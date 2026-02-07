@@ -20,7 +20,7 @@
     }
 
     public plot(point: [x: number, y: number]): [x: number, y: number] {
-        let fy = point[1] / this.innerHeight;
+        let fy = this.fractionalY(point[1]);
         let y = fy * this.height;
 
         let bottomPortion = fy;
@@ -29,7 +29,7 @@
 
         let difference = (this.bottomWidth - this.topWidth) / 2;
 
-        let fx = point[0] / this.innerWidth;
+        let fx = this.fractionalX(point[0]);
         let x = fx * widthAtPoint + difference * topPortion;
 
         return [x + this.xOffset, y + this.yOffset];

@@ -18,8 +18,8 @@ export default class SpaceShooter extends Game
 
     override onStart()
     {
-        this.entities.add(new Meteor(50, 50, 1, this, "#ff004f"))
-        this.entities.add(new Meteor(this.canvas.width - 50, 50, 1, this, "#ff004f"))
+        this.entities.add(new Meteor(50, 50, 1, this))
+        this.entities.add(new Meteor(this.canvas.width - 50, 50, 1, this))
     }
 
     override update() {
