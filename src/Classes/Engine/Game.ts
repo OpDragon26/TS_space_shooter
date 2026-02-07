@@ -1,10 +1,12 @@
 ﻿import type IEntity from "./IEntity.ts";
+import InputManager from "./InputManager.ts";
 
 export default class Game {
     public ctx: CanvasRenderingContext2D;
     public entities: Set<IEntity> = new Set<IEntity>();
     protected canvas: HTMLCanvasElement;
     public active: boolean = false;
+    public inputManager = new InputManager();
 
     constructor() {
         this.canvas = document.querySelector("#game-canvas")!;
