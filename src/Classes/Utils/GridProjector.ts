@@ -34,4 +34,7 @@
 
         return [x + this.xOffset, y + this.yOffset];
     }
+
+    fractionalY(y: number) {return y / this.innerHeight}
+    fractionalX(x: number) {return x / this.innerWidth}
 }

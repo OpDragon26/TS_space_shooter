@@ -3,12 +3,17 @@ import type Game from "./Engine/Game.ts";
 
 export default class Meteor extends Rectangle
 {
-    constructor(x: number, y: number, width: number, height: number, game: Game, color: string, tags: Set<number> = new Set<number>()) {
-        super(x, y, width, height, game, color, tags);
+    private speed: number = 1;
+    constructor(x: number, y: number, scale: number, game: Game, color: string, tags: Set<number> = new Set<number>()) {
+        super(x, y, 50, 50, scale, game, color, tags);
         this.tags.add(0);
     }
 
     override update() {
-        this.y += 1
+        this.y += this.speed
+        this.speed *= 1.01
+
+        if (this.game.outOfBounds(this, 200, 200))
+            this.game.entities.delete(this);
     }
 }

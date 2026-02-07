@@ -15,4 +15,6 @@ export default interface IEntity {
     start(): void
     update(): void
     tagged(tag: number): boolean
+    get Height(): number
+    get Width(): number
 }

@@ -3,6 +3,8 @@ import Meteor from "./Meteor.ts";
 import GridProjector from "./Utils/GridProjector.ts";
 import type IEntity from "./Engine/IEntity.ts";
 import {tags} from "./Tags.ts";
+import Easing from "./Utils/easing.ts";
+//import Easing from "./Utils/easing.ts";
 
 export default class SpaceShooter extends Game
 {
@@ -11,13 +13,19 @@ export default class SpaceShooter extends Game
     constructor() {
         super();
 
-        this.projector = new GridProjector(this.canvas.width, this.canvas.height, this.canvas.width * 0.6, this.canvas.width * 0.025, this.canvas.height * 0.45, this.canvas.width * 0.2, this.canvas.height * 0.4);
+        this.projector = new GridProjector(this.canvas.width, this.canvas.height, this.canvas.width * 0.5, this.canvas.width * 0.025, this.canvas.height * 0.65, this.canvas.width * 0.25, this.canvas.height * 0.3);
     }
 
     override onStart()
     {
-        this.entities.push(new Meteor(50, 50, 20, 20, this, "#ff004f"))
-        this.entities.push(new Meteor(this.canvas.width - 50, 50, 20, 20, this, "#ff004f"))
+        this.entities.add(new Meteor(50, 50, 1, this, "#ff004f"))
+        this.entities.add(new Meteor(this.canvas.width - 50, 50, 1, this, "#ff004f"))
+    }
+
+    override update() {
+        super.update();
+
+        this.entities.forEach((entity) => {entity.scale = Easing(this.projector.fractionalY(entity.y))})
     }
 
     override draw()

@@ -13,6 +13,16 @@ export default class GameEntity implements IEntity {
     hidden: boolean;
     tags: Set<number>;
 
+    get Height()
+    {
+        return this.height * this.scale;
+    }
+
+    get Width()
+    {
+        return this.width * this.scale;
+    }
+
     constructor(x: number, y: number, scale: number, game: Game, texture: HTMLImageElement, tags: Set<number> = new Set<number>()) {
         this.x = x;
         this.y = y;
@@ -42,7 +52,7 @@ export default class GameEntity implements IEntity {
 
     protected drawBody(pos: [x: number, y: number])
     {
-        this.game.ctx.drawImage(this.texture, pos[0] - this.width / 2, pos[1] - this.height / 2);
+        this.game.ctx.drawImage(this.texture, pos[0] - this.width * this.scale / 2, pos[1] - this.height * this.scale / 2);
     }
 
     public start() {

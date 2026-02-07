@@ -2,12 +2,13 @@
 
 export default class Game {
     public ctx: CanvasRenderingContext2D;
-    public entities: IEntity[] = [];
+    public entities: Set<IEntity> = new Set<IEntity>();
     protected canvas: HTMLCanvasElement;
     public active: boolean = false;
+
     constructor() {
         this.canvas = document.querySelector("#game-canvas")!;
-        this.ctx = this.canvas.getContext("2d")!;
+        this.ctx = this.canvas.getContext("2d")!;        
 
         this.canvas.width = window.innerWidth * 0.8
         this.canvas.height = window.innerHeight * 0.8
@@ -53,5 +54,18 @@ export default class Game {
     protected onStop()
     {
 
+    }
+
+    public outOfBounds(entity: IEntity, xLeniency: number, yLeniency: number)
+    {
+        return entity.x < 0 - xLeniency
+            || entity.x > this.canvas.width + xLeniency
+            || entity.y < 0 - yLeniency
+            || entity.y > this.canvas.height + yLeniency
+    }
+
+    public outOfBoundsDefault(entity: IEntity)
+    {
+        return this.outOfBounds(entity, entity.Width / 2, entity.Height / 2);
     }
 }

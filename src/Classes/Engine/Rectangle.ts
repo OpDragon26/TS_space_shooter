@@ -13,6 +13,16 @@ export default class Rectangle implements IEntity
     hidden: boolean;
     tags: Set<number>;
 
+    get Width()
+    {
+        return this.width * this.scale;
+    }
+
+    get Height()
+    {
+        return this.height * this.scale;
+    }
+
     constructor(x: number, y: number, width: number, height: number, scale: number, game: Game, color: string, tags: Set<number> = new Set<number>()) {
         this.x = x;
         this.y = y;
@@ -25,7 +35,7 @@ export default class Rectangle implements IEntity
         this.tags = tags;
     }
 
-    public drawAt(pos: [x: number, y: number]) {
+    public drawAt(pos: [x: number, y: number]) {        
         if (!this.hidden) {
             this.game.ctx.save()
             this.drawBody(pos)
@@ -41,7 +51,7 @@ export default class Rectangle implements IEntity
     protected drawBody(pos: [x: number, y: number])
     {
         this.game.ctx.fillStyle = this.color
-        this.game.ctx.fillRect(pos[0] - this.width * this.scale / 2, pos[1] - this.height * this.scale / 2, this.width * this.scale, this.height * this.scale);
+        this.game.ctx.fillRect(pos[0] - this.Width / 2, pos[1] - this.Height / 2, this.Width, this.Height);
     }
 
     public tagged(tag: number)
