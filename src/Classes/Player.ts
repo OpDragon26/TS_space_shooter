@@ -3,11 +3,11 @@ import type Game from "./Engine/Game.ts";
 
 export default class Player extends Rectangle
 {
-    private readonly acceleration: number = 0.18;
-    private readonly maxSpeed: number = 5;
+    private readonly acceleration: number = 0.2;
+    private readonly maxSpeed: number = 3;
     private speed: number = 0;
 
-    private readonly limit: number = 300;
+    private readonly limit: number = 400;
 
     constructor(x: number, y: number, game: Game) {
         super(x, y, 50, 20, 1, game, "#444282");
@@ -40,9 +40,13 @@ export default class Player extends Rectangle
     {
         if (this.limit <= this.x + x && this.game.Width - this.limit >= this.x + x)
             this.x += x;
+        else
+            this.speed = 0
     }
 
+    /*
     override draw() {
-        super.draw();
+        this.drawBody([this.game.Width / 2, this.y])
     }
+    */
 }

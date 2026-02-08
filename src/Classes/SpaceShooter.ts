@@ -5,32 +5,46 @@ import type IEntity from "./Engine/Entities/IEntity.ts";
 import {tags} from "./Tags.ts";
 import Easing from "./Utils/easing.ts";
 import Player from "./Player.ts";
-//import Easing from "./Utils/easing.ts";
+import Random from "./Utils/Random.ts";
 
 export default class SpaceShooter extends Game
 {
     public projector: GridProjector
+    private enemyInterval: [min: number, max: number] = [5, 60]
+    private enemyTimer: number = 0;
+    private readonly player: Player
 
     constructor() {
         super();
 
-        this.projector = new GridProjector(this.canvas.width, this.canvas.height, this.canvas.width * 0.5, this.canvas.width * 0.025, this.canvas.height * 0.65, this.canvas.width * 0.25, this.canvas.height * 0.3);
+        this.player = new Player(this.Width / 2, this.Height - 50, this)
+        this.projector = new GridProjector(this.canvas.width, this.canvas.height, this.canvas.width * 0.7, this.canvas.width * 0.025, this.canvas.height * 0.75, this.canvas.width * 0.15, this.canvas.height * 0.2);
     }
 
     override onStart()
     {
-        this.entities.add(new Meteor(50, 50, 1, this))
-        this.entities.add(new Meteor(this.canvas.width - 50, 50, 1, this))
-        this.entities.add(new Player(this.Width / 2, this.Height - 50, this))
+        this.entities.add(this.player)
     }
 
     override update() {
         super.update();
 
+        if (this.enemyTimer <= 0)
+        {
+            this.enemyTimer = this.getInterval()
+            this.spawnMeteor()
+        }
+        this.enemyTimer -= 1
+
         this.entities.forEach((entity) => {
             if (entity.tagged(tags.PROJECTED))
-                entity.scale = Easing(this.projector.fractionalY(entity.y))
+                entity.scale = Easing(this.projector.fractionalY(entity.y) * 1.1 + 0.1)
         })
+
+        //this.entities.add(new Meteor(0, 0, 1, this))
+        //this.entities.add(new Meteor(this.Width, 0, 1, this))
+
+        this.projector.skew = -(this.player.x - this.Width / 2)
     }
 
     override draw()
@@ -52,5 +66,27 @@ export default class SpaceShooter extends Game
         {
             entity.draw()
         }
+    }
+
+    private spawnMeteor()
+    {
+        if (Math.random() < 0.5)
+        {
+            // aim at player
+            const fPos = (this.player.x - 400) / (this.Width - 800)
+
+            const min = Math.max(0, this.Width * fPos + 75)
+            const max = Math.min(this.Width, this.Width * fPos - 75)
+            this.entities.add(new Meteor(Random(min, max), 0, 1, this))
+        }
+        else
+        {
+            this.entities.add(new Meteor(Random(0, this.Width), 0, 1, this))
+        }
+    }
+
+    private getInterval()
+    {
+        return Random(this.enemyInterval[0], this.enemyInterval[1])
     }
 }

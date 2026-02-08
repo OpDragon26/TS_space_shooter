@@ -11,7 +11,7 @@ export default class Meteor extends Rectangle
 
     override update() {
         this.y += this.speed
-        this.speed *= 1.02
+        this.speed *= 1.01
 
         if (this.game.outOfBounds(this, 200, 200))
             this.game.entities.delete(this);
