@@ -1,4 +1,4 @@
-﻿import type IEntity from "./IEntity.ts";
+﻿import type IEntity from "./Entities/IEntity.ts";
 import InputManager from "./InputManager.ts";
 
 export default class Game {
@@ -7,6 +7,16 @@ export default class Game {
     protected canvas: HTMLCanvasElement;
     public active: boolean = false;
     public inputManager = new InputManager();
+
+    public get Width()
+    {
+        return this.canvas.width
+    }
+
+    public get Height()
+    {
+        return this.canvas.height;
+    }
 
     constructor() {
         this.canvas = document.querySelector("#game-canvas")!;

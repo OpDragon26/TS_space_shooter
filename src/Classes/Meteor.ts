@@ -1,4 +1,4 @@
-﻿import Rectangle from "./Engine/Rectangle.ts";
+﻿import Rectangle from "./Engine/Entities/Rectangle.ts";
 import type Game from "./Engine/Game.ts";
 
 export default class Meteor extends Rectangle
@@ -11,7 +11,7 @@ export default class Meteor extends Rectangle
 
     override update() {
         this.y += this.speed
-        this.speed *= 1.01
+        this.speed *= 1.02
 
         if (this.game.outOfBounds(this, 200, 200))
             this.game.entities.delete(this);

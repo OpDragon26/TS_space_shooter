@@ -1,9 +1,10 @@
 ﻿import Game from "./Engine/Game.ts";
 import Meteor from "./Meteor.ts";
 import GridProjector from "./Utils/GridProjector.ts";
-import type IEntity from "./Engine/IEntity.ts";
+import type IEntity from "./Engine/Entities/IEntity.ts";
 import {tags} from "./Tags.ts";
 import Easing from "./Utils/easing.ts";
+import Player from "./Player.ts";
 //import Easing from "./Utils/easing.ts";
 
 export default class SpaceShooter extends Game
@@ -20,12 +21,16 @@ export default class SpaceShooter extends Game
     {
         this.entities.add(new Meteor(50, 50, 1, this))
         this.entities.add(new Meteor(this.canvas.width - 50, 50, 1, this))
+        this.entities.add(new Player(this.Width / 2, this.Height - 50, this))
     }
 
     override update() {
         super.update();
 
-        this.entities.forEach((entity) => {entity.scale = Easing(this.projector.fractionalY(entity.y))})
+        this.entities.forEach((entity) => {
+            if (entity.tagged(tags.PROJECTED))
+                entity.scale = Easing(this.projector.fractionalY(entity.y))
+        })
     }
 
     override draw()
@@ -44,6 +49,8 @@ export default class SpaceShooter extends Game
             entity.drawAt(projectedPos)
         }
         else
+        {
             entity.draw()
+        }
     }
 }
