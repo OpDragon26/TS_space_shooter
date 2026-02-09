@@ -47,8 +47,9 @@ export default class CircleHitbox implements IHitbox
     }
 
     update<GT extends Game>(parent: IEntity<GT>) {
-        this.x = parent.x;
-        this.y = parent.y;
+        const pos = parent.displayPos
+        this.x = pos[0];
+        this.y = pos[1];
         this.scale = parent.scale;
     }
 }

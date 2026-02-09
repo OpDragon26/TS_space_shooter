@@ -2,6 +2,7 @@ import Rectangle from "./Engine/Entities/Rectangle.ts";
 import type SpaceShooter from "./SpaceShooter.ts";
 import RectangleHitbox from "./Engine/Hitboxes/RectangleHitbox.ts";
 import Meteor from "./Meteor.ts";
+import {Tags} from "./Tags.ts";
 
 export default class Player extends Rectangle<SpaceShooter>
 {
@@ -12,6 +13,9 @@ export default class Player extends Rectangle<SpaceShooter>
     public readonly limit: number = this.game.Width * 0.3;
 
     public readonly hitbox: RectangleHitbox;
+
+    private readonly IFrames: number = 60;
+    private IFrameCounter: number = 0;
 
     constructor(x: number, y: number, game: SpaceShooter) {
         super(x, y, 50, 20, 1, game, "#444282");
@@ -43,13 +47,22 @@ export default class Player extends Rectangle<SpaceShooter>
 
         this.hitbox.update(this)
 
-        this.game.entities.forEach((entity) => {
-            if (typeof (entity as Meteor) !== "undefined") {
-                let m: Meteor = entity as Meteor;
-                if (m.hitbox.collides(this.hitbox) && !Object.is(this, m))
-                    console.log("BOOM")
-            }
-        })
+        this.IFrameCounter--;
+        if (this.IFrameCounter < 0)
+        {
+            this.game.entities.forEach((entity) => {
+                if (entity.tagged(Tags.METEOR))
+                {
+                    const m: Meteor = (entity as Meteor);
+                    if (m.hitbox.collides(this.hitbox))
+                    {
+                        this.game.screenShake.start()
+                        console.log(this.IFrameCounter)
+                        this.IFrameCounter = this.IFrames
+                    }
+                }
+            })
+        }
     }
 
     private tryMove(x: number)
@@ -60,9 +73,7 @@ export default class Player extends Rectangle<SpaceShooter>
             this.speed = 0
     }
 
-    /*
-    override draw() {
-        this.drawBody([this.game.Width / 2, this.y])
+    override get displayPos(): [x: number, y: number] {
+        return [this.x + this.game.screenShake.xOffset, this.y + this.game.screenShake.yOffset];
     }
-    */
 }

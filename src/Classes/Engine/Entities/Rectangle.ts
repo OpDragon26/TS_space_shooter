@@ -43,9 +43,14 @@ export default class Rectangle<GT extends Game> implements IEntity<GT>
         }
     }
 
+    get displayPos(): [x: number, y: number]
+    {
+        return [this.x, this.y];
+    }
+
     public draw()
     {
-        this.drawAt([this.x, this.y])
+        this.drawAt(this.displayPos)
     }
 
     protected drawBody(pos: [x: number, y: number])

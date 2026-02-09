@@ -3,6 +3,7 @@ import Meteor from "./Meteor.ts";
 import GridProjector from "./Utils/GridProjector.ts";
 import Player from "./Player.ts";
 import Random from "./Utils/Random.ts";
+import ScreenShake from "./ScreenShake.ts";
 
 export default class SpaceShooter extends Game
 {
@@ -10,17 +11,20 @@ export default class SpaceShooter extends Game
     private enemyInterval: [min: number, max: number] = [5, 40]
     private enemyTimer: number = 0;
     private readonly player: Player
+    public readonly screenShake: ScreenShake;
 
     constructor() {
         super();
 
         this.player = new Player(this.Width / 2, this.Height - 50, this)
         this.projector = new GridProjector(this.canvas.width, this.canvas.height, this.canvas.width * 0.7, this.canvas.width * 0.025, this.canvas.height * 0.75, this.canvas.width * 0.15, this.canvas.height * 0.2);
+        this.screenShake = new ScreenShake();
     }
 
     override onStart()
     {
         this.entities.add(this.player)
+        this.screenShake.start()
     }
 
     override update() {
@@ -36,6 +40,7 @@ export default class SpaceShooter extends Game
         //this.entities.add(new Meteor(0, 0, 1, this))
         //this.entities.add(new Meteor(this.Width, 0, 1, this))
 
+        this.screenShake.update();
         this.projector.skew = -(this.player.x - this.Width / 2) * 0.5
     }
 

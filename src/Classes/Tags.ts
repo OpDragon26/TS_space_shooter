@@ -1,3 +1,3 @@
-﻿export const tags = {
-    PROJECTED: 0,
+﻿export const Tags = {
+    METEOR: 0,
 }

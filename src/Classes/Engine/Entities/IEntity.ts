@@ -12,6 +12,7 @@ export default interface IEntity<GT extends Game> {
 
     draw(): void
     drawAt(pos: [x: number, y: number]): void
+    get displayPos(): [x: number, y: number]
     start(): void
     update(): void
     tagged(tag: number): boolean
