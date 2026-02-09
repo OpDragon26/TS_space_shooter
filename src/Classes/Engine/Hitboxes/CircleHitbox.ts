@@ -1,5 +1,7 @@
 ﻿import type IHitbox from "./IHitbox.ts";
 import CollisionTester from "./CollisionTester.ts";
+import type Game from "../Game.ts";
+import type IEntity from "../Entities/IEntity.ts";
 
 export default class CircleHitbox implements IHitbox
 {
@@ -42,5 +44,11 @@ export default class CircleHitbox implements IHitbox
             [this.x, this.y + this.Radius],
             [this.x, this.y - this.Radius],
         ]
+    }
+
+    update<GT extends Game>(parent: IEntity<GT>) {
+        this.x = parent.x;
+        this.y = parent.y;
+        this.scale = parent.scale;
     }
 }

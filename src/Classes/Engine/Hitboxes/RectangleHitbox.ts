@@ -1,5 +1,7 @@
 ﻿import type IHitbox from "./IHitbox.ts";
 import CollisionTester from "./CollisionTester.ts";
+import type Game from "../Game.ts";
+import type IEntity from "../Entities/IEntity.ts";
 
 export default class RectangleHitbox implements IHitbox
 {
@@ -44,5 +46,11 @@ export default class RectangleHitbox implements IHitbox
             [this.x + this.Width / 2, this.y - this.Height / 2],
             [this.x - this.Width / 2, this.y - this.Height / 2],
         ]
+    }
+
+    update<GT extends Game>(parent: IEntity<GT>) {
+        this.x = parent.x;
+        this.y = parent.y;
+        this.scale = parent.scale;
     }
 }
