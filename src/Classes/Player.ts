@@ -78,8 +78,4 @@ export default class Player extends Rectangle<SpaceShooter>
         else
             this.speed = 0
     }
-
-    override get displayPos(): [x: number, y: number] {
-        return [this.x + this.game.screenShake.xOffset, this.y + this.game.screenShake.yOffset];
-    }
 }

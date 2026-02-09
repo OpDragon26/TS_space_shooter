@@ -32,8 +32,8 @@ export default class Meteor extends Rectangle<SpaceShooter>
 
     override get displayPos(): [x: number, y: number] {
         const dPos = this.game.projector.plot([this.x, this.y])
-        dPos[0] += this.game.screenShake.xOffset
-        dPos[1] += this.game.screenShake.yOffset
+        dPos[0] += this.game.xOffsetGlobal
+        dPos[1] += this.game.yOffsetGlobal
         return dPos;
     }
 }

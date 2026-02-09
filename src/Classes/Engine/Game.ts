@@ -68,6 +68,16 @@ export default class Game {
 
     }
 
+    get xOffsetGlobal(): number
+    {
+        return 0;
+    }
+
+    get yOffsetGlobal(): number
+    {
+        return 0;
+    }
+
     public outOfBounds(entity: IEntity, xLeniency: number, yLeniency: number)
     {
         return entity.x < 0 - xLeniency

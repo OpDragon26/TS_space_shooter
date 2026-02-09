@@ -45,7 +45,7 @@ export default class Rectangle<GT extends Game> implements IEntity<GT>
 
     get displayPos(): [x: number, y: number]
     {
-        return [this.x, this.y];
+        return [this.x + this.game.xOffsetGlobal, this.y + this.game.yOffsetGlobal];
     }
 
     public draw()

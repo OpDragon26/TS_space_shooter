@@ -65,4 +65,12 @@ export default class SpaceShooter extends Game
     {
         return Random(this.enemyInterval[0], this.enemyInterval[1])
     }
+
+    get xOffsetGlobal(): number {
+        return this.screenShake.xOffset
+    }
+
+    get yOffsetGlobal(): number {
+        return this.screenShake.yOffset;
+    }
 }
