@@ -6,8 +6,8 @@ import {Tags} from "./Tags.ts";
 
 export default class Meteor extends Rectangle<SpaceShooter>
 {
-    private speed: number = Random(0.7, 0.9);
-    private readonly acceleration: number = 1.02;
+    private speed: number = Random(0.5, 0.7);
+    private readonly acceleration: number = 1.015;
     public readonly hitbox: CircleHitbox;
 
     constructor(x: number, y: number, scale: number, game: SpaceShooter, tags: Set<number> = new Set<number>()) {
@@ -15,7 +15,7 @@ export default class Meteor extends Rectangle<SpaceShooter>
         super(x, y, size, size, scale, game, "#ff004f", tags);
 
         this.tags.add(Tags.METEOR);
-        this.hitbox = new CircleHitbox(x, y / 2, size / 2);
+        this.hitbox = new CircleHitbox(x, y, size / 2);
     }
 
     override update() {
