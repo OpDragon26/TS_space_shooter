@@ -1,14 +1,14 @@
 ﻿import type IEntity from "./IEntity.ts";
 import type Game from "../Game.ts";
 
-export default class Rectangle implements IEntity
+export default class Rectangle<GT extends Game> implements IEntity<GT>
 {
     x: number;
     y: number;
     width: number;
     height: number;
     scale: number;
-    game: Game;
+    game: GT;
     color: string
     hidden: boolean;
     tags: Set<number>;
@@ -23,7 +23,7 @@ export default class Rectangle implements IEntity
         return this.height * this.scale;
     }
 
-    constructor(x: number, y: number, width: number, height: number, scale: number, game: Game, color: string, tags: Set<number> = new Set<number>()) {
+    constructor(x: number, y: number, width: number, height: number, scale: number, game: GT, color: string, tags: Set<number> = new Set<number>()) {
         this.x = x;
         this.y = y;
         this.width = width;

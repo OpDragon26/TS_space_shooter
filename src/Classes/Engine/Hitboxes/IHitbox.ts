@@ -3,7 +3,9 @@
     x: number;
     y: number;
     active: boolean;
-    type: number;
+    scale: number;
 
-    collides(other: IHitbox): boolean;
+    collides(other: IHitbox): boolean
+    containsPoint(x: number, y: number): boolean;
+    getKeyPoints(): [x: number, y: number][];
 }

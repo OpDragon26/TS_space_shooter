@@ -1,12 +1,12 @@
 ﻿import type Game from "../Game.ts";
 
-export default interface IEntity {
+export default interface IEntity<GT extends Game> {
     x: number;
     y: number;
     width: number;
     height: number;
     scale: number;
-    game: Game;
+    game: GT;
     hidden: boolean;
     tags: Set<number>;
 

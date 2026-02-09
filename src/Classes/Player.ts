@@ -1,15 +1,15 @@
 import Rectangle from "./Engine/Entities/Rectangle.ts";
-import type Game from "./Engine/Game.ts";
+import type SpaceShooter from "./SpaceShooter.ts";
 
-export default class Player extends Rectangle
+export default class Player extends Rectangle<SpaceShooter>
 {
-    private readonly acceleration: number = 0.2;
-    private readonly maxSpeed: number = 3;
+    private readonly acceleration: number = 0.22;
+    private readonly maxSpeed: number = 3.5;
     private speed: number = 0;
 
-    private readonly limit: number = 400;
+    public readonly limit: number = this.game.Width * 0.3;
 
-    constructor(x: number, y: number, game: Game) {
+    constructor(x: number, y: number, game: SpaceShooter) {
         super(x, y, 50, 20, 1, game, "#444282");
     }
 

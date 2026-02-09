@@ -1,14 +1,14 @@
 ﻿import type Game from "../Game.ts";
 import type IEntity from "./IEntity.ts";
 
-export default class GameEntity implements IEntity {
+export default class GameEntity<GT extends Game> implements IEntity<GT> {
 
     x: number;
     y: number;
     width: number;
     height: number;
     scale: number;
-    game: Game;
+    game: GT;
     texture: HTMLImageElement;
     hidden: boolean;
     tags: Set<number>;
@@ -23,7 +23,7 @@ export default class GameEntity implements IEntity {
         return this.width * this.scale;
     }
 
-    constructor(x: number, y: number, scale: number, game: Game, texture: HTMLImageElement, tags: Set<number> = new Set<number>()) {
+    constructor(x: number, y: number, scale: number, game: GT, texture: HTMLImageElement, tags: Set<number> = new Set<number>()) {
         this.x = x;
         this.y = y;
         this.game = game;

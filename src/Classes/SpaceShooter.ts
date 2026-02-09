@@ -1,16 +1,13 @@
 ﻿import Game from "./Engine/Game.ts";
 import Meteor from "./Meteor.ts";
 import GridProjector from "./Utils/GridProjector.ts";
-import type IEntity from "./Engine/Entities/IEntity.ts";
-import {tags} from "./Tags.ts";
-import Easing from "./Utils/easing.ts";
 import Player from "./Player.ts";
 import Random from "./Utils/Random.ts";
 
 export default class SpaceShooter extends Game
 {
     public projector: GridProjector
-    private enemyInterval: [min: number, max: number] = [5, 60]
+    private enemyInterval: [min: number, max: number] = [5, 40]
     private enemyTimer: number = 0;
     private readonly player: Player
 
@@ -36,36 +33,10 @@ export default class SpaceShooter extends Game
         }
         this.enemyTimer -= 1
 
-        this.entities.forEach((entity) => {
-            if (entity.tagged(tags.PROJECTED))
-                entity.scale = Easing(this.projector.fractionalY(entity.y) * 1.1 + 0.1)
-        })
-
         //this.entities.add(new Meteor(0, 0, 1, this))
         //this.entities.add(new Meteor(this.Width, 0, 1, this))
 
-        this.projector.skew = -(this.player.x - this.Width / 2)
-    }
-
-    override draw()
-    {
-        this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
-        this.entities.forEach((entity: IEntity) => this.drawEntity(entity))
-    }
-
-    private drawEntity(entity: IEntity)
-    {
-        if (entity.tagged(tags.PROJECTED))
-        {
-            let entityPos: [x: number, y: number] = [entity.x, entity.y]
-            let projectedPos: [x: number, y: number] = this.projector.plot(entityPos)
-            //console.log(`from: ${entityPos} to ${projectedPos}`)
-            entity.drawAt(projectedPos)
-        }
-        else
-        {
-            entity.draw()
-        }
+        this.projector.skew = -(this.player.x - this.Width / 2) * 0.5
     }
 
     private spawnMeteor()
@@ -73,7 +44,7 @@ export default class SpaceShooter extends Game
         if (Math.random() < 0.5)
         {
             // aim at player
-            const fPos = (this.player.x - 400) / (this.Width - 800)
+            const fPos = (this.player.x - this.player.limit) / (this.Width - this.player.limit * 2)
 
             const min = Math.max(0, this.Width * fPos + 75)
             const max = Math.min(this.Width, this.Width * fPos - 75)
