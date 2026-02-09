@@ -14,7 +14,7 @@ export default class Player extends Rectangle<SpaceShooter>
 
     public readonly hitbox: RectangleHitbox;
 
-    private readonly IFrames: number = 60;
+    private readonly IFrames: number = 120;
     private IFrameCounter: number = 0;
 
     constructor(x: number, y: number, game: SpaceShooter) {
@@ -50,6 +50,7 @@ export default class Player extends Rectangle<SpaceShooter>
         this.IFrameCounter--;
         if (this.IFrameCounter < 0)
         {
+            this.hidden = false
             this.game.entities.forEach((entity) => {
                 if (entity.tagged(Tags.METEOR))
                 {
@@ -57,12 +58,17 @@ export default class Player extends Rectangle<SpaceShooter>
                     if (m.hitbox.collides(this.hitbox))
                     {
                         this.game.screenShake.start()
-                        console.log(this.IFrameCounter)
                         this.IFrameCounter = this.IFrames
                     }
                 }
             })
         }
+        else
+        {
+            const c = Math.round(this.IFrameCounter / 15)
+            this.hidden = c % 2 == 0
+        }
+
     }
 
     private tryMove(x: number)
