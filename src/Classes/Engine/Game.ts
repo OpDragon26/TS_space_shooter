@@ -1,9 +1,9 @@
 ﻿import type IEntity from "./Entities/IEntity.ts";
 import InputManager from "./InputManager.ts";
 
-export default class Game {
+export default class Game<GT extends Game<GT>> {
     public ctx: CanvasRenderingContext2D;
-    public entities: Set<IEntity> = new Set<IEntity>();
+    public entities: Set<IEntity<GT>> = new Set<IEntity<GT>>();
     protected canvas: HTMLCanvasElement;
     public active: boolean = false;
     public inputManager = new InputManager();
@@ -27,27 +27,33 @@ export default class Game {
     }
 
     public update() {
-        this.entities.forEach((entity: IEntity) => entity.update())
+        this.entities.forEach((entity: IEntity<GT>) => entity.update())
         this.draw()
     }
 
     protected draw()
     {
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
-        this.entities.forEach((entity: IEntity) => entity.draw())
+        this.entities.forEach((entity: IEntity<GT>) => entity.draw())
     }
 
     private loop()
     {
         this.update();
+        const fps = 60;
+
         if (this.active)
-            requestAnimationFrame(() => this.loop());
+        {
+            setTimeout(() => {
+                requestAnimationFrame(() => this.loop())
+            }, 950 / fps);
+        }
     }
 
     public start()
     {
         this.active = true;
-        this.entities.forEach((entity: IEntity) => entity.start());
+        this.entities.forEach((entity: IEntity<GT>) => entity.start());
         this.onStart();
         this.loop();
     }
@@ -78,7 +84,7 @@ export default class Game {
         return 0;
     }
 
-    public outOfBounds(entity: IEntity, xLeniency: number, yLeniency: number)
+    public outOfBounds(entity: IEntity<GT>, xLeniency: number, yLeniency: number)
     {
         return entity.x < 0 - xLeniency
             || entity.x > this.canvas.width + xLeniency
@@ -86,7 +92,7 @@ export default class Game {
             || entity.y > this.canvas.height + yLeniency
     }
 
-    public outOfBoundsDefault(entity: IEntity)
+    public outOfBoundsDefault(entity: IEntity<GT>)
     {
         return this.outOfBounds(entity, entity.Width / 2, entity.Height / 2);
     }

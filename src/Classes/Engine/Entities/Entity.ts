@@ -1,13 +1,14 @@
 ﻿import type Game from "../Game.ts";
 import type IEntity from "./IEntity.ts";
 
-export default class GameEntity<GT extends Game> implements IEntity<GT> {
+export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
 
     x: number;
     y: number;
     width: number;
     height: number;
     scale: number;
+    rotation: number;
     game: GT;
     texture: HTMLImageElement;
     hidden: boolean;
@@ -23,7 +24,7 @@ export default class GameEntity<GT extends Game> implements IEntity<GT> {
         return this.width * this.scale;
     }
 
-    constructor(x: number, y: number, scale: number, game: GT, texture: HTMLImageElement, tags: Set<number> = new Set<number>()) {
+    constructor(x: number, y: number, scale: number, rotation: number, game: GT, texture: HTMLImageElement, tags: Set<number> = new Set<number>()) {
         this.x = x;
         this.y = y;
         this.game = game;
@@ -31,6 +32,7 @@ export default class GameEntity<GT extends Game> implements IEntity<GT> {
         this.width = texture.width;
         this.height = texture.height;
         this.scale = scale;
+        this.rotation = rotation;
         this.hidden = false;
         this.tags = tags
     }
@@ -57,6 +59,10 @@ export default class GameEntity<GT extends Game> implements IEntity<GT> {
 
     protected drawBody(pos: [x: number, y: number])
     {
+        this.game.ctx.translate(pos[0], pos[1]);
+        this.game.ctx.rotate(this.rotation)
+        this.game.ctx.translate(-pos[0], -pos[1]);
+
         this.game.ctx.drawImage(this.texture, pos[0] - this.width * this.scale / 2, pos[1] - this.height * this.scale / 2);
     }
 

@@ -6,7 +6,7 @@ import {Tags} from "./Tags.ts";
 
 export default class Player extends Rectangle<SpaceShooter>
 {
-    private readonly acceleration: number = 0.22;
+    private readonly acceleration: number = 0.25;
     private readonly maxSpeed: number = 3.5;
     private speed: number = 0;
 
@@ -18,7 +18,7 @@ export default class Player extends Rectangle<SpaceShooter>
     private IFrameCounter: number = 0;
 
     constructor(x: number, y: number, game: SpaceShooter) {
-        super(x, y, 50, 20, 1, game, "#444282");
+        super(x, y, 50, 20, 1, 0, game, "#444282");
 
         this.hitbox = new RectangleHitbox(x, y, 50, 20)
     }
@@ -45,6 +45,8 @@ export default class Player extends Rectangle<SpaceShooter>
                 this.speed -= this.acceleration
         }
 
+        this.applyRotation()
+
         this.hitbox.update(this)
 
         this.IFrameCounter--;
@@ -69,6 +71,11 @@ export default class Player extends Rectangle<SpaceShooter>
             this.hidden = c % 2 == 0
         }
 
+    }
+
+    private applyRotation()
+    {
+        this.rotation = this.speed / 14
     }
 
     private tryMove(x: number)

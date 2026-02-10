@@ -48,7 +48,7 @@ export default class RectangleHitbox implements IHitbox
         ]
     }
 
-    update<GT extends Game>(parent: IEntity<GT>) {
+    update<GT extends Game<GT>>(parent: IEntity<GT>) {
         const pos = parent.displayPos
         this.x = pos[0];
         this.y = pos[1];

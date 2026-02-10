@@ -5,7 +5,7 @@ import Player from "./Player.ts";
 import Random from "./Utils/Random.ts";
 import ScreenShake from "./ScreenShake.ts";
 
-export default class SpaceShooter extends Game
+export default class SpaceShooter extends Game<SpaceShooter>
 {
     public projector: GridProjector
     private enemyInterval: [min: number, max: number] = [5, 40]
@@ -24,7 +24,6 @@ export default class SpaceShooter extends Game
     override onStart()
     {
         this.entities.add(this.player)
-        this.screenShake.start()
     }
 
     override update() {

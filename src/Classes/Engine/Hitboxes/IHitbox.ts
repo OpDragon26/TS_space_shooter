@@ -11,5 +11,5 @@ export default interface IHitbox
     collides(other: IHitbox): boolean
     containsPoint(x: number, y: number): boolean;
     getKeyPoints(): [x: number, y: number][];
-    update<GT extends Game>(parent: IEntity<GT>): void;
+    update<GT extends Game<GT>>(parent: IEntity<GT>): void;
 }

@@ -9,10 +9,11 @@ export default class Meteor extends Rectangle<SpaceShooter>
     private speed: number = Random(0.5, 0.7);
     private readonly acceleration: number = 1.015;
     public readonly hitbox: CircleHitbox;
+    private readonly frameRotation: number = Random(0.001, 0.01);
 
     constructor(x: number, y: number, scale: number, game: SpaceShooter, tags: Set<number> = new Set<number>()) {
         const size = Random(35, 75)
-        super(x, y, size, size, scale, game, "#ff004f", tags);
+        super(x, y, size, size, scale, 0, game, "#ff004f", tags);
 
         this.tags.add(Tags.METEOR);
         this.hitbox = new CircleHitbox(x, y, size / 2);
@@ -21,6 +22,7 @@ export default class Meteor extends Rectangle<SpaceShooter>
     override update() {
         this.y += this.speed
         this.speed *= this.acceleration
+        this.rotation += this.frameRotation
 
         if (this.game.outOfBounds(this, 200, 200))
             this.game.entities.delete(this);
