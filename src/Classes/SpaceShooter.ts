@@ -36,9 +36,6 @@ export default class SpaceShooter extends Game<SpaceShooter>
         }
         this.enemyTimer -= 1
 
-        //this.entities.add(new Meteor(0, 0, 1, this))
-        //this.entities.add(new Meteor(this.Width, 0, 1, this))
-
         this.screenShake.update();
         this.projector.skew = -(this.player.x - this.Width / 2) * 0.5
     }

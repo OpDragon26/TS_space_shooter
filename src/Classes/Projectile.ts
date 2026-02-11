@@ -3,6 +3,7 @@ import ProjectedRect from "./Utils/ProjectedRect.ts";
 import {Tags} from "./Utils/Tags.ts";
 import RectangleHitbox from "./Engine/Hitboxes/RectangleHitbox.ts";
 import Meteor from "./Meteor.ts";
+import RGBA from "./Engine/General/RGBA.ts";
 
 export default class Projectile extends ProjectedRect
 {
@@ -11,7 +12,7 @@ export default class Projectile extends ProjectedRect
     private readonly hitbox: RectangleHitbox
 
     constructor(x: number, y: number, game: SpaceShooter, tags: Set<number> = new Set()) {
-        super(x, y, 5, 5, 1, 0, game, "#FFFFFF", tags);
+        super(x, y, 5, 5, 1, 0, game, new RGBA(0xFF, 0xFF, 0xFF), tags);
         this.tags.add(Tags.PROJECTILE);
 
         const p1: ProjectedRect = this;
