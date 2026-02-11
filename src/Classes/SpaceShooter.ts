@@ -1,4 +1,4 @@
-﻿import Game from "./Engine/Game.ts";
+﻿import Game from "./Engine/General/Game.ts";
 import Meteor from "./Meteor.ts";
 import GridProjector from "./Utils/GridProjector.ts";
 import Player from "./Player.ts";

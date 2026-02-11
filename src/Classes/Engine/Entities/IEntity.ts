@@ -1,4 +1,4 @@
-﻿import type Game from "../Game.ts";
+﻿import type Game from "../General/Game.ts";
 
 export default interface IEntity<GT extends Game<GT>> {
     x: number;

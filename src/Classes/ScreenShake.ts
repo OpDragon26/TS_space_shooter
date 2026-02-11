@@ -1,5 +1,5 @@
 import Random from "./Utils/Random.ts";
-import type IGlobalTransform from "./Engine/IGlobalTransform.ts";
+import type IGlobalTransform from "./Engine/General/IGlobalTransform.ts";
 
 export default class ScreenShake implements IGlobalTransform {
     public xOffset: number = 0

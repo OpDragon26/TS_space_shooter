@@ -1,10 +1,10 @@
-﻿import Rectangle from "./Engine/Entities/Rectangle.ts";
-import Random from "./Utils/Random.ts";
+﻿import Random from "./Utils/Random.ts";
 import type SpaceShooter from "./SpaceShooter.ts";
 import CircleHitbox from "./Engine/Hitboxes/CircleHitbox.ts";
-import {Tags} from "./Tags.ts";
+import {Tags} from "./Utils/Tags.ts";
+import ProjectedRect from "./Utils/ProjectedRect.ts";
 
-export default class Meteor extends Rectangle<SpaceShooter>
+export default class Meteor extends ProjectedRect
 {
     private speed: number = Random(0.5, 0.7);
     private readonly acceleration: number = 1.015;
@@ -27,15 +27,8 @@ export default class Meteor extends Rectangle<SpaceShooter>
         if (this.game.outOfBounds(this, 200, 200))
             this.game.entities.delete(this);
 
-        this.scale = this.game.projector.fractionalY(this.y)
+        super.update();
 
         this.hitbox.update(this)
-    }
-
-    override get displayPos(): [x: number, y: number] {
-        const dPos = this.game.projector.plot([this.x, this.y])
-        dPos[0] += this.game.xOffsetGlobal
-        dPos[1] += this.game.yOffsetGlobal
-        return dPos;
     }
 }

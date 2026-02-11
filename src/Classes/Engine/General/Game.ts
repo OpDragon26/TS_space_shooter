@@ -1,4 +1,4 @@
-﻿import type IEntity from "./Entities/IEntity.ts";
+﻿import type IEntity from "../Entities/IEntity.ts";
 import InputManager from "./InputManager.ts";
 
 export default class Game<GT extends Game<GT>> {

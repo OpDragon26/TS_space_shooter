@@ -2,7 +2,9 @@ import Rectangle from "./Engine/Entities/Rectangle.ts";
 import type SpaceShooter from "./SpaceShooter.ts";
 import RectangleHitbox from "./Engine/Hitboxes/RectangleHitbox.ts";
 import Meteor from "./Meteor.ts";
-import {Tags} from "./Tags.ts";
+import {Tags} from "./Utils/Tags.ts";
+import Projectile from "./Projectile.ts";
+import Timer from "./Engine/General/Timer.ts";
 
 export default class Player extends Rectangle<SpaceShooter>
 {
@@ -17,6 +19,10 @@ export default class Player extends Rectangle<SpaceShooter>
     private readonly IFrames: number = 120;
     private IFrameCounter: number = 0;
 
+    private readonly projectileYOffset: number = 5;
+    private readonly projectileXOffset: number = 15;
+    private readonly projectileTimer: Timer = new Timer(40);
+
     constructor(x: number, y: number, game: SpaceShooter) {
         super(x, y, 50, 20, 1, 0, game, "#444282");
 
@@ -26,6 +32,16 @@ export default class Player extends Rectangle<SpaceShooter>
     override update() {
         this.tryMove(this.speed)
 
+        this.projectileTimer.tick()
+        this.handleInputs()
+        this.applyRotation()
+
+        this.hitbox.update(this)
+        this.handleCollision()
+    }
+
+    private handleInputs()
+    {
         let anyPressed: boolean = false;
 
         if (this.game.inputManager.isKeyDown("a") || this.game.inputManager.isKeyDown("ArrowLeft")) {
@@ -36,6 +52,13 @@ export default class Player extends Rectangle<SpaceShooter>
             this.speed = Math.min(this.maxSpeed, this.speed + this.acceleration);
             anyPressed = true;
         }
+        if (this.game.inputManager.isKeyDown(" ")) {
+            if (this.projectileTimer.passed())
+            {
+                this.spawnProjectile()
+                this.projectileTimer.reset()
+            }
+        }
 
         if (!anyPressed)
         {
@@ -44,12 +67,10 @@ export default class Player extends Rectangle<SpaceShooter>
             else if (this.speed > 0)
                 this.speed -= this.acceleration
         }
+    }
 
-        this.applyRotation()
-
-        this.hitbox.update(this)
-
-        this.IFrameCounter--;
+    private handleCollision()
+    {
         if (this.IFrameCounter < 0)
         {
             this.hidden = false
@@ -70,7 +91,17 @@ export default class Player extends Rectangle<SpaceShooter>
             const c = Math.round(this.IFrameCounter / 15)
             this.hidden = c % 2 == 0
         }
+        this.IFrameCounter--;
+    }
 
+    private spawnProjectile()
+    {
+        const y = this.y + this.projectileYOffset;
+        const xPlus = this.x + this.projectileXOffset - this.limit;
+        const xMinus = this.x - this.projectileXOffset - this.limit;
+
+        this.game.entities.add(new Projectile(xPlus / 0.4, y, this.game))
+        this.game.entities.add(new Projectile(xMinus / 0.4, y, this.game))
     }
 
     private applyRotation()

@@ -1,5 +1,5 @@
 ﻿import type IEntity from "../Entities/IEntity.ts";
-import type Game from "../Game.ts";
+import type Game from "../General/Game.ts";
 
 export default interface IHitbox
 {

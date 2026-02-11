@@ -1,5 +1,5 @@
 ﻿import type IEntity from "./IEntity.ts";
-import type Game from "../Game.ts";
+import type Game from "../General/Game.ts";
 
 export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
 {
