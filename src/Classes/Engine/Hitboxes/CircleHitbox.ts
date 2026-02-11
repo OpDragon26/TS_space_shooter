@@ -34,7 +34,7 @@ export default class CircleHitbox implements IHitbox
         const yDist = this.y - y;
 
         const squareDist = xDist * xDist + yDist * yDist;
-        return squareDist <= this.radius * this.radius;
+        return squareDist <= this.Radius * this.Radius;
     }
 
     getKeyPoints(): [x: number, y: number][] {
@@ -46,7 +46,7 @@ export default class CircleHitbox implements IHitbox
         ]
     }
 
-    update<GT extends Game>(parent: IEntity<GT>) {
+    update<GT extends Game<GT>>(parent: IEntity<GT>) {
         const pos = parent.displayPos
         this.x = pos[0];
         this.y = pos[1];

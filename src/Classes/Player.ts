@@ -20,8 +20,8 @@ export default class Player extends Rectangle<SpaceShooter>
     private IFrameCounter: number = 0;
 
     private readonly projectileYOffset: number = 5;
-    private readonly projectileXOffset: number = 15;
-    private readonly projectileTimer: Timer = new Timer(40);
+    private readonly projectileXOffset: number = 5;
+    private readonly projectileTimer: Timer = new Timer(60);
 
     constructor(x: number, y: number, game: SpaceShooter) {
         super(x, y, 50, 20, 1, 0, game, "#444282");

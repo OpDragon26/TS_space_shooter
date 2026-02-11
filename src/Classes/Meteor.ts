@@ -31,4 +31,9 @@ export default class Meteor extends ProjectedRect
 
         this.hitbox.update(this)
     }
+
+    destroy()
+    {
+        this.game.entities.delete(this);
+    }
 }
