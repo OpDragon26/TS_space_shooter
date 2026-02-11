@@ -13,6 +13,7 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
     texture: HTMLImageElement;
     hidden: boolean;
     tags: Set<number>;
+    layer: number = 0;
 
     get Height()
     {

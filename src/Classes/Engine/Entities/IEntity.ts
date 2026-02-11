@@ -10,6 +10,7 @@ export default interface IEntity<GT extends Game<GT>> {
     game: GT;
     hidden: boolean;
     tags: Set<number>;
+    layer: number;
 
     draw(): void
     drawAt(pos: [x: number, y: number]): void

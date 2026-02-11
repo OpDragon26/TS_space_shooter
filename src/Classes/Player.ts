@@ -26,6 +26,7 @@ export default class Player extends Rectangle<SpaceShooter>
 
     constructor(x: number, y: number, game: SpaceShooter) {
         super(x, y, 50, 20, 1, 0, game, new RGBA(0x44, 0x42, 0x82));
+        this.layer = 1
 
         this.hitbox = new RectangleHitbox(x, y, 50, 20)
     }

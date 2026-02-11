@@ -20,7 +20,7 @@ export default class Game<GT extends Game<GT>> {
 
     constructor() {
         this.canvas = document.querySelector("#game-canvas")!;
-        this.ctx = this.canvas.getContext("2d")!;        
+        this.ctx = this.canvas.getContext("2d")!;
 
         this.canvas.width = window.innerWidth * 0.8
         this.canvas.height = window.innerHeight * 0.8
@@ -34,6 +34,11 @@ export default class Game<GT extends Game<GT>> {
     protected draw()
     {
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
+        /*
+        const array = Array.from(this.entities)
+        array.sort((a, b) => a.layer - b.layer);
+        array.forEach((entity: IEntity<GT>) => entity.draw())
+        */
         this.entities.forEach((entity: IEntity<GT>) => entity.draw())
     }
 
