@@ -34,11 +34,15 @@ export default class GridProjector {
         let difference = (this.bottomWidth - this.topWidth) / 2;
 
         let fx = this.fractionalX(point[0]);
-        let x = fx * widthAtPoint + difference * topPortion + this.skew * bottomPortion;
+        let x = fx * widthAtPoint + difference * topPortion + this.skewAt(y);
 
         return [x + this.xOffset, y + this.yOffset];
     }
 
     fractionalY(y: number) {return y / this.innerHeight}
     fractionalX(x: number) {return x / this.innerWidth}
+    skewAt(y: number)
+    {
+        return this.fractionalY(y) * this.skew
+    }
 }

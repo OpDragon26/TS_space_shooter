@@ -16,7 +16,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
     constructor() {
         super();
 
-        this.player = new Player(this.Width / 2, this.Height - 50, this)
+        this.player = new Player(this.Width / 2, this.Height, this)
         this.projector = new GridProjector(this.canvas.width, this.canvas.height, this.canvas.width * 0.7, this.canvas.width * 0.025, this.canvas.height * 0.75, this.canvas.width * 0.15, this.canvas.height * 0.2);
         this.screenShake = new ScreenShake();
     }
@@ -37,7 +37,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.enemyTimer -= 1
 
         this.screenShake.update();
-        this.projector.skew = -(this.player.x - this.Width / 2) * 0.5
+        this.projector.skew = -(this.player.x - this.Width / 2) * 0.35
     }
 
     private spawnMeteor()

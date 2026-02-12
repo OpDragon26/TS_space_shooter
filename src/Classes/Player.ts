@@ -1,4 +1,3 @@
- import Rectangle from "./Engine/Entities/Rectangle.ts";
 import type SpaceShooter from "./SpaceShooter.ts";
 import RectangleHitbox from "./Engine/Hitboxes/RectangleHitbox.ts";
 import Meteor from "./Meteor.ts";
@@ -6,22 +5,25 @@ import {Tags} from "./Utils/Tags.ts";
 import Projectile from "./Projectile.ts";
 import Timer from "./Engine/General/Timer.ts";
 import RGBA from "./Engine/General/RGBA.ts";
+ import ProjectedRect from "./Utils/ProjectedRect.ts";
+import Easing from "./Utils/easing.ts";
 
-export default class Player extends Rectangle<SpaceShooter>
+export default class Player extends ProjectedRect
 {
-    private readonly acceleration: number = 0.25;
-    private readonly maxSpeed: number = 3.5;
+    private readonly acceleration: number = 0.75;
+    private readonly maxSpeed: number = 7.5;
     private speed: number = 0;
 
-    public readonly limit: number = this.game.Width * 0.3;
+    //public readonly limit: number = this.game.Width * 0.3;
+    public readonly limit: number = 0;
 
     public readonly hitbox: RectangleHitbox;
 
     private readonly IFrames: number = 120;
     private IFrameCounter: number = 0;
 
-    private readonly projectileYOffset: number = 5;
-    private readonly projectileXOffset: number = 10;
+    private readonly projectileYOffset: number = -10;
+    private readonly projectileXOffset: number = 20;
     private readonly projectileTimer: Timer = new Timer(50);
 
     constructor(x: number, y: number, game: SpaceShooter) {
@@ -32,6 +34,7 @@ export default class Player extends Rectangle<SpaceShooter>
     }
 
     override update() {
+        super.update()
         this.tryMove(this.speed)
 
         this.projectileTimer.tick()
@@ -99,16 +102,18 @@ export default class Player extends Rectangle<SpaceShooter>
     private spawnProjectile()
     {
         const y = this.y + this.projectileYOffset;
-        const xPlus = this.x + this.projectileXOffset - this.limit;
-        const xMinus = this.x - this.projectileXOffset - this.limit;
+        const xPlus = this.x + this.projectileXOffset
+        const xMinus = this.x - this.projectileXOffset
 
-        this.game.entities.add(new Projectile(xPlus / 0.4, y, this.game))
-        this.game.entities.add(new Projectile(xMinus / 0.4, y, this.game))
+        this.game.entities.add(new Projectile(xPlus, y, this.game))
+        this.game.entities.add(new Projectile(xMinus, y, this.game))
     }
 
     private applyRotation()
     {
-        this.rotation = this.speed / 14
+        const fs = this.speed / this.maxSpeed
+        const s = Math.sign(fs)
+        this.rotation = Easing(Math.abs(fs)) * 0.5 * s
     }
 
     private tryMove(x: number)
