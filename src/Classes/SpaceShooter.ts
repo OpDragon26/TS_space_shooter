@@ -5,6 +5,7 @@ import Player from "./Player.ts";
 import Random from "./Engine/Utils/Random.ts";
 import ScreenShake from "./ScreenShake.ts";
 import Counter from "./Engine/Utils/Counter.ts";
+import easeOut from "./Engine/Utils/easeOut.ts";
 
 export default class SpaceShooter extends Game<SpaceShooter>
 {
@@ -13,13 +14,13 @@ export default class SpaceShooter extends Game<SpaceShooter>
     private enemyTimer: number = 0;
     private readonly player: Player
     public readonly screenShake: ScreenShake = new ScreenShake();
-    public readonly mobilityCounter: Counter = new Counter(20);
+    public readonly mobilityCounter: Counter = new Counter(30, 1800, 4);
 
     constructor() {
         super();
 
         this.player = new Player(this.Width / 2, this.Height, this)
-        this.projector = new GridProjector(this.canvas.width, this.canvas.height, this.canvas.width * 0.7, this.canvas.width * 0.025, this.canvas.height * 0.75, this.canvas.width * 0.15, this.canvas.height * 0.2);
+        this.projector = new GridProjector(this.Width, this.Height, this.Width * 0.7, this.Width * 0.025, this.Height * 0.75, this.Width * 0.15, this.Height * 0.2);
     }
 
     override onStart()
@@ -43,6 +44,8 @@ export default class SpaceShooter extends Game<SpaceShooter>
 
     private spawnMeteor()
     {
+        const size = Math.random() < easeOut(this.mobilityCounter.f) / 2 + 0.5 ? 0 : 3
+
         if (Math.random() < 0.5)
         {
             // aim at player
@@ -50,17 +53,22 @@ export default class SpaceShooter extends Game<SpaceShooter>
 
             const min = Math.max(0, this.Width * fPos + 75)
             const max = Math.min(this.Width, this.Width * fPos - 75)
-            this.entities.add(new Meteor(Random(min, max), 0, 1, this))
+            this.entities.add(new Meteor(Random(min, max), 0, 1, this, size))
         }
         else
         {
-            this.entities.add(new Meteor(Random(0, this.Width), 0, 1, this))
+            this.entities.add(new Meteor(Random(0, this.Width), 0, 1, this, size))
         }
     }
 
     private getInterval()
     {
-        return Random(this.enemyInterval[0], this.enemyInterval[1])
+        return this.ImmobilityDisadvantage(Random(this.enemyInterval[0], this.enemyInterval[1]))
+    }
+
+    private ImmobilityDisadvantage(x: number)
+    {
+        return x * 0.8 + x * 0.2 * easeOut(this.mobilityCounter.f)
     }
 
     get xOffsetGlobal(): number {
