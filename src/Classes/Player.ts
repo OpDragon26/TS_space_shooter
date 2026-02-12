@@ -66,6 +66,8 @@ export default class Player extends ProjectedRect
             }
         }
 
+        this.game.mobilityCounter.update(anyPressed)
+
         if (!anyPressed)
         {
             if (this.speed < 0)

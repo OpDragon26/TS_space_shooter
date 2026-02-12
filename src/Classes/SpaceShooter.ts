@@ -4,6 +4,7 @@ import GridProjector from "./Engine/Utils/GridProjector.ts";
 import Player from "./Player.ts";
 import Random from "./Engine/Utils/Random.ts";
 import ScreenShake from "./ScreenShake.ts";
+import Counter from "./Engine/Utils/Counter.ts";
 
 export default class SpaceShooter extends Game<SpaceShooter>
 {
@@ -11,14 +12,14 @@ export default class SpaceShooter extends Game<SpaceShooter>
     private enemyInterval: [min: number, max: number] = [5, 40]
     private enemyTimer: number = 0;
     private readonly player: Player
-    public readonly screenShake: ScreenShake;
+    public readonly screenShake: ScreenShake = new ScreenShake();
+    public readonly mobilityCounter: Counter = new Counter(20);
 
     constructor() {
         super();
 
         this.player = new Player(this.Width / 2, this.Height, this)
         this.projector = new GridProjector(this.canvas.width, this.canvas.height, this.canvas.width * 0.7, this.canvas.width * 0.025, this.canvas.height * 0.75, this.canvas.width * 0.15, this.canvas.height * 0.2);
-        this.screenShake = new ScreenShake();
     }
 
     override onStart()
