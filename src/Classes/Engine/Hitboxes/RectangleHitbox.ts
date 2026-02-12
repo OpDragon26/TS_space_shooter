@@ -2,6 +2,7 @@
 import CollisionTester from "./CollisionTester.ts";
 import type Game from "../General/Game.ts";
 import type IEntity from "../Entities/IEntity.ts";
+import random from "../Utils/Random.ts";
 
 export default class RectangleHitbox implements IHitbox
 {
@@ -53,5 +54,15 @@ export default class RectangleHitbox implements IHitbox
         this.x = pos[0];
         this.y = pos[1];
         this.scale = parent.scale;
+    }
+
+    randomPoint(): [x: number, y: number] {
+        return this.randomPointFrom([this.x, this.y]);
+    }
+
+    randomPointFrom(pos: [x: number, y: number]): [x: number, y: number] {
+        const x = pos[0] + random(0, this.Width) - this.Width / 2;
+        const y = pos[1] + random(0, this.Height) - this.Height / 2;
+        return [x, y];
     }
 }

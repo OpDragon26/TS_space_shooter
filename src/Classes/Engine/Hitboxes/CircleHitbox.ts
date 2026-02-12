@@ -2,6 +2,7 @@
 import CollisionTester from "./CollisionTester.ts";
 import type Game from "../General/Game.ts";
 import type IEntity from "../Entities/IEntity.ts";
+import random from "../Utils/Random.ts";
 
 export default class CircleHitbox implements IHitbox
 {
@@ -51,5 +52,19 @@ export default class CircleHitbox implements IHitbox
         this.x = pos[0];
         this.y = pos[1];
         this.scale = parent.scale;
+    }
+
+    randomPoint(): [x: number, y: number] {
+        return this.randomPointFrom([this.x, this.y]);
+    }
+
+    randomPointFrom(pos: [x: number, y: number]): [x: number, y: number] {
+        const angle = random(0, Math.PI * 2)
+        const distance = Math.sqrt(Math.random()) * this.Radius
+
+        const x = pos[0] + distance * Math.cos(angle);
+        const y = pos[1] + distance * Math.sin(angle);
+
+        return [x, y];
     }
 }

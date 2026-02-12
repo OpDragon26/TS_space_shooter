@@ -15,7 +15,11 @@ export default class Meteor extends ProjectedRect
     private hp: number
     private readonly size: number;
 
-    constructor(x: number, y: number, scale: number, game: SpaceShooter, size: number = 0, tags: Set<number> = new Set<number>()) {
+    private xVelocity: number;
+    private yVelocity: number;
+    private readonly deacceleration: number = 0.95;
+
+    constructor(x: number, y: number, scale: number, game: SpaceShooter, size: number = 0, initXVelocity: number = 0, initYVelocity: number = 0, tags: Set<number> = new Set<number>()) {
         size = size == 0 ? randomSize() : size
         const edge = randomEdge(size)
 
@@ -27,12 +31,24 @@ export default class Meteor extends ProjectedRect
 
         this.tags.add(Tags.METEOR);
         this.hitbox = new CircleHitbox(x, y, edge / 2);
+
+        this.xVelocity = initXVelocity
+        this.yVelocity = initYVelocity
     }
 
     override update() {
         this.y += this.speed
         this.speed *= this.acceleration
         this.rotation += this.frameRotation
+
+        this.x += this.xVelocity
+        this.xVelocity *= this.deacceleration
+        if (this.xVelocity > -0.05 && this.xVelocity < 0.05)
+            this.xVelocity = 0
+        this.y += this.yVelocity
+        this.yVelocity *= this.deacceleration
+        if (this.yVelocity > -0.05 && this.yVelocity < 0.05)
+            this.yVelocity = 0
 
         if (this.game.outOfBounds(this, 200, 200) || this.destroyed)
             this.game.entities.delete(this);
@@ -56,6 +72,8 @@ export default class Meteor extends ProjectedRect
     {
         this.animate(Presets.RECT_POP)
         this.hitbox.active = false;
+        if (this.size === 3)
+            this.split()
     }
 
     private get destroyed()
@@ -63,6 +81,21 @@ export default class Meteor extends ProjectedRect
         return !this.hitbox.active && this.animation == null;
     }
 
+    private split()
+    {
+        for (let i = 0; i < Math.round(random(2,3.5)); i++)
+            this.spawnNew(this.hitbox.randomPointFrom([this.x, this.y]))
+    }
+
+    private spawnNew(pos: [x: number, y: number])
+    {
+        const sign = Math.sign(pos[0] - this.x)
+        const xVelocity = random(4, 16) * sign
+        const yVelocity = random(-4, 4) * sign
+        const m: Meteor = new Meteor(pos[0], pos[1], 1, this.game, 1, xVelocity, yVelocity)
+        m.speed = this.speed
+        this.game.entities.add(m)
+    }
 }
 function randomSize(): number
 {

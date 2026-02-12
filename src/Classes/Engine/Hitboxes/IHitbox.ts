@@ -12,4 +12,6 @@ export default interface IHitbox
     containsPoint(x: number, y: number): boolean;
     getKeyPoints(): [x: number, y: number][];
     update<GT extends Game<GT>>(parent: IEntity<GT>): void;
+    randomPoint(): [x: number, y: number];
+    randomPointFrom(pos: [x: number, y: number]): [x: number, y: number];
 }

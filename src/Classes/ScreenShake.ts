@@ -16,16 +16,14 @@ export default class ScreenShake implements IGlobalTransform {
     }
 
     start() {
-        this.severity = 10
+        this.severity = 15
         this.active = true
     }
 
     update()
     {
         if (this.active)
-        {
             this.applyShake()
-        }
 
         this.severity = Math.max(0, this.severity - this.diminish)
         if (this.severity < 1)
