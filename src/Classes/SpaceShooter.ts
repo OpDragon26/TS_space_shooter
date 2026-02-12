@@ -1,8 +1,8 @@
 ﻿import Game from "./Engine/General/Game.ts";
 import Meteor from "./Meteor.ts";
-import GridProjector from "./Utils/GridProjector.ts";
+import GridProjector from "./Engine/Utils/GridProjector.ts";
 import Player from "./Player.ts";
-import Random from "./Utils/Random.ts";
+import Random from "./Engine/Utils/Random.ts";
 import ScreenShake from "./ScreenShake.ts";
 
 export default class SpaceShooter extends Game<SpaceShooter>

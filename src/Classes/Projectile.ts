@@ -1,6 +1,6 @@
 ﻿import type SpaceShooter from "./SpaceShooter.ts";
-import ProjectedRect from "./Utils/ProjectedRect.ts";
-import {Tags} from "./Utils/Tags.ts";
+import ProjectedRect from "./Engine/Utils/ProjectedRect.ts";
+import {Tags} from "./Engine/Utils/Tags.ts";
 import RectangleHitbox from "./Engine/Hitboxes/RectangleHitbox.ts";
 import Meteor from "./Meteor.ts";
 import RGBA from "./Engine/General/RGBA.ts";
@@ -8,7 +8,7 @@ import RGBA from "./Engine/General/RGBA.ts";
 export default class Projectile extends ProjectedRect
 {
     private subSet: ProjectedRect[]
-    private readonly speed: number = 8;
+    private readonly speed: number = 12;
     private readonly hitbox: RectangleHitbox
 
     constructor(x: number, y: number, game: SpaceShooter, tags: Set<number> = new Set()) {
@@ -44,7 +44,7 @@ export default class Projectile extends ProjectedRect
                 if (m.hitbox.collides(this.hitbox))
                 {
                     this.destroy()
-                    m.destroy()
+                    m.hit()
                 }
             }
         })

@@ -1,12 +1,12 @@
 import type SpaceShooter from "./SpaceShooter.ts";
 import RectangleHitbox from "./Engine/Hitboxes/RectangleHitbox.ts";
 import Meteor from "./Meteor.ts";
-import {Tags} from "./Utils/Tags.ts";
+import {Tags} from "./Engine/Utils/Tags.ts";
 import Projectile from "./Projectile.ts";
 import Timer from "./Engine/General/Timer.ts";
 import RGBA from "./Engine/General/RGBA.ts";
- import ProjectedRect from "./Utils/ProjectedRect.ts";
-import Easing from "./Utils/easing.ts";
+ import ProjectedRect from "./Engine/Utils/ProjectedRect.ts";
+import Easing from "./Engine/Utils/easing.ts";
 
 export default class Player extends ProjectedRect
 {
@@ -24,7 +24,8 @@ export default class Player extends ProjectedRect
 
     private readonly projectileYOffset: number = -10;
     private readonly projectileXOffset: number = 20;
-    private readonly projectileTimer: Timer = new Timer(50);
+    private projectileXOffsetSign: number = 1;
+    private readonly projectileTimer: Timer = new Timer(20);
 
     constructor(x: number, y: number, game: SpaceShooter) {
         super(x, y, 50, 20, 1, 0, game, new RGBA(0x44, 0x42, 0x82));
@@ -102,11 +103,10 @@ export default class Player extends ProjectedRect
     private spawnProjectile()
     {
         const y = this.y + this.projectileYOffset;
-        const xPlus = this.x + this.projectileXOffset
-        const xMinus = this.x - this.projectileXOffset
+        const x = this.x + this.projectileXOffset * this.projectileXOffsetSign
+        this.projectileXOffsetSign = -this.projectileXOffsetSign;
 
-        this.game.entities.add(new Projectile(xPlus, y, this.game))
-        this.game.entities.add(new Projectile(xMinus, y, this.game))
+        this.game.entities.add(new Projectile(x, y, this.game))
     }
 
     private applyRotation()

@@ -1,17 +1,32 @@
 import hexByte from "./hexByte.ts";
+import clamp from "../Utils/clamp.ts";
 
 export default class RGBA
 {
-    r: number;
-    g: number;
-    b: number;
-    a: number;
+    private r: number = 0;
+    private g: number = 0;
+    private b: number = 0;
+    private a: number = 255;
+
+    get opacity() {
+        return this.a / 255
+    }
+
+    set R(v: number) { this.r = Math.round(clamp(v, 0, 255)); }
+    set G(v: number) { this.g = Math.round(clamp(v, 0, 255)); }
+    set B(v: number) { this.b = Math.round(clamp(v, 0, 255)); }
+    set A(v: number) { this.a = Math.round(clamp(v, 0, 255)); }
+
+    get R() { return this.r; }
+    get G() { return this.g; }
+    get B() { return this.b; }
+    get A() { return this.a; }
 
     constructor(r: number, g: number, b: number, a: number = 0xFF) {
-        this.r = r
-        this.g = g
-        this.b = b
-        this.a = a
+        this.R = r
+        this.G = g
+        this.B = b
+        this.A = a
     }
 
     getStr()
@@ -21,20 +36,33 @@ export default class RGBA
 
     interpolate(other: RGBA): RGBA
     {
-        const r = Math.max(0,(this.r + other.r) * 0.5)
-        const g = Math.max(0,(this.g + other.g) * 0.5)
-        const b = Math.max(0,(this.b + other.b) * 0.5)
-        const a = Math.max(0,(this.a + other.a) * 0.5)
+        let tof;
+        let oof;
+
+        if (this.opacity > other.opacity) {
+            oof = other.opacity / this.opacity
+            tof = 1 - oof
+        }
+        else
+        {
+            tof = this.opacity / other.opacity;
+            oof = 1 - tof
+        }
+
+        const r = this.r * tof + other.r * oof
+        const g = this.g * tof + other.g * oof
+        const b = this.b * tof + other.b * oof
+        const a = this.a + other.a
 
         return new RGBA(r, g, b, a);
     }
 
     add(other: RGBA): RGBA
     {
-        const r = Math.max(0,this.r + other.r)
-        const g = Math.max(0,this.g + other.g)
-        const b = Math.max(0,this.b + other.b)
-        const a = Math.max(0,this.a + other.a)
+        const r = this.r + other.r
+        const g = this.g + other.g
+        const b = this.b + other.b
+        const a = this.a + other.a
 
         return new RGBA(r, g, b, a);
     }

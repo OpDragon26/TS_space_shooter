@@ -31,7 +31,7 @@ export default class RectangleFrame implements IFrame {
         const co = transform.colorOffset == null ? new RGBA(0, 0, 0, 0xFF) : transform.colorOffset
         const xo = transform.xOffset == null ? 0 : transform.xOffset
         const yo = transform.yOffset == null ? 0 : transform.yOffset
-        const so = transform.scaleMultiplier == null ? 0 : transform.scaleMultiplier
+        const so = transform.scaleMultiplier == null ? 1 : transform.scaleMultiplier
 
         return {colorOffset: co, xOffset: xo, yOffset: yo, scaleMultiplier: so}
     }

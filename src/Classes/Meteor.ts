@@ -1,24 +1,32 @@
-﻿import Random from "./Utils/Random.ts";
-import type SpaceShooter from "./SpaceShooter.ts";
+﻿import type SpaceShooter from "./SpaceShooter.ts";
 import CircleHitbox from "./Engine/Hitboxes/CircleHitbox.ts";
-import {Tags} from "./Utils/Tags.ts";
-import ProjectedRect from "./Utils/ProjectedRect.ts";
+import {Tags} from "./Engine/Utils/Tags.ts";
+import ProjectedRect from "./Engine/Utils/ProjectedRect.ts";
 import RGBA from "./Engine/General/RGBA.ts";
 import {Presets} from "./Engine/Animations/Presets.ts";
+import random from "./Engine/Utils/Random.ts";
 
 export default class Meteor extends ProjectedRect
 {
-    private speed: number = Random(0.5, 0.7);
-    private readonly acceleration: number = 1.015;
+    private speed: number;
+    private readonly acceleration: number = 1.01;
     public readonly hitbox: CircleHitbox;
-    private readonly frameRotation: number = Random(0.001, 0.01);
+    private readonly frameRotation: number;
+    private hp: number
+    private readonly size: number;
 
-    constructor(x: number, y: number, scale: number, game: SpaceShooter, tags: Set<number> = new Set<number>()) {
-        const size = Random(35, 75)
-        super(x, y, size, size, scale, 0, game, new RGBA(0xFF, 0x00, 0x4F), tags);
+    constructor(x: number, y: number, scale: number, game: SpaceShooter, size: number = 0, tags: Set<number> = new Set<number>()) {
+        size = size == 0 ? randomSize() : size
+        const edge = randomEdge(size)
+
+        super(x, y, edge, edge, scale, 0, game, getColor(size), tags);
+        this.size = size;
+        this.hp = this.size
+        this.speed = getSpeed(size)
+        this.frameRotation = randomRotation(size)
 
         this.tags.add(Tags.METEOR);
-        this.hitbox = new CircleHitbox(x, y, size / 2);
+        this.hitbox = new CircleHitbox(x, y, edge / 2);
     }
 
     override update() {
@@ -34,6 +42,16 @@ export default class Meteor extends ProjectedRect
         this.hitbox.update(this)
     }
 
+    hit()
+    {
+        this.hp--
+
+        if (this.hp <= 0)
+            this.destroy()
+        else
+            this.animate(Presets.RECT_FLASH)
+    }
+
     destroy()
     {
         this.animate(Presets.RECT_POP)
@@ -44,4 +62,44 @@ export default class Meteor extends ProjectedRect
     {
         return !this.hitbox.active && this.animation == null;
     }
+
+}
+function randomSize(): number
+{
+    let n = Math.random();
+    if (n > 0.65)
+        return 1
+    n = Math.random()
+    if (n > 0.2)
+        return 2
+    return 3
+}
+
+function randomEdge(size: number): number
+{
+    const min = 25 * size + 5
+    const max = 35 * size + 10
+    return random(min, max);
+}
+
+function getColor(size: number): RGBA
+{
+    return new RGBA(40 * size, 40 * size, 40 * size)
+}
+
+function getSpeed(size: number): number
+{
+    switch (size)
+    {
+        case 1: return random(0.6, 0.8)
+        case 2: return random(0.35, 0.5)
+        case 3: return random(0.15, 0.2)
+    }
+    return 0
+}
+
+function randomRotation(size: number): number
+{
+    const m = 3.5 - size;
+    return random(m * -0.01, m * 0.01)
 }
