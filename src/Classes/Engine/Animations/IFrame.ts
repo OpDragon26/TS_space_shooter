@@ -1,3 +1,6 @@
 export default interface IFrame {
-    frameType: number;
+    readonly frameType: number;
+    readonly xOffset: number
+    readonly yOffset: number
+    readonly scaleMultiplier: number
 }

@@ -99,17 +99,46 @@ export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
         this.rotateCanvas(pos)
         const frame: RectangleFrame = this.animation!.current
 
+        let w: number
+        let h: number
+
         switch (frame.frameType)
         {
             case FrameType.OFFSET:
                 const color = this.getNewColor(frame)
                 this.game.ctx.fillStyle = color.getStr()
-                this.game.ctx.fillRect(pos[0] - this.Width / 2, pos[1] - this.Height / 2, this.Width, this.Height);
+
+                w = this.width * this.getScale(frame)
+                h = this.height * this.getScale(frame)
+
+                this.game.ctx.fillRect(pos[0] - w / 2, pos[1] - h / 2, w, h);
             break;
 
             case FrameType.UPDATE:
                 if (this.animation!.newFrame)
+                {
                     this.Color = this.getNewColor(frame)
+                    this.scale = this.getScale(frame)
+                }
+                this.game.ctx.fillStyle = this.colorStr
+                this.game.ctx.fillRect(pos[0] - this.Width / 2, pos[1] - this.Height / 2, this.Width, this.Height);
+            break;
+
+            case FrameType.OBJECTIVE:
+                this.game.ctx.fillStyle = frame.colorOffset.getStr()
+
+                 w = this.width * frame.scaleMultiplier
+                 h = this.height * frame.scaleMultiplier
+
+                this.game.ctx.fillRect(pos[0] - w / 2, pos[1] - h / 2, w, h);
+            break;
+
+            case FrameType.REPLACE:
+                if (this.animation!.newFrame)
+                {
+                    this.Color = frame.colorOffset
+                    this.scale = frame.scaleMultiplier
+                }
                 this.game.ctx.fillStyle = this.colorStr
                 this.game.ctx.fillRect(pos[0] - this.Width / 2, pos[1] - this.Height / 2, this.Width, this.Height);
             break;
@@ -121,6 +150,11 @@ export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
         return frame.colorTreatment == ColorTreatment.INTERPOLATE
             ? this.color.interpolate(frame.colorOffset)
             : this.color.add(frame.colorOffset)
+    }
+
+    private getScale(frame: RectangleFrame)
+    {
+        return this.scale * frame.scaleMultiplier
     }
 
     rotateCanvas(pos: [x: number, y: number])

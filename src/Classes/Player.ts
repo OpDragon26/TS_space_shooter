@@ -1,4 +1,4 @@
-import Rectangle from "./Engine/Entities/Rectangle.ts";
+ import Rectangle from "./Engine/Entities/Rectangle.ts";
 import type SpaceShooter from "./SpaceShooter.ts";
 import RectangleHitbox from "./Engine/Hitboxes/RectangleHitbox.ts";
 import Meteor from "./Meteor.ts";

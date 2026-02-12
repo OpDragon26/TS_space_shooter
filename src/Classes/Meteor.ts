@@ -36,7 +36,7 @@ export default class Meteor extends ProjectedRect
 
     destroy()
     {
-        this.animate(Presets.RECT_FADE_OUT)
+        this.animate(Presets.RECT_POP)
         this.hitbox.active = false;
     }
 
