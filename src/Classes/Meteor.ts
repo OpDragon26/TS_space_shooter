@@ -73,7 +73,12 @@ export default class Meteor extends ProjectedRect
         this.animate(Presets.RECT_POP)
         this.hitbox.active = false;
         if (this.size === 3)
+        {
             this.split()
+            this.game.score += 2
+        }
+        else
+            this.game.score++;
     }
 
     private get destroyed()

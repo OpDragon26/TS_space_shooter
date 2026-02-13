@@ -5,7 +5,7 @@ import {Tags} from "./Engine/Utils/Tags.ts";
 import Projectile from "./Projectile.ts";
 import Timer from "./Engine/General/Timer.ts";
 import RGBA from "./Engine/General/RGBA.ts";
- import ProjectedRect from "./Engine/Utils/ProjectedRect.ts";
+import ProjectedRect from "./Engine/Utils/ProjectedRect.ts";
 import Easing from "./Engine/Utils/easing.ts";
 
 export default class Player extends ProjectedRect

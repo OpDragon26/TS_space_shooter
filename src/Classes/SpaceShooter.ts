@@ -15,6 +15,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
     private readonly player: Player
     public readonly screenShake: ScreenShake = new ScreenShake();
     public readonly mobilityCounter: Counter = new Counter(30, 1800, 4);
+    public score: number = 0
 
     constructor() {
         super();
