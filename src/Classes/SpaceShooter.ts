@@ -6,6 +6,7 @@ import Random from "./Engine/Utils/Random.ts";
 import ScreenShake from "./ScreenShake.ts";
 import Counter from "./Engine/Utils/Counter.ts";
 import easeOut from "./Engine/Utils/easeOut.ts";
+import ScoreDisplay from "./ScoreDisplay.ts";
 
 export default class SpaceShooter extends Game<SpaceShooter>
 {
@@ -27,6 +28,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
     override onStart()
     {
         this.entities.add(this.player)
+        this.ui.add(new ScoreDisplay(this))
     }
 
     override update() {
@@ -64,10 +66,10 @@ export default class SpaceShooter extends Game<SpaceShooter>
 
     private getInterval()
     {
-        return this.ImmobilityDisadvantage(Random(this.enemyInterval[0], this.enemyInterval[1]))
+        return this.ImmobilityPunishment(Random(this.enemyInterval[0], this.enemyInterval[1]))
     }
 
-    private ImmobilityDisadvantage(x: number)
+    private ImmobilityPunishment(x: number)
     {
         return x * 0.8 + x * 0.2 * easeOut(this.mobilityCounter.f)
     }

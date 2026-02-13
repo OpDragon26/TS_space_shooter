@@ -3,7 +3,10 @@ import InputManager from "./InputManager.ts";
 
 export default class Game<GT extends Game<GT>> {
     public ctx: CanvasRenderingContext2D;
+    public background: Set<IEntity<GT>> = new Set<IEntity<GT>>();
     public entities: Set<IEntity<GT>> = new Set<IEntity<GT>>();
+    public particles: Set<IEntity<GT>> = new Set<IEntity<GT>>();
+    public ui: Set<IEntity<GT>> = new Set<IEntity<GT>>();
     protected canvas: HTMLCanvasElement;
     public active: boolean = false;
     public inputManager = new InputManager();
@@ -27,19 +30,21 @@ export default class Game<GT extends Game<GT>> {
     }
 
     public update() {
+        this.background.forEach((entity: IEntity<GT>) => entity.update())
         this.entities.forEach((entity: IEntity<GT>) => entity.update())
+        this.particles.forEach((entity: IEntity<GT>) => entity.update())
+        this.ui.forEach((entity: IEntity<GT>) => entity.update())
         this.draw()
     }
 
     protected draw()
     {
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
-        /*
-        const array = Array.from(this.entities)
-        array.sort((a, b) => a.layer - b.layer);
-        array.forEach((entity: IEntity<GT>) => entity.draw())
-        */
+
+        this.background.forEach((entity: IEntity<GT>) => entity.draw())
         this.entities.forEach((entity: IEntity<GT>) => entity.draw())
+        this.particles.forEach((entity: IEntity<GT>) => entity.draw())
+        this.ui.forEach((entity: IEntity<GT>) => entity.draw())
     }
 
     private loop()

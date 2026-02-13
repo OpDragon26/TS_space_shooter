@@ -2,15 +2,17 @@ import type IEntity from "./IEntity.ts";
 import type Game from "../General/Game.ts";
 import type Font from "../Utils/Font.ts";
 import type RGBA from "../General/RGBA.ts";
+import {textAlignment} from "../Utils/textAlignment.ts";
 
 export default class Text<GT extends Game<GT>> implements IEntity<GT>
 {
-    constructor(text: string, font: Font, color: RGBA, x: number, y: number, width: number, height: number, scale: number, rotation: number, game: GT, tags: Set<number> = new Set<number>()) {
+    constructor(text: string, font: Font, color: RGBA, x: number, y: number, width: number, height: number, scale: number, rotation: number, game: GT, alignment: string = textAlignment.START, tags: Set<number> = new Set<number>()) {
         this.text = text;
         this.font = font;
         this.fontStr = font.getStr()
         this.color = color;
         this.colorStr = color.getStr()
+        this.alignment = alignment
 
         this.x = x;
         this.y = y;
@@ -29,6 +31,7 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
     private fontStr: string;
     private color: RGBA;
     private colorStr: string;
+    alignment: string;
 
     set Font(font: Font) {
         this.font = font
@@ -68,6 +71,7 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
     {
         this.game.ctx.font = this.fontStr
         this.game.ctx.fillStyle = this.colorStr
+        this.game.ctx.textAlign = this.alignment as CanvasTextAlign
         if (this.width == 0)
             this.game.ctx.fillText(this.text, pos[0], pos[1]);
         else
