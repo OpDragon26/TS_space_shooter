@@ -1,15 +1,15 @@
 import type IAnimation from "./IAnimation.ts";
-import type RectangleFrame from "./RectangleFrame.ts";
+import type Frame from "./Frame.ts";
 
-export default class RectangleAnimation implements IAnimation<RectangleFrame> {
-    frames: RectangleFrame[];
+export default class Animation implements IAnimation<Frame> {
+    frames: Frame[];
     length: number
     currentTick: number = 0
 
     private lastFrame: number = -1;
     newFrame: boolean = false;
 
-    constructor(frames: RectangleFrame[], length: number) {
+    constructor(frames: Frame[], length: number) {
         this.frames = frames;
         this.length = length
     }
@@ -19,7 +19,7 @@ export default class RectangleAnimation implements IAnimation<RectangleFrame> {
         return Math.round(this.currentTick / this.frameLength)
     }
 
-    get current(): RectangleFrame
+    get current(): Frame
     {
         const i = this.currentIndex
         this.newFrame = i != this.lastFrame

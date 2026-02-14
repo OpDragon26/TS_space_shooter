@@ -1,9 +1,9 @@
 ﻿import type IEntity from "./IEntity.ts";
 import type Game from "../General/Game.ts";
 import type RGBA from "../General/RGBA.ts";
-import type RectangleAnimation from "../Animations/RectangleAnimation.ts";
-import {ColorTreatment} from "../Animations/ColorTreatment.ts";
-import RectangleFrame from "../Animations/RectangleFrame.ts";
+import type Animation from "../Animations/Animation.ts";
+import {ColorTreatment} from "../Utils/ColorTreatment.ts";
+import Frame from "../Animations/Frame.ts";
 import {FrameType} from "../Animations/FrameType.ts";
 
 export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
@@ -19,7 +19,7 @@ export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
     hidden: boolean;
     tags: Set<number>;
     private colorStr: string = "#FFFFFF"
-    animation: RectangleAnimation | null = null
+    animation: Animation | null = null
     layer: number = 0;
 
     get Width()
@@ -78,26 +78,23 @@ export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
 
     protected drawBody(pos: [x: number, y: number])
     {
-        if (this.animation == null) {
+        this.rotateCanvas(pos)
+        if (this.animation == null)
             this.drawNormal(pos)
-        }
         else
-        {
             this.drawAnimated(pos)
-        }
+
     }
 
     protected drawNormal(pos: [x: number, y: number]): void
     {
-        this.rotateCanvas(pos)
         this.game.ctx.fillStyle = this.colorStr
         this.game.ctx.fillRect(pos[0] - this.Width / 2, pos[1] - this.Height / 2, this.Width, this.Height);
     }
 
     protected drawAnimated(pos: [x: number, y: number]): void
     {
-        this.rotateCanvas(pos)
-        const frame: RectangleFrame = this.animation!.current
+        const frame: Frame = this.animation!.current
 
         let w: number
         let h: number
@@ -145,14 +142,14 @@ export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
         }
     }
 
-    private getNewColor(frame: RectangleFrame)
+    private getNewColor(frame: Frame)
     {
         return frame.colorTreatment == ColorTreatment.INTERPOLATE
             ? this.color.interpolate(frame.colorOffset)
             : this.color.add(frame.colorOffset)
     }
 
-    private getScale(frame: RectangleFrame)
+    private getScale(frame: Frame)
     {
         return this.scale * frame.scaleMultiplier
     }
@@ -186,7 +183,7 @@ export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
 
     }
 
-    animate(animation: RectangleAnimation)
+    animate(animation: Animation)
     {
         this.animation = animation;
         animation.reset()

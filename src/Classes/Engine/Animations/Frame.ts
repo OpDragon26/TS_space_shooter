@@ -1,11 +1,11 @@
 import type IFrame from "./IFrame.ts";
 import {FrameType} from "./FrameType.ts";
 import RGBA from "../General/RGBA.ts";
-import {ColorTreatment} from "./ColorTreatment.ts";
+import {ColorTreatment} from "../Utils/ColorTreatment.ts";
 import type IFrameTransform from "./IFrameTransform.ts";
 import type IFrameTransformComplete from "./IFrameTransformComplete.ts";
 
-export default class RectangleFrame implements IFrame {
+export default class Frame implements IFrame {
     readonly frameType: number;
     readonly colorTreatment: number;
 

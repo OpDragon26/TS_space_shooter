@@ -22,6 +22,11 @@ export default class RGBA
     get B() { return this.b; }
     get A() { return this.a; }
 
+    get FR() { return this.r / 0xFF; }
+    get FG() { return this.g / 0xFF; }
+    get FB() { return this.b / 0xFF; }
+    get FA() { return this.a / 0xFF; }
+
     constructor(r: number, g: number, b: number, a: number = 0xFF) {
         this.R = r
         this.G = g

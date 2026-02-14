@@ -1,5 +1,10 @@
 ﻿import type Game from "../General/Game.ts";
 import type IEntity from "./IEntity.ts";
+import Frame from "../Animations/Frame.ts";
+import type Animation from "../Animations/Animation.ts";
+import {FrameType} from "../Animations/FrameType.ts";
+import ColorizeImage from "../Utils/ColorizeImage.ts";
+import GetImageData from "../Utils/GetImageData.ts";
 
 export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
 
@@ -13,6 +18,7 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
     texture: HTMLImageElement;
     hidden: boolean;
     tags: Set<number>;
+    animation: Animation | null = null
     layer: number = 0;
 
     get Height()
@@ -60,11 +66,77 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
 
     protected drawBody(pos: [x: number, y: number])
     {
-        this.game.ctx.translate(pos[0], pos[1]);
-        this.game.ctx.rotate(this.rotation)
-        this.game.ctx.translate(-pos[0], -pos[1]);
+        this.rotateCanvas(pos)
+        if (this.animation == null)
+            this.drawNormal(pos)
+        else
+            this.drawAnimated(pos)
+    }
 
-        this.game.ctx.drawImage(this.texture, pos[0] - this.width * this.scale / 2, pos[1] - this.height * this.scale / 2);
+    protected drawNormal(pos: [x: number, y: number]): void
+    {
+        this.game.ctx.drawImage(this.texture, pos[0] - this.Width / 2, pos[1] - this.Height / 2, this.Width, this.Height);
+    }
+
+    protected drawAnimated(pos: [x: number, y: number]): void
+    {
+        const frame: Frame = this.animation!.current
+
+        let w: number
+        let h: number
+
+        let imageData: ImageData;
+        let img: ImageData;
+
+        switch (frame.frameType)
+        {
+            case FrameType.OFFSET:
+                w = this.width * this.getScale(frame)
+                h = this.height * this.getScale(frame)
+
+                imageData = GetImageData(this.texture, w, h)
+                img = ColorizeImage(imageData, frame.colorOffset, frame.colorTreatment)
+
+                this.game.ctx.putImageData(img, pos[0] - w, pos[1] - h);
+                break;
+
+            case FrameType.UPDATE:
+                if (this.animation!.newFrame)
+                    this.scale = this.getScale(frame)
+
+                imageData = GetImageData(this.texture, this.Width, this.Height)
+                img = ColorizeImage(imageData, frame.colorOffset, frame.colorTreatment)
+
+                this.game.ctx.putImageData(img, pos[0] - this.Width, pos[1] - this.Height);
+                break;
+
+            case FrameType.OBJECTIVE:
+                this.game.ctx.fillStyle = frame.colorOffset.getStr()
+
+                w = this.width * frame.scaleMultiplier
+                h = this.height * frame.scaleMultiplier
+
+                imageData = GetImageData(this.texture, w, h)
+                img = ColorizeImage(imageData, frame.colorOffset, frame.colorTreatment)
+
+                this.game.ctx.putImageData(img, pos[0] - w, pos[1] - h);
+                break;
+
+            case FrameType.REPLACE:
+                if (this.animation!.newFrame)
+                    this.scale = frame.scaleMultiplier
+
+                imageData = GetImageData(this.texture, this.Width, this.Height)
+                img = ColorizeImage(imageData, frame.colorOffset, frame.colorTreatment)
+
+                this.game.ctx.putImageData(img, pos[0] - this.Width, pos[1] - this.Height);
+                break;
+        }
+    }
+
+    private getScale(frame: Frame)
+    {
+        return this.scale * frame.scaleMultiplier
     }
 
     public start() {
@@ -74,5 +146,12 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
     public tagged(tag: number)
     {
         return this.tags.has(tag)
+    }
+
+    rotateCanvas(pos: [x: number, y: number])
+    {
+        this.game.ctx.translate(pos[0], pos[1]);
+        this.game.ctx.rotate(this.rotation)
+        this.game.ctx.translate(-pos[0], -pos[1]);
     }
 }
