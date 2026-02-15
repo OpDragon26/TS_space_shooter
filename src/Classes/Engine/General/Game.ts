@@ -1,15 +1,18 @@
 ﻿import type IEntity from "../Entities/IEntity.ts";
 import InputManager from "./InputManager.ts";
+import ParticleSystem from "../Particles/ParticleSystem.ts";
 
 export default class Game<GT extends Game<GT>> {
     public ctx: CanvasRenderingContext2D;
     public background: Set<IEntity<GT>> = new Set<IEntity<GT>>();
+    public backgroundParticles: ParticleSystem<GT>;
     public entities: Set<IEntity<GT>> = new Set<IEntity<GT>>();
-    public particles: Set<IEntity<GT>> = new Set<IEntity<GT>>();
+    public particles: ParticleSystem<GT>;
     public ui: Set<IEntity<GT>> = new Set<IEntity<GT>>();
     protected canvas: HTMLCanvasElement;
     public active: boolean = false;
     public inputManager = new InputManager();
+    public globalTime: number = 0;
 
     public get Width()
     {
@@ -27,14 +30,19 @@ export default class Game<GT extends Game<GT>> {
 
         this.canvas.width = window.innerWidth * 0.8
         this.canvas.height = window.innerHeight * 0.8
+
+        //@ts-ignore
+        this.particles = new ParticleSystem<GT>(this)
+        //@ts-ignore
+        this.backgroundParticles = new ParticleSystem<GT>(this)
     }
 
     public update() {
         this.background.forEach((entity: IEntity<GT>) => entity.update())
         this.entities.forEach((entity: IEntity<GT>) => entity.update())
-        this.particles.forEach((entity: IEntity<GT>) => entity.update())
         this.ui.forEach((entity: IEntity<GT>) => entity.update())
         this.draw()
+        this.globalTime++
     }
 
     protected draw()
@@ -43,7 +51,6 @@ export default class Game<GT extends Game<GT>> {
 
         this.background.forEach((entity: IEntity<GT>) => entity.draw())
         this.entities.forEach((entity: IEntity<GT>) => entity.draw())
-        this.particles.forEach((entity: IEntity<GT>) => entity.draw())
         this.ui.forEach((entity: IEntity<GT>) => entity.draw())
     }
 
@@ -63,7 +70,9 @@ export default class Game<GT extends Game<GT>> {
     public start()
     {
         this.active = true;
+        this.background.forEach((entity: IEntity<GT>) => entity.start())
         this.entities.forEach((entity: IEntity<GT>) => entity.start());
+        this.ui.forEach((entity: IEntity<GT>) => entity.draw())
         this.onStart();
         this.loop();
     }
@@ -105,5 +114,13 @@ export default class Game<GT extends Game<GT>> {
     public outOfBoundsDefault(entity: IEntity<GT>)
     {
         return this.outOfBounds(entity, entity.Width / 2, entity.Height / 2);
+    }
+
+    public outOfBoundsPoint(x: number, y: number, xLeniency: number = 0, yLeniency: number = 0)
+    {
+        return x < 0 - xLeniency
+            || x > this.canvas.width + xLeniency
+            || y < 0 - yLeniency
+            || y > this.canvas.height + yLeniency
     }
 }

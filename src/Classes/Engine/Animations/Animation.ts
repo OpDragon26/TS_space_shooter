@@ -28,7 +28,7 @@ export default class Animation implements IAnimation<Frame> {
         return this.frames[i];
     }
 
-    private get frameLength()
+    get frameLength()
     {
         return this.length / (this.frames.length - 1);
     }
