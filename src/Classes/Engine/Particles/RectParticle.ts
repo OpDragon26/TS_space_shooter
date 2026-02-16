@@ -40,8 +40,8 @@ export default class RectParticle<GT extends Game<GT>> extends BaseParticle<GT> 
 
         const w = this.Width(scale)
         const h = this.Height(scale)
-        const dx = this.displayX(x, y) - w / 2
-        const dy = this.displayY(x, y) - h / 2
+        const dx = this.displayX(game, x, y) - w / 2
+        const dy = this.displayY(game, x, y) - h / 2
 
         game.ctx.fillStyle = this.colorStr;
         game.ctx.fillRect(dx, dy, w, h);

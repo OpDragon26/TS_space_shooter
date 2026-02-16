@@ -10,22 +10,22 @@ export default class BaseParticle<GT extends Game<GT>> implements IParticleTempl
     rotation: number = 0;
 
     // @ts-ignore
-    updateX(x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): number {
+    updateX(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): number {
         return x + this.xSpeed + elapsedTime * this.xAcceleration
     }
 
     // @ts-ignore
-    updateY(x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): number {
+    updateY(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): number {
         return y + this.ySpeed + elapsedTime * this.yAcceleration
     }
 
     // @ts-ignore
-    updateRotation(x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): number {
+    updateRotation(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): number {
         return rotation + this.rotation
     }
 
     // @ts-ignore
-    updateScale(x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): number {
+    updateScale(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): number {
         return scale
     }
 
@@ -38,12 +38,12 @@ export default class BaseParticle<GT extends Game<GT>> implements IParticleTempl
     draw(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): void {}
 
     // @ts-ignore
-    displayX(x: number, y: number) {
+    displayX(game: GT, x: number, y: number) {
         return x
     }
 
     // @ts-ignore
-    displayY(x: number, y: number) {
+    displayY(game: GT, x: number, y: number) {
         return y
     }
 }

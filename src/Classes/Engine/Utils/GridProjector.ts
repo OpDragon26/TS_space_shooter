@@ -27,16 +27,34 @@ export default class GridProjector {
         let y = fy * this.height;
         fy = Easing(fy)
 
+        let x = this.calcX(point[0], fy);
+
+        return [x + this.xOffset, y + this.yOffset];
+    }
+
+    //@ts-ignore
+    public plotY(x: number, y: number): number {
+        let fy = this.fractionalY(y);
+        return fy * this.height + this.yOffset;
+    }
+    public plotX(x: number, y: number): number {
+        let fy = this.fractionalY(y);
+        fy = Easing(fy)
+
+        return this.calcX(x, fy) + this.xOffset;
+    }
+
+    private calcX(x: number, fy: number): number {
+        let y = fy * this.height;
+
         let bottomPortion = fy;
         let topPortion = 1 - fy
         let widthAtPoint = bottomPortion * this.bottomWidth + topPortion * this.topWidth
 
         let difference = (this.bottomWidth - this.topWidth) / 2;
 
-        let fx = this.fractionalX(point[0]);
-        let x = fx * widthAtPoint + difference * topPortion + this.skewAt(y);
-
-        return [x + this.xOffset, y + this.yOffset];
+        let fx = this.fractionalX(x);
+        return  x = fx * widthAtPoint + difference * topPortion + this.skewAt(y);
     }
 
     fractionalY(y: number) {return y / this.innerHeight}

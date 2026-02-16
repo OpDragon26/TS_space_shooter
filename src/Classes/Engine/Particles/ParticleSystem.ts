@@ -34,8 +34,19 @@ export default class ParticleSystem<GT extends Game<GT>> {
             if (type.doRemove(this.game, x, y, s, a, t, r))
                 this.removeParticle(i)
             else
-                this.updateParticle(i, x, y, s, a, t, r)
+                this.updateParticle(this.game, i, x, y, s, a, t, r)
         }
+    }
+
+    spawn(type: IParticleTemplate<GT>, x: number, y: number, scale: number, rotation: number)
+    {
+        this.xPos.push(x)
+        this.yPos.push(y)
+        this.scale.push(scale)
+        this.rotation.push(rotation)
+        this.creationTime.push(this.game.globalTime)
+        this.randomizer.push(Math.random())
+        this.type.push(type)
     }
 
     draw()
@@ -47,12 +58,12 @@ export default class ParticleSystem<GT extends Game<GT>> {
         }
     }
 
-    updateParticle(i: number, x: number, y: number, s: number, a: number, t: number, r: number)
+    updateParticle(game: GT, i: number, x: number, y: number, s: number, a: number, t: number, r: number)
     {
-        this.xPos[i] = this.type[i].updateX(x, y, s, a, t, r)
-        this.yPos[i] = this.type[i].updateY(x, y, s, a, t, r)
-        this.rotation[i] = this.type[i].updateRotation(x, y, s, a, t, r)
-        this.scale[i] = this.type[i].updateScale(x, y, s, a, t, r)
+        this.xPos[i] = this.type[i].updateX(game, x, y, s, a, t, r)
+        this.yPos[i] = this.type[i].updateY(game, x, y, s, a, t, r)
+        this.rotation[i] = this.type[i].updateRotation(game, x, y, s, a, t, r)
+        this.scale[i] = this.type[i].updateScale(game, x, y, s, a, t, r)
     }
 
     removeParticle(i: number)

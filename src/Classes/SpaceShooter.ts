@@ -7,6 +7,7 @@ import ScreenShake from "./ScreenShake.ts";
 import Counter from "./Engine/Utils/Counter.ts";
 import easeOut from "./Engine/Utils/easeOut.ts";
 import ScoreDisplay from "./ScoreDisplay.ts";
+import {Particles} from "./Particles.ts";
 
 export default class SpaceShooter extends Game<SpaceShooter>
 {
@@ -18,11 +19,14 @@ export default class SpaceShooter extends Game<SpaceShooter>
     public readonly mobilityCounter: Counter = new Counter(30, 1800, 4);
     public score: number = 0
 
+    public starProjector: GridProjector;
+
     constructor() {
         super();
 
         this.player = new Player(this.Width / 2, this.Height, this)
         this.projector = new GridProjector(this.Width, this.Height, this.Width * 0.7, this.Width * 0.025, this.Height * 0.75, this.Width * 0.15, this.Height * 0.2);
+        this.starProjector = new GridProjector(this.Width, this.Height, this.Width * 1.5, this.Width, this.Height * 0.75, this.Width * -0.25, this.Height * 0.2)
     }
 
     override onStart()
@@ -43,6 +47,8 @@ export default class SpaceShooter extends Game<SpaceShooter>
 
         this.screenShake.update();
         this.projector.skew = -(this.player.x - this.Width / 2) * 0.35
+
+        this.spawnStars()
     }
 
     private spawnMeteor()
@@ -80,5 +86,11 @@ export default class SpaceShooter extends Game<SpaceShooter>
 
     get yOffsetGlobal(): number {
         return this.screenShake.yOffset;
+    }
+
+    spawnStars()
+    {
+        if (Math.random() > 0.95)
+            this.backgroundParticles.spawn(Particles.STAR, Random(0, this.Width) ,0, 1, 0)
     }
 }

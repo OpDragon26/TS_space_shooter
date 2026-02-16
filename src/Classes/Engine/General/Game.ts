@@ -39,7 +39,9 @@ export default class Game<GT extends Game<GT>> {
 
     public update() {
         this.background.forEach((entity: IEntity<GT>) => entity.update())
+        this.backgroundParticles.update()
         this.entities.forEach((entity: IEntity<GT>) => entity.update())
+        this.particles.update()
         this.ui.forEach((entity: IEntity<GT>) => entity.update())
         this.draw()
         this.globalTime++
@@ -50,7 +52,9 @@ export default class Game<GT extends Game<GT>> {
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
 
         this.background.forEach((entity: IEntity<GT>) => entity.draw())
+        this.backgroundParticles.draw()
         this.entities.forEach((entity: IEntity<GT>) => entity.draw())
+        this.particles.draw()
         this.ui.forEach((entity: IEntity<GT>) => entity.draw())
     }
 
