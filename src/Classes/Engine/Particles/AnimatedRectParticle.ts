@@ -26,8 +26,8 @@ export default class AnimatedRectParticle<GT extends Game<GT>> extends RectParti
 
         const w = this.Width(scale * frame.scaleMultiplier)
         const h = this.Height(scale * frame.scaleMultiplier)
-        const dx = this.displayX(x, y) + frame.xOffset - w / 2
-        const dy = this.displayY(x, y) + frame.yOffset - h / 2
+        const dx = this.displayX(game, x, y) + frame.xOffset - w / 2
+        const dy = this.displayY(game, x, y) + frame.yOffset - h / 2
 
         game.ctx.fillStyle = this.getColor(frame);
         game.ctx.fillRect(dx, dy, w, h);

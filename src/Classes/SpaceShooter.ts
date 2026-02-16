@@ -19,20 +19,25 @@ export default class SpaceShooter extends Game<SpaceShooter>
     public readonly mobilityCounter: Counter = new Counter(30, 1800, 4);
     public score: number = 0
 
-    public starProjector: GridProjector;
+    public lowerCloseStarProjector: GridProjector
+    public lowerMidStarProjector: GridProjector
+    public lowerFarStarProjector: GridProjector
 
     constructor() {
         super();
 
         this.player = new Player(this.Width / 2, this.Height, this)
         this.projector = new GridProjector(this.Width, this.Height, this.Width * 0.7, this.Width * 0.025, this.Height * 0.75, this.Width * 0.15, this.Height * 0.2);
-        this.starProjector = new GridProjector(this.Width, this.Height, this.Width * 1.5, this.Width, this.Height * 0.75, this.Width * -0.25, this.Height * 0.2)
+        this.lowerCloseStarProjector = new GridProjector(this.Width, this.Height, this.Width * 1.75, this.Width, this.Height * 0.75, this.Width * -0.375, this.Height * 0.2)
+        this.lowerMidStarProjector = new GridProjector(this.Width, this.Height, this.Width * 1.5, this.Width, this.Height * 0.75, this.Width * -0.25, this.Height * 0.2)
+        this.lowerFarStarProjector = new GridProjector(this.Width, this.Height, this.Width * 1.25, this.Width, this.Height * 0.75, this.Width * -0.125, this.Height * 0.2)
     }
 
     override onStart()
     {
         this.entities.add(this.player)
         this.ui.add(new ScoreDisplay(this))
+        this.spawnInitialStars()
     }
 
     override update() {
@@ -90,7 +95,14 @@ export default class SpaceShooter extends Game<SpaceShooter>
 
     spawnStars()
     {
-        if (Math.random() > 0.95)
+        if (Math.random() > 0.96)
             this.backgroundParticles.spawn(Particles.STAR, Random(0, this.Width) ,0, 1, 0)
+    }
+
+    spawnInitialStars()
+    {
+        for (let i = 0; i < 100; i++) {
+            this.backgroundParticles.spawn(Particles.STAR, Random(0, this.Width), Random(0, this.Height), 1, 0)
+        }
     }
 }

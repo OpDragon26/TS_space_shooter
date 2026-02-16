@@ -2,11 +2,16 @@ import type Game from "../General/Game.ts";
 
 export default interface IParticleTemplate<GT extends Game<any>>
 {
-    updateX(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): number
-    updateY(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): number
-    updateRotation(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): number
-    updateScale(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): number
-    doRemove(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): boolean
+    game: GT | null
+    x: number | null
+    y: number | null
+    scale: number | null
+    rotation: number | null
+    elapsedTime: number | null
+    randomizer: number | null
+    deleted: boolean | null
 
-    draw(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): void
+    load(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): void
+    update(): void
+    draw(): void
 }
