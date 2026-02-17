@@ -73,7 +73,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         if (Math.random() < 0.5)
         {
             // aim at player
-            const fPos = this.player.x / (this.Width * 2)
+            const fPos = this.player.x / this.Width
 
             const min = Math.max(0, this.Width * fPos + 75)
             const max = Math.min(this.Width, this.Width * fPos - 75)
