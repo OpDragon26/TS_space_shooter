@@ -37,16 +37,15 @@ export default class RectParticle<GT extends Game<GT>> extends BaseParticle<GT> 
     override draw() {
         const game = this.game!
         const scale = this.scale!
-        const rotation = this.rotation!
 
         const w = this.Width(scale)
         const h = this.Height(scale)
-        const dx = this.displayX - w / 2 + game.xOffsetGlobal
-        const dy = this.displayY - h / 2 + game.yOffsetGlobal
+        const dx = this.displayX + game.xOffsetGlobal
+        const dy = this.displayY + game.yOffsetGlobal
 
-        rotateCanvas(game.ctx, rotation, dx, dy)
+        rotateCanvas(game.ctx, this.newRotation, dx, dy)
 
         game.ctx.fillStyle = this.colorStr;
-        game.ctx.fillRect(dx, dy, w, h);
+        game.ctx.fillRect(dx - w / 2, dy - h / 2, w, h);
     }
 }

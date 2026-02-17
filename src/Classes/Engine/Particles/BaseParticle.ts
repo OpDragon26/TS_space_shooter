@@ -53,7 +53,8 @@ export default class BaseParticle<GT extends Game<GT>> implements IParticleTempl
 
     get newRotation(): number {
         const rotation = this.rotation!
-        return rotation + this.rotationTick
+        const elapsedTime = this.elapsedTime!
+        return rotation * elapsedTime
     }
 
     get newScale(): number {

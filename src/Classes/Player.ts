@@ -6,16 +6,13 @@ import Projectile from "./Projectile.ts";
 import Timer from "./Engine/General/Timer.ts";
 import RGBA from "./Engine/General/RGBA.ts";
 import ProjectedRect from "./Engine/Utils/ProjectedRect.ts";
-import Easing from "./Engine/Utils/easing.ts";
 
 export default class Player extends ProjectedRect
 {
-    private readonly acceleration: number = 0.75;
-    private readonly maxSpeed: number = 7.5;
+    private readonly acceleration: number = 0.40625;
+    private readonly maxSpeed: number = 6.5;
     private speed: number = 0;
 
-    //public readonly limit: number = this.game.Width * 0.3;
-    public readonly limit: number = 0;
 
     public readonly hitbox: RectangleHitbox;
 
@@ -114,13 +111,12 @@ export default class Player extends ProjectedRect
     private applyRotation()
     {
         const fs = this.speed / this.maxSpeed
-        const s = Math.sign(fs)
-        this.rotation = Easing(Math.abs(fs)) * 0.5 * s
+        this.rotation = fs * 0.25
     }
 
     private tryMove(x: number)
     {
-        if (this.limit <= this.x + x && this.game.Width - this.limit >= this.x + x)
+        if (0 <= this.x + x && this.game.Width >= this.x + x)
             this.x += x;
         else
             this.speed = 0

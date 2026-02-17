@@ -9,8 +9,10 @@ export default class GridProjector {
     xOffset: number
     yOffset: number;
     skew: number = 0;
+    invertX: boolean;
+    invertY: boolean;
 
-    constructor(innerWidth: number, innerHeight: number, bottomWidth: number, topWidth: number, height: number, xOffset: number = 0, yOffset: number = 0) {
+    constructor(innerWidth: number, innerHeight: number, bottomWidth: number, topWidth: number, height: number, xOffset: number = 0, yOffset: number = 0, invertX: boolean = false, invertY: boolean = false) {
         this.innerWidth = innerWidth;
         this.innerHeight = innerHeight;
 
@@ -20,6 +22,9 @@ export default class GridProjector {
 
         this.xOffset = xOffset;
         this.yOffset = yOffset;
+
+        this.invertX = invertX;
+        this.invertY = invertY;
     }
 
     public plot(point: [x: number, y: number]): [x: number, y: number] {
@@ -57,8 +62,8 @@ export default class GridProjector {
         return  x = fx * widthAtPoint + difference * topPortion + this.skewAt(y);
     }
 
-    fractionalY(y: number) {return y / this.innerHeight}
-    fractionalX(x: number) {return x / this.innerWidth}
+    fractionalY(y: number) { return this.invertY ? 1 - y / this.innerHeight : y / this.innerHeight }
+    fractionalX(x: number) { return this.invertX ? 1 - x / this.innerWidth : x / this.innerWidth }
     skewAt(y: number)
     {
         return this.fractionalY(y) * this.skew

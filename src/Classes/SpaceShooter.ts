@@ -23,14 +23,24 @@ export default class SpaceShooter extends Game<SpaceShooter>
     public lowerMidStarProjector: GridProjector
     public lowerFarStarProjector: GridProjector
 
+    public upperCloseStarProjector: GridProjector
+    public upperMidStarProjector: GridProjector
+    public upperFarStarProjector: GridProjector
+
     constructor() {
         super();
 
         this.player = new Player(this.Width / 2, this.Height, this)
         this.projector = new GridProjector(this.Width, this.Height, this.Width * 0.7, this.Width * 0.025, this.Height * 0.75, this.Width * 0.15, this.Height * 0.2);
+
         this.lowerCloseStarProjector = new GridProjector(this.Width, this.Height, this.Width * 1.75, this.Width, this.Height * 0.75, this.Width * -0.375, this.Height * 0.2)
         this.lowerMidStarProjector = new GridProjector(this.Width, this.Height, this.Width * 1.5, this.Width, this.Height * 0.75, this.Width * -0.25, this.Height * 0.2)
         this.lowerFarStarProjector = new GridProjector(this.Width, this.Height, this.Width * 1.25, this.Width, this.Height * 0.75, this.Width * -0.125, this.Height * 0.2)
+
+        this.upperCloseStarProjector = new GridProjector(this.Width, this.Height, this.Width, this.Width * 1.75, this.Height * 0.75, this.Width * -0.375, this.Height * -0.55, false, true)
+        this.upperMidStarProjector = new GridProjector(this.Width, this.Height, this.Width, this.Width * 1.5, this.Height * 0.75, this.Width * -0.25, this.Height * -0.55, false, true)
+        this.upperFarStarProjector = new GridProjector(this.Width, this.Height, this.Width, this.Width * 1.25, this.Height * 0.75, this.Width * -0.125, this.Height * -0.55, false, true)
+
     }
 
     override onStart()
@@ -51,7 +61,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.enemyTimer -= 1
 
         this.screenShake.update();
-        this.projector.skew = -(this.player.x - this.Width / 2) * 0.35
+        this.updateSkews()
 
         this.spawnStars()
     }
@@ -63,7 +73,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         if (Math.random() < 0.5)
         {
             // aim at player
-            const fPos = (this.player.x - this.player.limit) / (this.Width - this.player.limit * 2)
+            const fPos = this.player.x / (this.Width * 2)
 
             const min = Math.max(0, this.Width * fPos + 75)
             const max = Math.min(this.Width, this.Width * fPos - 75)
@@ -85,6 +95,20 @@ export default class SpaceShooter extends Game<SpaceShooter>
         return x * 0.8 + x * 0.2 * easeOut(this.mobilityCounter.f)
     }
 
+    updateSkews() {
+        const s = -(this.player.x - this.Width / 2) * 0.35
+
+        this.projector.skew = s
+
+        this.lowerCloseStarProjector.skew = s * 0.12
+        this.lowerMidStarProjector.skew = s * 0.08
+        this.lowerFarStarProjector.skew = s * 0.04
+
+        this.upperCloseStarProjector.skew = s * 0.12
+        this.upperMidStarProjector.skew = s * 0.08
+        this.upperFarStarProjector.skew = s * 0.04
+    }
+
     get xOffsetGlobal(): number {
         return this.screenShake.xOffset
     }
@@ -95,7 +119,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
 
     spawnStars()
     {
-        if (Math.random() > 0.96)
+        if (Math.random() > 0.94)
             this.backgroundParticles.spawn(Particles.STAR, Random(0, this.Width) ,0, 1, 0)
     }
 

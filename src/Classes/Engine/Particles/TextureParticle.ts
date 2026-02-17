@@ -26,15 +26,14 @@ export default class TextureParticle<GT extends Game<GT>> extends BaseParticle<G
     override draw() {
         const game = this.game!
         const scale = this.scale!
-        const rotation = this.rotation!
 
         const w = this.Width(scale)
         const h = this.Height(scale)
-        const dx = this.displayX - w / 2 + game.xOffsetGlobal
-        const dy = this.displayY - h / 2 + game.yOffsetGlobal
+        const dx = this.displayX + game.xOffsetGlobal
+        const dy = this.displayY + game.yOffsetGlobal
 
-        rotateCanvas(game.ctx, rotation, dx, dy)
+        rotateCanvas(game.ctx, this.newRotation, dx, dy)
 
-        game.ctx.drawImage(this.texture, dx, dy, w, h);
+        game.ctx.drawImage(this.texture, dx - w / 2, dy - h / 2, w, h);
     }
 }
