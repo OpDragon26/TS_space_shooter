@@ -78,8 +78,9 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
             this.game.ctx.fillText(this.text, pos[0], pos[1], this.Width);
     }
 
-    get displayPos(): [x: number, y: number] {
-        return [this.x, this.y]
+    get displayPos(): [x: number, y: number]
+    {
+        return [this.x + this.game.xOffsetGlobal, this.y + this.game.yOffsetGlobal];
     }
     start(): void {}
     update(): void {

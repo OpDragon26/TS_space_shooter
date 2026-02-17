@@ -18,7 +18,7 @@ export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
     protected color: RGBA
     hidden: boolean;
     tags: Set<number>;
-    private colorStr: string = "#FFFFFF"
+    protected colorStr: string = "#FFFFFF"
     animation: Animation | null = null
     layer: number = 0;
 

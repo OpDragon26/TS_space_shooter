@@ -8,6 +8,9 @@ import Counter from "./Engine/Utils/Counter.ts";
 import easeOut from "./Engine/Utils/easeOut.ts";
 import ScoreDisplay from "./ScoreDisplay.ts";
 import {Particles} from "./Particles.ts";
+import Rectangle from "./Engine/Entities/Rectangle.ts";
+import RGBA from "./Engine/General/RGBA.ts";
+import FillBar from "./Engine/Entities/FillBar.ts";
 
 export default class SpaceShooter extends Game<SpaceShooter>
 {
@@ -47,6 +50,9 @@ export default class SpaceShooter extends Game<SpaceShooter>
     {
         this.entities.add(this.player)
         this.ui.add(new ScoreDisplay(this))
+        this.ui.add(new Rectangle<SpaceShooter>(95, 35, 135, 30, 1, 0, this, new RGBA(0xFF, 0xFF, 0xFF)))
+        this.ui.add(new Rectangle<SpaceShooter>(95, 35, 127.5, 22.5, 1, 0, this, new RGBA(0x00, 0x00, 0x00)))
+        this.ui.add(new FillBar<SpaceShooter>(95, 35, 120, 15, 1 , 0, this, new RGBA(0xFF, 0xFF, 0xFF)))
         this.spawnInitialStars()
     }
 
