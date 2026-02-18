@@ -1,13 +1,13 @@
 import  SpaceShooter from "./SpaceShooter.ts";
-import RectParticle from "./Engine/Particles/RectParticle.ts";
 import RGBA from "./Engine/General/RGBA.ts";
+import CircleParticle from "./Engine/Particles/CircleParticle.ts";
 
-export default class HitParticle extends RectParticle<SpaceShooter>
+export default class HitParticle extends CircleParticle<SpaceShooter>
 {
     protected lifeTime: number | null = null;
 
     constructor() {
-        super(new RGBA(0xFF, 0xFF, 0xFF, 0x99), 10, 10);
+        super(new RGBA(0xFF, 0xFF, 0xFF, 0x99), 5);
     }
 
     override load(game: SpaceShooter, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number) {
