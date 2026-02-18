@@ -18,3 +18,7 @@ canvas {
     height: 80%;
 
 }
+
+img {
+    display: none;
+}

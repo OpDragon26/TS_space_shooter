@@ -7,7 +7,7 @@ import ScreenShake from "./ScreenShake.ts";
 import Counter from "./Engine/Utils/Counter.ts";
 import easeOut from "./Engine/Utils/easeOut.ts";
 import ScoreDisplay from "./ScoreDisplay.ts";
-import {Particles} from "./Particles.ts";
+import {Particles} from "./Helper/Particles.ts";
 import Rectangle from "./Engine/Entities/Rectangle.ts";
 import RGBA from "./Engine/General/RGBA.ts";
 import FillBar from "./Engine/Entities/FillBar.ts";
@@ -133,6 +133,13 @@ export default class SpaceShooter extends Game<SpaceShooter>
     {
         for (let i = 0; i < 100; i++) {
             this.backgroundParticles.spawn(Particles.STAR, Random(0, this.Width), Random(0, this.Height), 1, 0)
+        }
+    }
+
+    spawnHitParticles(x: number, y: number)
+    {
+        for (let i = 0; i < 10; i++) {
+            this.particles.spawn(Particles.HIT, x, y, 1, 0)
         }
     }
 }

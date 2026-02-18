@@ -16,7 +16,6 @@ export default class BaseParticle<GT extends Game<GT>> implements IParticleTempl
     xSpeed: number = 0;
     xAcceleration: number = 0;
     yAcceleration: number = 0;
-    rotationTick: number = 0;
 
     load(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): void {
         this.game = game;

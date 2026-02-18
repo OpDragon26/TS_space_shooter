@@ -28,10 +28,6 @@ export default class StarParticle extends RectParticle<SpaceShooter>
         this.rotation = randomizer % 0.04 - 0.02
     }
 
-    override update() {
-        super.update();
-    }
-
     override get displayX(): number {
         const p = this.relevantProjector!
         const x = this.x!
@@ -49,10 +45,9 @@ export default class StarParticle extends RectParticle<SpaceShooter>
     }
 
     override get newScale(): number {
-        const game = this.game!
         const y = this.y!
 
-        return flatten(game.lowerCloseStarProjector.fractionalY(y), 0.3)
+        return flatten(this.RelevantProjector.fractionalY(y), 0.3)
     }
 
     override get newY(): number {

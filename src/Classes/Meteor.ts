@@ -1,15 +1,15 @@
 ﻿import type SpaceShooter from "./SpaceShooter.ts";
 import CircleHitbox from "./Engine/Hitboxes/CircleHitbox.ts";
 import {Tags} from "./Engine/Utils/Tags.ts";
-import ProjectedRect from "./Engine/Utils/ProjectedRect.ts";
-import RGBA from "./Engine/General/RGBA.ts";
-import {Presets} from "./Engine/Animations/Presets.ts";
+import {Animations} from "./Helper/Animations.ts";
 import random from "./Engine/Utils/Random.ts";
+import ProjectedEntity from "./Helper/ProjectedEntity.ts";
+import {Textures} from "./Helper/Textures.ts";
 
-export default class Meteor extends ProjectedRect
+export default class Meteor extends ProjectedEntity
 {
     private speed: number;
-    private readonly acceleration: number = 1.01;
+    private readonly acceleration: number = 0.03;
     public readonly hitbox: CircleHitbox;
     private readonly frameRotation: number;
     private hp: number
@@ -23,7 +23,7 @@ export default class Meteor extends ProjectedRect
         size = size == 0 ? randomSize() : size
         const edge = randomEdge(size)
 
-        super(x, y, edge, edge, scale, 0, game, getColor(size), tags);
+        super(x, y, scale, 0, game, getTexture(size), tags);
         this.size = size;
         this.hp = this.size
         this.speed = getSpeed(size)
@@ -38,7 +38,7 @@ export default class Meteor extends ProjectedRect
 
     override update() {
         this.y += this.speed
-        this.speed *= this.acceleration
+        this.speed += this.acceleration
         this.rotation += this.frameRotation
 
         this.x += this.xVelocity
@@ -65,12 +65,12 @@ export default class Meteor extends ProjectedRect
         if (this.hp <= 0)
             this.destroy()
         else
-            this.animate(Presets.RECT_FLASH)
+            this.animate(Animations.FLASH)
     }
 
     destroy()
     {
-        this.animate(Presets.RECT_POP)
+        this.animate(Animations.FINAL_FLASH)
         this.hitbox.active = false;
         if (this.size === 3)
         {
@@ -115,14 +115,25 @@ function randomSize(): number
 
 function randomEdge(size: number): number
 {
-    const min = 25 * size + 5
-    const max = 35 * size + 10
+    const sizeMultiplier = size * size + size
+    const min = 8 * sizeMultiplier
+    const max = 10 * sizeMultiplier
     return random(min, max);
 }
 
-function getColor(size: number): RGBA
+function getTexture(size: number): HTMLImageElement
 {
-    return new RGBA(40 * size, 40 * size, 40 * size)
+    switch (size) {
+        case 1:
+            return Textures.METEOR_SMALL.random()
+        case 2:
+            return Textures.METEOR_MED.random()
+        case 3:
+            return Textures.METEOR_BIG.random()
+        default:
+            return Textures.METEOR_SMALL.random()
+
+    }
 }
 
 function getSpeed(size: number): number

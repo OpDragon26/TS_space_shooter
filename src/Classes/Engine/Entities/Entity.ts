@@ -3,8 +3,7 @@ import type IEntity from "./IEntity.ts";
 import Frame from "../Animations/Frame.ts";
 import type Animation from "../Animations/Animation.ts";
 import {FrameType} from "../Animations/FrameType.ts";
-import ColorizeImage from "../Utils/ColorizeImage.ts";
-import GetImageData from "../Utils/GetImageData.ts";
+import discolorImage from "../Utils/discolorImage.ts";
 
 export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
 
@@ -57,6 +56,7 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
     }
 
     public drawAt(pos: [x: number, y: number]) {
+        this.updateAnimation()
         if (!this.hidden) {
             this.game.ctx.save()
             this.drawBody(pos)
@@ -85,29 +85,22 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
         let w: number
         let h: number
 
-        let imageData: ImageData;
-        let img: ImageData;
-
         switch (frame.frameType)
         {
             case FrameType.OFFSET:
                 w = this.width * this.getScale(frame)
                 h = this.height * this.getScale(frame)
 
-                imageData = GetImageData(this.texture, w, h)
-                img = ColorizeImage(imageData, frame.colorOffset, frame.colorTreatment)
+                const discolored = discolorImage(this.texture, frame.colorOffset)
+                this.game.ctx.drawImage(discolored, pos[0] - w / 2, pos[1] - h / 2, w, h)
 
-                this.game.ctx.putImageData(img, pos[0] - w, pos[1] - h);
                 break;
 
             case FrameType.UPDATE:
                 if (this.animation!.newFrame)
                     this.scale = this.getScale(frame)
 
-                imageData = GetImageData(this.texture, this.Width, this.Height)
-                img = ColorizeImage(imageData, frame.colorOffset, frame.colorTreatment)
-
-                this.game.ctx.putImageData(img, pos[0] - this.Width, pos[1] - this.Height);
+                this.drawNormal(pos)
                 break;
 
             case FrameType.OBJECTIVE:
@@ -116,22 +109,22 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
                 w = this.width * frame.scaleMultiplier
                 h = this.height * frame.scaleMultiplier
 
-                imageData = GetImageData(this.texture, w, h)
-                img = ColorizeImage(imageData, frame.colorOffset, frame.colorTreatment)
-
-                this.game.ctx.putImageData(img, pos[0] - w, pos[1] - h);
+                this.game.ctx.drawImage(this.texture, pos[0] - w / 2, pos[1] - h / 2, w, h)
                 break;
 
             case FrameType.REPLACE:
                 if (this.animation!.newFrame)
                     this.scale = frame.scaleMultiplier
 
-                imageData = GetImageData(this.texture, this.Width, this.Height)
-                img = ColorizeImage(imageData, frame.colorOffset, frame.colorTreatment)
-
-                this.game.ctx.putImageData(img, pos[0] - this.Width, pos[1] - this.Height);
+                this.drawNormal(pos)
                 break;
         }
+    }
+
+    animate(animation: Animation)
+    {
+        this.animation = animation;
+        animation.reset()
     }
 
     private getScale(frame: Frame)
@@ -153,5 +146,14 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
         this.game.ctx.translate(pos[0], pos[1]);
         this.game.ctx.rotate(this.rotation)
         this.game.ctx.translate(-pos[0], -pos[1]);
+    }
+
+    private updateAnimation()
+    {
+        if (this.animation != null) {
+            this.animation.tick()
+            if (this.animation.finished)
+                this.animation = null
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿import type SpaceShooter from "./SpaceShooter.ts";
-import ProjectedRect from "./Engine/Utils/ProjectedRect.ts";
+import ProjectedRect from "./Helper/ProjectedRect.ts";
 import {Tags} from "./Engine/Utils/Tags.ts";
 import RectangleHitbox from "./Engine/Hitboxes/RectangleHitbox.ts";
 import Meteor from "./Meteor.ts";
@@ -30,6 +30,7 @@ export default class Projectile extends ProjectedRect
     destroy()
     {
         this.subSet.forEach(sub => this.game.entities.delete(sub));
+        this.game.spawnHitParticles(this.x, this.y)
     }
 
     override update() {
