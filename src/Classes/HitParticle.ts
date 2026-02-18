@@ -7,7 +7,7 @@ export default class HitParticle extends RectParticle<SpaceShooter>
     protected lifeTime: number | null = null;
 
     constructor() {
-        super(new RGBA(0xFF, 0xFF, 0xFF, 0x99), 5, 5);
+        super(new RGBA(0xFF, 0xFF, 0xFF, 0x99), 10, 10);
     }
 
     override load(game: SpaceShooter, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number) {
@@ -19,7 +19,7 @@ export default class HitParticle extends RectParticle<SpaceShooter>
 
     protected get LifeTime(): number {
         const randomizer = this.randomizer!
-        return randomizer * 10 + 15
+        return randomizer * 10 + 25
     }
 
     protected get YSpeed(): number {

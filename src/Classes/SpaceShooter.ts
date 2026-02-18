@@ -30,6 +30,8 @@ export default class SpaceShooter extends Game<SpaceShooter>
     public upperMidStarProjector: GridProjector
     public upperFarStarProjector: GridProjector
 
+    private HPBar: FillBar<SpaceShooter>
+
     constructor() {
         super();
 
@@ -44,6 +46,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.upperMidStarProjector = new GridProjector(this.Width, this.Height, this.Width, this.Width * 1.5, this.Height * 0.75, this.Width * -0.25, this.Height * -0.55, false, true)
         this.upperFarStarProjector = new GridProjector(this.Width, this.Height, this.Width, this.Width * 1.25, this.Height * 0.75, this.Width * -0.125, this.Height * -0.55, false, true)
 
+        this.HPBar = new FillBar<SpaceShooter>(95, 35, 120, 15, 1 , 0, this, new RGBA(0xFF, 0xFF, 0xFF))
     }
 
     override onStart()
@@ -52,10 +55,9 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.ui.add(new ScoreDisplay(this))
         this.ui.add(new Rectangle<SpaceShooter>(95, 35, 135, 30, 1, 0, this, new RGBA(0xFF, 0xFF, 0xFF)))
         this.ui.add(new Rectangle<SpaceShooter>(95, 35, 127.5, 22.5, 1, 0, this, new RGBA(0x00, 0x00, 0x00)))
-        this.ui.add(new FillBar<SpaceShooter>(95, 35, 120, 15, 1 , 0, this, new RGBA(0xFF, 0xFF, 0xFF)))
+        this.ui.add(this.HPBar)
         this.spawnInitialStars()
     }
-
     override update() {
         super.update();
 
@@ -66,6 +68,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         }
         this.enemyTimer -= 1
 
+        this.HPBar.fillPercent = this.player.currentHP / this.player.maxHP
         this.screenShake.update();
         this.updateSkews()
 
@@ -138,7 +141,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
 
     spawnHitParticles(x: number, y: number)
     {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 5; i++) {
             this.particles.spawn(Particles.HIT, x, y, 1, 0)
         }
     }

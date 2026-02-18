@@ -13,7 +13,7 @@ export default class Meteor extends ProjectedEntity
     public readonly hitbox: CircleHitbox;
     private readonly frameRotation: number;
     private hp: number
-    private readonly size: number;
+    readonly size: number;
 
     private xVelocity: number;
     private yVelocity: number;
@@ -150,5 +150,5 @@ function getSpeed(size: number): number
 function randomRotation(size: number): number
 {
     const m = 3.5 - size;
-    return random(m * -0.01, m * 0.01)
+    return random(m * -0.025, m * 0.025)
 }

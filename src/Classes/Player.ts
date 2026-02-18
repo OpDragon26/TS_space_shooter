@@ -6,6 +6,7 @@ import Projectile from "./Projectile.ts";
 import Timer from "./Engine/General/Timer.ts";
 import RGBA from "./Engine/General/RGBA.ts";
 import ProjectedRect from "./Helper/ProjectedRect.ts";
+import clamp from "./Engine/Utils/clamp.ts";
 
 export default class Player extends ProjectedRect
 {
@@ -13,8 +14,10 @@ export default class Player extends ProjectedRect
     private readonly maxSpeed: number = 6.5;
     private speed: number = 0;
 
-
     public readonly hitbox: RectangleHitbox;
+
+    currentHP: number;
+    readonly maxHP: number = 7
 
     private readonly IFrames: number = 120;
     private IFrameCounter: number = 0;
@@ -29,6 +32,8 @@ export default class Player extends ProjectedRect
         this.layer = 1
 
         this.hitbox = new RectangleHitbox(x, y, 50, 20)
+
+        this.currentHP = this.maxHP;
     }
 
     override update() {
@@ -84,10 +89,7 @@ export default class Player extends ProjectedRect
                 {
                     const m: Meteor = (entity as Meteor);
                     if (m.hitbox.collides(this.hitbox))
-                    {
-                        this.game.screenShake.start()
-                        this.IFrameCounter = this.IFrames
-                    }
+                        this.gotHit(m)
                 }
             })
         }
@@ -97,6 +99,21 @@ export default class Player extends ProjectedRect
             this.hidden = c % 2 == 0
         }
         this.IFrameCounter--;
+    }
+
+    private gotHit(meteor: Meteor)
+    {
+        this.game.screenShake.start()
+        this.IFrameCounter = this.IFrames
+
+        if (meteor.size == 3)
+            this.currentHP -= 2
+        else
+            this.currentHP--
+        this.currentHP = clamp(this.currentHP, 0, this.maxHP)
+
+        if (this.currentHP == 0)
+            this.game.stop()
     }
 
     private spawnProjectile()

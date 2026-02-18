@@ -47,7 +47,8 @@ export default class StarParticle extends RectParticle<SpaceShooter>
     override get newScale(): number {
         const y = this.y!
 
-        return flatten(this.RelevantProjector.fractionalY(y), 0.3)
+        const fy = this.RelevantProjector.fractionalY(y)
+        return flatten((this.IsInverted ? 1 - fy : fy), 0.3)
     }
 
     override get newY(): number {
