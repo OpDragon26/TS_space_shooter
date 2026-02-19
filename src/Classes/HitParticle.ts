@@ -1,6 +1,7 @@
 import  SpaceShooter from "./SpaceShooter.ts";
 import RGBA from "./Engine/General/RGBA.ts";
 import CircleParticle from "./Engine/Particles/CircleParticle.ts";
+import clamp from "./Engine/Utils/clamp.ts";
 
 export default class HitParticle extends CircleParticle<SpaceShooter>
 {
@@ -38,8 +39,9 @@ export default class HitParticle extends CircleParticle<SpaceShooter>
     protected get ScaleMultiplier(): number {
         const elapsedTime = this.elapsedTime!
         const lifeTime = this.lifeTime!
+        const v = elapsedTime / lifeTime
 
-        return elapsedTime / lifeTime
+        return clamp(v, 0, 1)
     }
 
     override get doRemove(): boolean {

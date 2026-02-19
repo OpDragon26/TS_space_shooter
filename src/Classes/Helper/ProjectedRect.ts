@@ -1,4 +1,4 @@
-import Rectangle from "../Engine/Entities/Rectangle.ts";
+import Rectangle from "../Engine/Entities/Standard/Rectangle.ts";
 import type SpaceShooter from "../SpaceShooter.ts";
 
 export default class ProjectedRect extends Rectangle<SpaceShooter>

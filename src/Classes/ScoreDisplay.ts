@@ -1,4 +1,4 @@
-import Text from "./Engine/Entities/Text.ts";
+import Text from "./Engine/Entities/Standard/Text.ts";
 import type SpaceShooter from "./SpaceShooter.ts";
 import Font from "./Engine/Utils/Font.ts";
 import RGBA from "./Engine/General/RGBA.ts";

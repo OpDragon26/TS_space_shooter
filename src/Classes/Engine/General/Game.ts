@@ -11,7 +11,7 @@ export default class Game<GT extends Game<GT>> {
     public ui: Set<IEntity<GT>> = new Set<IEntity<GT>>();
     protected canvas: HTMLCanvasElement;
     public active: boolean = false;
-    public inputManager = new InputManager();
+    public inputManager: InputManager;
     public globalTime: number = 0;
     public gameState: number = 0;
 
@@ -36,10 +36,11 @@ export default class Game<GT extends Game<GT>> {
         this.particles = new ParticleSystem<GT>(this)
         //@ts-ignore
         this.backgroundParticles = new ParticleSystem<GT>(this)
+
+        this.inputManager = new InputManager(this.canvas)
     }
 
     public update() {
-        this.inputManager.update()
         this.background.forEach((entity: IEntity<GT>) => entity.update())
         this.backgroundParticles.update()
         this.entities.forEach((entity: IEntity<GT>) => entity.update())

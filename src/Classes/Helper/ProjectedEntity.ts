@@ -1,4 +1,4 @@
-import GameEntity from "../Engine/Entities/Entity.ts";
+import GameEntity from "../Engine/Entities/Standard/Entity.ts";
 import type SpaceShooter from "../SpaceShooter.ts";
 
 export default class ProjectedEntity extends GameEntity<SpaceShooter>

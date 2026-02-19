@@ -1,6 +1,6 @@
-﻿import type Game from "../General/Game.ts";
-import Rectangle from "./Rectangle.ts";
-import type RGBA from "../General/RGBA.ts";
+﻿import type Game from "../../General/Game.ts";
+import Rectangle from "../Standard/Rectangle.ts";
+import type RGBA from "../../General/RGBA.ts";
 
 export default class FillBar<GT extends Game<GT>> extends Rectangle<GT>
 {
