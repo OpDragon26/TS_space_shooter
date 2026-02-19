@@ -4,6 +4,7 @@ import clamp from "../../Utils/clamp.ts";
 import type IHitbox from "../../Hitboxes/IHitbox.ts";
 import RectangleHitbox from "../../Hitboxes/RectangleHitbox.ts";
 import rotateCanvas from "../../Utils/rotateCanvas.ts";
+type PressFn = () => void;
 
 export default class Button<GT extends Game<GT>> implements IEntity<GT>
 {
@@ -20,8 +21,14 @@ export default class Button<GT extends Game<GT>> implements IEntity<GT>
     opacity: number = 1
     hitbox: IHitbox
     activator: number;
+    pressTime: number;
+    onPress: PressFn
+    protected lastPressTime: number = 0;
 
-    constructor(x: number, y: number, width: number, height: number, scale: number, rotation: number, game: GT, activator: number = 0, tags: Set<number> = new Set<number>()) {
+    constructor(x: number, y: number, width: number, height: number, scale: number, rotation: number, game: GT,
+                activator: number = 0, pressTime: number = 30,
+                onPress: PressFn,
+                tags: Set<number> = new Set<number>()) {
         this.x = x
         this.y = y
         this.width = width
@@ -30,9 +37,11 @@ export default class Button<GT extends Game<GT>> implements IEntity<GT>
         this.rotation = rotation
         this.game = game
         this.activator = activator
+        this.pressTime = pressTime
         this.hidden = false
         this.tags = tags
         this.layer = 0
+        this.onPress = onPress
         this.hitbox = new RectangleHitbox(x, y, width, height, scale)
     }
 
@@ -49,6 +58,15 @@ export default class Button<GT extends Game<GT>> implements IEntity<GT>
 
     update() {
         this.hitbox.update(this)
+
+        if (this.Pressed && this.lastPressTime == 0)
+            this.lastPressTime = this.game.globalTime
+
+        if (this.game.globalTime - this.lastPressTime > this.pressTime && this.lastPressTime != 0)
+        {
+            this.onPress()
+            this.lastPressTime = 0
+        }
     }
 
     start() {
