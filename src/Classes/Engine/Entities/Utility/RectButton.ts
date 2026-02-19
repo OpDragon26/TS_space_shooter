@@ -1,6 +1,7 @@
 import type Game from "../../General/Game.ts";
 import Button from "./Button.ts";
 import type RGBA from "../../General/RGBA.ts";
+import flatten from "../../Utils/flatten.ts";
 type PressFn = () => void;
 
 export default class RectButton<GT extends Game<GT>> extends Button<GT>
@@ -39,7 +40,9 @@ export default class RectButton<GT extends Game<GT>> extends Button<GT>
 
     protected override drawPressed(pos: [x: number, y: number]) {
         const s = this.scale
-        this.scale *= 0.9
+
+        const f = 1 - this.PressedElapsedTime / this.pressTime
+        this.scale *= flatten(f, 0.9)
 
         this.game.ctx.fillStyle = this.pressedColorStr
         this.game.ctx.fillRect(pos[0] - this.Width / 2, pos[1] - this.Height / 2, this.Width, this.Height);

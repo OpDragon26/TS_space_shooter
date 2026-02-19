@@ -20,6 +20,7 @@ import Font from "./Engine/Utils/Font.ts";
 import {fontStyle} from "./Engine/Utils/fontStyle.ts";
 import {fontFamily} from "./Engine/Utils/fontFamily.ts";
 import {textAlignment} from "./Engine/Utils/textAlignment.ts";
+import RestartButton from "./RestartButton.ts";
 
 export default class SpaceShooter extends Game<SpaceShooter>
 {
@@ -44,6 +45,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
     private readonly fading: FadeRect<SpaceShooter>;
     private readonly fadeOutLength: number = 180;
     private readonly gameOverText: Text<SpaceShooter>;
+    private readonly restartButton: RestartButton;
 
     constructor() {
         super();
@@ -70,6 +72,8 @@ export default class SpaceShooter extends Game<SpaceShooter>
             this,
             textAlignment.CENTER,
             new Set<number>([Tags.GAME_OVER_UI]))
+
+        this.restartButton = new RestartButton(this.Width / 2, this.Height / 2, this)
     }
 
     override onStart()
@@ -81,8 +85,11 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.ui.add(this.HPBar)
         this.ui.add(this.fading)
         this.ui.add(this.gameOverText)
+        this.ui.add(this.restartButton)
 
         this.spawnInitialStars()
+
+        this.setStage(0)
     }
     override update() {
         super.update();
@@ -137,6 +144,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         {
             case gameStates.ONGOING:
                 this.setAllWithTag(Tags.RUN_UI, this.ui, false)
+                this.reset()
                 break;
 
             case gameStates.GAME_OVER_TRANSITION:
@@ -161,11 +169,11 @@ export default class SpaceShooter extends Game<SpaceShooter>
         return x * 0.8 + x * 0.2 * easeOut(this.mobilityCounter.f)
     }
 
-    private setAllWithTag(tag: number, set: Set<IEntity<SpaceShooter>>, on: boolean)
+    private setAllWithTag(tag: number, set: Set<IEntity<SpaceShooter>>, hidden: boolean)
     {
         set.forEach(entity => {
             if (entity.tagged(tag))
-                entity.hidden = on
+                entity.hidden = hidden
         })
     }
 
@@ -189,9 +197,11 @@ export default class SpaceShooter extends Game<SpaceShooter>
         {
             this.fading.Opacity = this.globalTime / this.fadeOutLength
             this.gameOverText.Opacity = this.globalTime / (this.fadeOutLength * 2)
+            this.restartButton.Opacity = (this.globalTime - 60) / (this.fadeOutLength * 0.5)
         }
         else
         {
+            this.restartButton.Opacity = 0
             this.fading.Opacity = 0
             this.gameOverText.Opacity = 0
         }

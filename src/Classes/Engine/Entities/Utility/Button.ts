@@ -62,7 +62,7 @@ export default class Button<GT extends Game<GT>> implements IEntity<GT>
         if (this.Pressed && this.lastPressTime == 0)
             this.lastPressTime = this.game.globalTime
 
-        if (this.game.globalTime - this.lastPressTime > this.pressTime && this.lastPressTime != 0)
+        if (this.PressedElapsedTime >= this.pressTime && this.lastPressTime != 0)
         {
             this.onPress()
             this.lastPressTime = 0
@@ -71,6 +71,10 @@ export default class Button<GT extends Game<GT>> implements IEntity<GT>
 
     start() {
 
+    }
+
+    get PressedElapsedTime(): number {
+        return this.game.globalTime - this.lastPressTime
     }
 
 

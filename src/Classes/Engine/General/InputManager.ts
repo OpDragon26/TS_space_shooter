@@ -10,8 +10,8 @@ export default class InputManager {
         window.addEventListener("keydown", (e) => this.inputKeys[e.key] = true);
         window.addEventListener("keyup", (e) => this.inputKeys[e.key] = false);
 
-        window.addEventListener("mouseup", (e) => this.mouseButtons[e.button] = true);
-        window.addEventListener("mousedown", (e) => this.mouseButtons[e.button] = false);
+        window.addEventListener("mousedown", (e) => this.mouseButtons[e.button] = true);
+        window.addEventListener("mouseup", (e) => this.mouseButtons[e.button] = false);
 
         window.addEventListener("mousemove", (e) => this.handleMouseMove(e))
         this.canvas = canvas;
