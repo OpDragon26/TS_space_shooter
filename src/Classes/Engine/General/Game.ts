@@ -39,6 +39,7 @@ export default class Game<GT extends Game<GT>> {
     }
 
     public update() {
+        this.inputManager.update()
         this.background.forEach((entity: IEntity<GT>) => entity.update())
         this.backgroundParticles.update()
         this.entities.forEach((entity: IEntity<GT>) => entity.update())

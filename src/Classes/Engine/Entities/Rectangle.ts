@@ -5,6 +5,7 @@ import type Animation from "../Animations/Animation.ts";
 import {ColorTreatment} from "../Utils/ColorTreatment.ts";
 import Frame from "../Animations/Frame.ts";
 import {FrameType} from "../Animations/FrameType.ts";
+import clamp from "../Utils/clamp.ts";
 
 export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
 {
@@ -21,6 +22,7 @@ export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
     protected colorStr: string = "#FFFFFF"
     animation: Animation | null = null
     layer: number = 0;
+    opacity: number = 1
 
     get Width()
     {
@@ -187,5 +189,13 @@ export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
     {
         this.animation = animation;
         animation.reset()
+    }
+
+    public get Opacity() {
+        return this.opacity
+    }
+
+    public set Opacity(v: number) {
+        this.opacity = clamp(v, 0, 1)
     }
 }

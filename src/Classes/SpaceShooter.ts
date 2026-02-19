@@ -105,6 +105,10 @@ export default class SpaceShooter extends Game<SpaceShooter>
     public reset()
     {
         this.player.currentHP = this.player.maxHP
+        this.player.x = this.Width / 2
+        this.player.y = this.Height
+        this.entities.clear()
+        this.entities.add(this.player)
     }
 
     private spawnMeteor()

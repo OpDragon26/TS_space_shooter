@@ -4,6 +4,7 @@ import Frame from "../Animations/Frame.ts";
 import type Animation from "../Animations/Animation.ts";
 import {FrameType} from "../Animations/FrameType.ts";
 import discolorImage from "../Utils/discolorImage.ts";
+import clamp from "../Utils/clamp.ts";
 
 export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
 
@@ -19,14 +20,13 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
     tags: Set<number>;
     animation: Animation | null = null
     layer: number = 0;
+    opacity: number = 1
 
-    get Height()
-    {
+    get Height() {
         return this.height * this.scale;
     }
 
-    get Width()
-    {
+    get Width() {
         return this.width * this.scale;
     }
 
@@ -43,15 +43,14 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
         this.tags = tags
     }
 
-    public update() {}
+    public update() {
+    }
 
-    get displayPos(): [x: number, y: number]
-    {
+    get displayPos(): [x: number, y: number] {
         return [this.x + this.game.xOffsetGlobal, this.y + this.game.yOffsetGlobal];
     }
 
-    public draw()
-    {
+    public draw() {
         this.drawAt(this.displayPos)
     }
 
@@ -64,8 +63,7 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
         }
     }
 
-    protected drawBody(pos: [x: number, y: number])
-    {
+    protected drawBody(pos: [x: number, y: number]) {
         this.rotateCanvas(pos)
         if (this.animation == null)
             this.drawNormal(pos)
@@ -73,20 +71,17 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
             this.drawAnimated(pos)
     }
 
-    protected drawNormal(pos: [x: number, y: number]): void
-    {
+    protected drawNormal(pos: [x: number, y: number]): void {
         this.game.ctx.drawImage(this.texture, pos[0] - this.Width / 2, pos[1] - this.Height / 2, this.Width, this.Height);
     }
 
-    protected drawAnimated(pos: [x: number, y: number]): void
-    {
+    protected drawAnimated(pos: [x: number, y: number]): void {
         const frame: Frame = this.animation!.current
 
         let w: number
         let h: number
 
-        switch (frame.frameType)
-        {
+        switch (frame.frameType) {
             case FrameType.OFFSET:
                 w = this.width * this.getScale(frame)
                 h = this.height * this.getScale(frame)
@@ -121,14 +116,12 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
         }
     }
 
-    animate(animation: Animation)
-    {
+    animate(animation: Animation) {
         this.animation = animation;
         animation.reset()
     }
 
-    private getScale(frame: Frame)
-    {
+    private getScale(frame: Frame) {
         return this.scale * frame.scaleMultiplier
     }
 
@@ -136,24 +129,29 @@ export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
 
     }
 
-    public tagged(tag: number)
-    {
+    public tagged(tag: number) {
         return this.tags.has(tag)
     }
 
-    rotateCanvas(pos: [x: number, y: number])
-    {
+    rotateCanvas(pos: [x: number, y: number]) {
         this.game.ctx.translate(pos[0], pos[1]);
         this.game.ctx.rotate(this.rotation)
         this.game.ctx.translate(-pos[0], -pos[1]);
     }
 
-    private updateAnimation()
-    {
+    private updateAnimation() {
         if (this.animation != null) {
             this.animation.tick()
             if (this.animation.finished)
                 this.animation = null
         }
+    }
+
+    public get Opacity() {
+        return this.opacity
+    }
+
+    public set Opacity(v: number) {
+        this.opacity = clamp(v, 0, 1)
     }
 }

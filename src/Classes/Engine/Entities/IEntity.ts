@@ -11,6 +11,7 @@ export default interface IEntity<GT extends Game<GT>> {
     hidden: boolean;
     tags: Set<number>;
     layer: number;
+    opacity: number;
 
     draw(): void
     drawAt(pos: [x: number, y: number]): void
@@ -20,4 +21,6 @@ export default interface IEntity<GT extends Game<GT>> {
     tagged(tag: number): boolean
     get Height(): number
     get Width(): number
+    get Opacity(): number
+    set Opacity(v: number)
 }
