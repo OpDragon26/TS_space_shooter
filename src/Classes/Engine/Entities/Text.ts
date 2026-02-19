@@ -3,6 +3,7 @@ import type Game from "../General/Game.ts";
 import type Font from "../Utils/Font.ts";
 import type RGBA from "../General/RGBA.ts";
 import {textAlignment} from "../Utils/textAlignment.ts";
+import clamp from "../Utils/clamp.ts";
 
 export default class Text<GT extends Game<GT>> implements IEntity<GT>
 {
@@ -32,6 +33,8 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
     private color: RGBA;
     private colorStr: string;
     alignment: string;
+
+    private opacity: number = 1
 
     set Font(font: Font) {
         this.font = font
@@ -69,6 +72,9 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
 
     private drawText(pos: [x: number, y: number]): void
     {
+        const prevA = this.game.ctx.globalAlpha
+        this.game.ctx.globalAlpha = this.opacity
+
         this.game.ctx.font = this.fontStr
         this.game.ctx.fillStyle = this.colorStr
         this.game.ctx.textAlign = this.alignment as CanvasTextAlign
@@ -76,6 +82,8 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
             this.game.ctx.fillText(this.text, pos[0], pos[1]);
         else
             this.game.ctx.fillText(this.text, pos[0], pos[1], this.Width);
+
+        this.game.ctx.globalAlpha = prevA
     }
 
     get displayPos(): [x: number, y: number]
@@ -94,5 +102,13 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
     }
     get Width(): number {
         return this.width * this.scale;
+    }
+
+    public get Opacity() {
+        return this.opacity
+    }
+
+    public set Opacity(v: number) {
+        this.opacity = clamp(v, 0, 1)
     }
 }

@@ -58,6 +58,7 @@ export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
     }
 
     public drawAt(pos: [x: number, y: number]) {
+
         this.updateAnimation()
         if (!this.hidden) {
             this.game.ctx.save()
@@ -83,7 +84,6 @@ export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
             this.drawNormal(pos)
         else
             this.drawAnimated(pos)
-
     }
 
     protected drawNormal(pos: [x: number, y: number]): void

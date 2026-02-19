@@ -1,6 +1,6 @@
 ﻿import type SpaceShooter from "./SpaceShooter.ts";
 import ProjectedRect from "./Helper/ProjectedRect.ts";
-import {Tags} from "./Engine/Utils/Tags.ts";
+import {Tags} from "./Helper/Tags.ts";
 import RectangleHitbox from "./Engine/Hitboxes/RectangleHitbox.ts";
 import Meteor from "./Meteor.ts";
 import RGBA from "./Engine/General/RGBA.ts";

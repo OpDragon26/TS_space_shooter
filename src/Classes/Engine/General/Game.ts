@@ -13,6 +13,7 @@ export default class Game<GT extends Game<GT>> {
     public active: boolean = false;
     public inputManager = new InputManager();
     public globalTime: number = 0;
+    public gameState: number = 0;
 
     public get Width()
     {
@@ -67,7 +68,7 @@ export default class Game<GT extends Game<GT>> {
         {
             setTimeout(() => {
                 requestAnimationFrame(() => this.loop())
-            }, 950 / fps);
+            }, 900 / fps);
         }
     }
 
@@ -79,6 +80,18 @@ export default class Game<GT extends Game<GT>> {
         this.ui.forEach((entity: IEntity<GT>) => entity.draw())
         this.onStart();
         this.loop();
+    }
+
+    public setStage(state: number)
+    {
+        this.gameState = state
+        this.globalTime = 0
+        this.stateSet(state)
+    }
+
+    protected stateSet(state: number)
+    {
+        switch (state) {}
     }
 
     public stop()

@@ -11,6 +11,15 @@ import {Particles} from "./Helper/Particles.ts";
 import Rectangle from "./Engine/Entities/Rectangle.ts";
 import RGBA from "./Engine/General/RGBA.ts";
 import FillBar from "./Engine/Entities/FillBar.ts";
+import type IEntity from "./Engine/Entities/IEntity.ts";
+import {Tags} from "./Helper/Tags.ts";
+import {gameStates} from "./Helper/gameStates.ts";
+import FadeRect from "./Engine/Entities/FadeRect.ts";
+import Text from "./Engine/Entities/Text.ts";
+import Font from "./Engine/Utils/Font.ts";
+import {fontStyle} from "./Engine/Utils/fontStyle.ts";
+import {fontFamily} from "./Engine/Utils/fontFamily.ts";
+import {textAlignment} from "./Engine/Utils/textAlignment.ts";
 
 export default class SpaceShooter extends Game<SpaceShooter>
 {
@@ -30,7 +39,11 @@ export default class SpaceShooter extends Game<SpaceShooter>
     public upperMidStarProjector: GridProjector
     public upperFarStarProjector: GridProjector
 
-    private HPBar: FillBar<SpaceShooter>
+    private readonly HPBar: FillBar<SpaceShooter>
+
+    private readonly fading: FadeRect<SpaceShooter>;
+    private readonly fadeOutLength: number = 180;
+    private readonly gameOverText: Text<SpaceShooter>;
 
     constructor() {
         super();
@@ -46,22 +59,35 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.upperMidStarProjector = new GridProjector(this.Width, this.Height, this.Width, this.Width * 1.5, this.Height * 0.75, this.Width * -0.25, this.Height * -0.55, false, true)
         this.upperFarStarProjector = new GridProjector(this.Width, this.Height, this.Width, this.Width * 1.25, this.Height * 0.75, this.Width * -0.125, this.Height * -0.55, false, true)
 
-        this.HPBar = new FillBar<SpaceShooter>(95, 35, 120, 15, 1 , 0, this, new RGBA(0xFF, 0xFF, 0xFF))
+        this.HPBar = new FillBar<SpaceShooter>(95, 35, 120, 15, 1 , 0, this, new RGBA(0xFF, 0xFF, 0xFF), new Set<number>([Tags.RUN_UI]))
+        this.fading = new FadeRect<SpaceShooter>(this, new RGBA(0, 0, 0), new Set<number>([Tags.GAME_OVER_UI]))
+        this.gameOverText = new Text<SpaceShooter>(
+            "GAME OVER",
+            new Font(100, fontFamily.SANS_SERIF, 1, fontStyle.BOLD),
+            new RGBA(0xFF, 0, 0x4F),
+            this.Width / 2, this.Height / 2,
+            0, 100, 1, 0,
+            this,
+            textAlignment.CENTER,
+            new Set<number>([Tags.GAME_OVER_UI]))
     }
 
     override onStart()
     {
         this.entities.add(this.player)
         this.ui.add(new ScoreDisplay(this))
-        this.ui.add(new Rectangle<SpaceShooter>(95, 35, 135, 30, 1, 0, this, new RGBA(0xFF, 0xFF, 0xFF)))
-        this.ui.add(new Rectangle<SpaceShooter>(95, 35, 127.5, 22.5, 1, 0, this, new RGBA(0x00, 0x00, 0x00)))
+        this.ui.add(new Rectangle<SpaceShooter>(95, 35, 135, 30, 1, 0, this, new RGBA(0xFF, 0xFF, 0xFF), new Set<number>([Tags.RUN_UI])))
+        this.ui.add(new Rectangle<SpaceShooter>(95, 35, 127.5, 22.5, 1, 0, this, new RGBA(0x00, 0x00, 0x00), new Set<number>([Tags.RUN_UI])))
         this.ui.add(this.HPBar)
+        this.ui.add(this.fading)
+        this.ui.add(this.gameOverText)
+
         this.spawnInitialStars()
     }
     override update() {
         super.update();
 
-        if (this.enemyTimer <= 0)
+        if (this.enemyTimer <= 0 && this.gameState == gameStates.ONGOING)
         {
             this.enemyTimer = this.getInterval()
             this.spawnMeteor()
@@ -71,8 +97,14 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.HPBar.fillPercent = this.player.currentHP / this.player.maxHP
         this.screenShake.update();
         this.updateSkews()
+        this.updateFade()
 
         this.spawnStars()
+    }
+
+    public reset()
+    {
+        this.player.currentHP = this.player.maxHP
     }
 
     private spawnMeteor()
@@ -94,6 +126,27 @@ export default class SpaceShooter extends Game<SpaceShooter>
         }
     }
 
+    protected override stateSet(state: number) {
+        this.ui.forEach(entity => entity.hidden = true)
+
+        switch (state)
+        {
+            case gameStates.ONGOING:
+                this.setAllWithTag(Tags.RUN_UI, this.ui, false)
+                break;
+
+            case gameStates.GAME_OVER_TRANSITION:
+                this.setAllWithTag(Tags.RUN_UI, this.ui, false)
+                this.setAllWithTag(Tags.GAME_OVER_UI, this.ui, false)
+                break;
+
+            case gameStates.GAME_START_TRANSITION:
+
+                break;
+        }
+    }
+
+
     private getInterval()
     {
         return this.ImmobilityPunishment(Random(this.enemyInterval[0], this.enemyInterval[1]))
@@ -102,6 +155,14 @@ export default class SpaceShooter extends Game<SpaceShooter>
     private ImmobilityPunishment(x: number)
     {
         return x * 0.8 + x * 0.2 * easeOut(this.mobilityCounter.f)
+    }
+
+    private setAllWithTag(tag: number, set: Set<IEntity<SpaceShooter>>, on: boolean)
+    {
+        set.forEach(entity => {
+            if (entity.tagged(tag))
+                entity.hidden = on
+        })
     }
 
     updateSkews() {
@@ -116,6 +177,20 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.upperCloseStarProjector.skew = s * 0.12
         this.upperMidStarProjector.skew = s * 0.08
         this.upperFarStarProjector.skew = s * 0.04
+    }
+
+    updateFade()
+    {
+        if (this.gameState == gameStates.GAME_OVER_TRANSITION)
+        {
+            this.fading.Opacity = this.globalTime / this.fadeOutLength
+            this.gameOverText.Opacity = this.globalTime / (this.fadeOutLength * 2)
+        }
+        else
+        {
+            this.fading.Opacity = 0
+            this.gameOverText.Opacity = 0
+        }
     }
 
     get xOffsetGlobal(): number {

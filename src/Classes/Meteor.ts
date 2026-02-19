@@ -1,6 +1,6 @@
 ﻿import type SpaceShooter from "./SpaceShooter.ts";
 import CircleHitbox from "./Engine/Hitboxes/CircleHitbox.ts";
-import {Tags} from "./Engine/Utils/Tags.ts";
+import {Tags} from "./Helper/Tags.ts";
 import {Animations} from "./Helper/Animations.ts";
 import random from "./Engine/Utils/Random.ts";
 import ProjectedEntity from "./Helper/ProjectedEntity.ts";

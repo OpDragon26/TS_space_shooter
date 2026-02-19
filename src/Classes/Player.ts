@@ -1,12 +1,13 @@
 import type SpaceShooter from "./SpaceShooter.ts";
 import RectangleHitbox from "./Engine/Hitboxes/RectangleHitbox.ts";
 import Meteor from "./Meteor.ts";
-import {Tags} from "./Engine/Utils/Tags.ts";
+import {Tags} from "./Helper/Tags.ts";
 import Projectile from "./Projectile.ts";
 import Timer from "./Engine/General/Timer.ts";
 import RGBA from "./Engine/General/RGBA.ts";
 import ProjectedRect from "./Helper/ProjectedRect.ts";
 import clamp from "./Engine/Utils/clamp.ts";
+import {gameStates} from "./Helper/gameStates.ts";
 
 export default class Player extends ProjectedRect
 {
@@ -81,7 +82,7 @@ export default class Player extends ProjectedRect
 
     private handleCollision()
     {
-        if (this.IFrameCounter < 0)
+        if (this.IFrameCounter < 0 && this.game.gameState == gameStates.ONGOING)
         {
             this.hidden = false
             this.game.entities.forEach((entity) => {
@@ -113,7 +114,7 @@ export default class Player extends ProjectedRect
         this.currentHP = clamp(this.currentHP, 0, this.maxHP)
 
         if (this.currentHP == 0)
-            this.game.stop()
+            this.game.setStage(gameStates.GAME_OVER_TRANSITION)
     }
 
     private spawnProjectile()
