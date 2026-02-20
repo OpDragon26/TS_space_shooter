@@ -1,13 +1,13 @@
-import type SpaceShooter from "./SpaceShooter.ts";
-import RectangleHitbox from "./Engine/Hitboxes/RectangleHitbox.ts";
+import type SpaceShooter from "../SpaceShooter.ts";
+import RectangleHitbox from "../Engine/Hitboxes/RectangleHitbox.ts";
 import Meteor from "./Meteor.ts";
-import {Tags} from "./Helper/Tags.ts";
+import {Tags} from "../Helper/Tags.ts";
 import Projectile from "./Projectile.ts";
-import Timer from "./Engine/General/Timer.ts";
-import RGBA from "./Engine/General/RGBA.ts";
-import ProjectedRect from "./Helper/ProjectedRect.ts";
-import clamp from "./Engine/Utils/clamp.ts";
-import {gameStates} from "./Helper/gameStates.ts";
+import Timer from "../Engine/General/Timer.ts";
+import RGBA from "../Engine/General/RGBA.ts";
+import ProjectedRect from "../Helper/ProjectedRect.ts";
+import clamp from "../Engine/Utils/clamp.ts";
+import {gameStates} from "../Helper/gameStates.ts";
 
 export default class Player extends ProjectedRect
 {
@@ -21,7 +21,7 @@ export default class Player extends ProjectedRect
     readonly maxHP: number = 7
 
     private readonly IFrames: number = 120;
-    private IFrameCounter: number = 0;
+    public IFrameCounter: number = 0;
 
     private readonly projectileYOffset: number = -10;
     private readonly projectileXOffset: number = 20;
@@ -39,14 +39,18 @@ export default class Player extends ProjectedRect
 
     override update() {
         super.update()
-        this.tryMove(this.speed)
 
-        this.projectileTimer.tick()
-        this.handleInputs()
-        this.applyRotation()
+        if (this.game.gameState == gameStates.ONGOING)
+        {
+            this.tryMove(this.speed)
 
-        this.hitbox.update(this)
-        this.handleCollision()
+            this.projectileTimer.tick()
+            this.handleInputs()
+            this.applyRotation()
+
+            this.hitbox.update(this)
+            this.handleCollision()
+        }
     }
 
     private handleInputs()
@@ -82,7 +86,7 @@ export default class Player extends ProjectedRect
 
     private handleCollision()
     {
-        if (this.IFrameCounter < 0 && this.game.gameState == gameStates.ONGOING)
+        if (this.IFrameCounter < 0)
         {
             this.hidden = false
             this.game.entities.forEach((entity) => {

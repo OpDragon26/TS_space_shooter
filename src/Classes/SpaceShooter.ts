@@ -1,12 +1,12 @@
 ﻿import Game from "./Engine/General/Game.ts";
-import Meteor from "./Meteor.ts";
+import Meteor from "./Entities/Meteor.ts";
 import GridProjector from "./Engine/Utils/GridProjector.ts";
-import Player from "./Player.ts";
+import Player from "./Entities/Player.ts";
 import Random from "./Engine/Utils/Random.ts";
-import ScreenShake from "./ScreenShake.ts";
+import ScreenShake from "./Effects/ScreenShake.ts";
 import Counter from "./Engine/Utils/Counter.ts";
 import easeOut from "./Engine/Utils/easeOut.ts";
-import ScoreDisplay from "./ScoreDisplay.ts";
+import ScoreDisplay from "./UI/ScoreDisplay.ts";
 import {Particles} from "./Helper/Particles.ts";
 import Rectangle from "./Engine/Entities/Standard/Rectangle.ts";
 import RGBA from "./Engine/General/RGBA.ts";
@@ -20,7 +20,7 @@ import Font from "./Engine/Utils/Font.ts";
 import {fontStyle} from "./Engine/Utils/fontStyle.ts";
 import {fontFamily} from "./Engine/Utils/fontFamily.ts";
 import {textAlignment} from "./Engine/Utils/textAlignment.ts";
-import RestartButton from "./RestartButton.ts";
+import RestartButton from "./UI/RestartButton.ts";
 
 export default class SpaceShooter extends Game<SpaceShooter>
 {
@@ -46,6 +46,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
     private readonly fadeOutLength: number = 180;
     private readonly gameOverText: Text<SpaceShooter>;
     private readonly restartButton: RestartButton;
+    private readonly restartButtonWait: number = 300;
 
     constructor() {
         super();
@@ -106,7 +107,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.updateSkews()
         this.updateFade()
 
-        this.restartButton.hitbox.active = this.gameState == gameStates.GAME_OVER_TRANSITION && this.globalTime > 400
+        this.restartButton.hitbox.active = this.gameState == gameStates.GAME_OVER_TRANSITION && this.globalTime > this.restartButtonWait + 30
 
         this.spawnStars()
     }
@@ -114,6 +115,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
     public reset()
     {
         this.player.currentHP = this.player.maxHP
+        this.player.IFrameCounter = 0
         this.player.x = this.Width / 2
         this.player.y = this.Height
         this.entities.clear()
@@ -200,7 +202,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         {
             this.fading.Opacity = this.globalTime / this.fadeOutLength
             this.gameOverText.Opacity = this.globalTime / (this.fadeOutLength * 2)
-            this.restartButton.Opacity = (this.globalTime - 360) / (this.fadeOutLength * 0.5)
+            this.restartButton.Opacity = (this.globalTime - this.restartButtonWait) / (this.fadeOutLength * 0.5)
         }
         else
         {

@@ -64,13 +64,9 @@ export default class Game<GT extends Game<GT>> {
     private loop()
     {
         this.update();
-        const fps = 60;
-
         if (this.active)
         {
-            setTimeout(() => {
-                requestAnimationFrame(() => this.loop())
-            }, 900 / fps);
+            requestAnimationFrame(() => this.loop())
         }
     }
 

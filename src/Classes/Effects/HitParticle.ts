@@ -1,7 +1,7 @@
-import  SpaceShooter from "./SpaceShooter.ts";
-import RGBA from "./Engine/General/RGBA.ts";
-import CircleParticle from "./Engine/Particles/CircleParticle.ts";
-import clamp from "./Engine/Utils/clamp.ts";
+import  SpaceShooter from "../SpaceShooter.ts";
+import RGBA from "../Engine/General/RGBA.ts";
+import CircleParticle from "../Engine/Particles/CircleParticle.ts";
+import clamp from "../Engine/Utils/clamp.ts";
 
 export default class HitParticle extends CircleParticle<SpaceShooter>
 {
