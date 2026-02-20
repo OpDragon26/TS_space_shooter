@@ -85,4 +85,16 @@ export default class ParticleSystem<GT extends Game<GT>> {
         this.fixedValue.splice(i, 1)
         this.type.splice(i, 1)
     }
+
+    clear(): void
+    {
+        this.xPos = []
+        this.yPos = []
+        this.scale = []
+        this.rotation = []
+        this.creationTime = []
+        this.randomizer = []
+        this.fixedValue = []
+        this.type = []
+    }
 }

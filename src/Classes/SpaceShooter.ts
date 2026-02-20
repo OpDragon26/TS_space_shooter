@@ -119,6 +119,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.player.x = this.Width / 2
         this.player.y = this.Height
         this.entities.clear()
+        this.particles.clear()
         this.entities.add(this.player)
     }
 
@@ -240,8 +241,11 @@ export default class SpaceShooter extends Game<SpaceShooter>
         }
     }
 
-    spawnSmokeParticles(x: number, y: number, size: number)
+    spawnExplosionParticles(x: number, y: number, size: number)
     {
+        for (let i = 0; i < 3; i++) {
+            this.particles.spawn(Particles.SCATTER, x, y, 1, 0, size * 10 + i)
+        }
         for (let i = 0; i < 5; i++) {
             this.particles.spawn(Particles.SMOKE, x, y, 1, 0, size)
         }

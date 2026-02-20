@@ -41,7 +41,7 @@ export default class HitParticle extends CircleParticle<SpaceShooter>
         const lifeTime = this.lifeTime!
         const v = elapsedTime / lifeTime
 
-        return clamp(v, 0, 1)
+        return 1 - clamp(v, 0, 1)
     }
 
     override get doRemove(): boolean {
@@ -71,6 +71,6 @@ export default class HitParticle extends CircleParticle<SpaceShooter>
         const p = this.game!.projector
         const y = this.y!
 
-        return p.fractionalY(y)* (1 - this.ScaleMultiplier)
+        return p.fractionalY(y) * this.ScaleMultiplier
     }
 }

@@ -54,7 +54,7 @@ export default class Meteor extends ProjectedEntity
         {
             this.game.entities.delete(this);
 
-            this.game.spawnSmokeParticles(this.x, this.y, this.size)
+            this.game.spawnExplosionParticles(this.x, this.y, this.size)
         }
 
         super.update();

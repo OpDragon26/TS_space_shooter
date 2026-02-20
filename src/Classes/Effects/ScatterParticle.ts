@@ -1,0 +1,113 @@
+import RectParticle from "../Engine/Particles/RectParticle.ts";
+import  SpaceShooter from "../SpaceShooter.ts";
+import RGBA from "../Engine/General/RGBA.ts";
+import clamp from "../Engine/Utils/Math/clamp.ts";
+
+export default class ScatterParticle extends RectParticle<SpaceShooter>
+{
+    protected lifeTime: number | null = null;
+    protected speed: number | null = null;
+    protected size: number | null = null;
+    protected sector: number | null = null;
+
+    constructor() {
+        super(new RGBA(0xED, 0xAA, 0x1A), 2.5, 20);
+    }
+
+    override load(game: SpaceShooter, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number, fixedValue: number) {
+        super.load(game, x, y, scale, rotation, elapsedTime, randomizer, fixedValue);
+        this.lifeTime = this.LifeTime
+        this.speed = this.Speed
+        this.ySpeed = this.YSpeed
+        this.xSpeed = this.XSpeed
+
+        this.size = Math.floor(fixedValue / 10)
+        this.sector = fixedValue % 10
+        console.log(this.sector)
+    }
+
+    override get newRotation(): number
+    {
+        const randomizer = this.randomizer!
+        const sector = this.sector!
+
+        return (randomizer * 0.33 + sector * 0.33) * Math.PI * 2
+    }
+
+    protected get YSpeed(): number {
+        const speed = this.speed!;
+        const rotation = this.rotation!;
+        const p = this.game!.projector
+        const y = this.y!
+
+        return (speed * Math.sin(rotation - 0.5 * Math.PI) + 4 * p.fractionalY(y)) * this.InitJump;
+    }
+
+    protected get XSpeed(): number {
+        const speed = this.speed!;
+        const rotation = this.rotation!;
+
+        return speed * Math.cos(rotation - 0.5 * Math.PI) * this.InitJump;
+    }
+
+    protected get InitJump(): number {
+        const elapsedTime = this.elapsedTime!;
+        const size = this.size!;
+        return elapsedTime == 1 ? size * 3 : 1
+    }
+
+    protected get Speed(): number {
+        const randomizer = this.randomizer!
+        const size = this.size!;
+        return size + 2 + randomizer % 0.1 * 10
+    }
+
+    protected get LifeTime(): number {
+        const randomizer = this.randomizer!
+        return randomizer * 10 + 15
+    }
+
+    protected get ScaleMultiplier(): number {
+        const elapsedTime = this.elapsedTime!
+        const lifeTime = this.lifeTime!
+        const v = elapsedTime / lifeTime
+
+        return 1 - clamp(v, 0, 1)
+    }
+
+    override get displayX(): number {
+        const p = this.game!.projector
+        const x = this.x!
+        const y = this.y!
+
+        return p.plotX(x, y)
+    }
+
+    override get displayY(): number {
+        const p = this.game!.projector
+        const x = this.x!
+        const y = this.y!
+
+        return p.plotY(x, y)
+    }
+
+    override get newScale(): number {
+        const p = this.game!.projector
+        const y = this.y!
+        const size = this.size!
+
+        return p.fractionalY(y) * size
+    }
+
+    override get doRemove(): boolean {
+        const elapsedTime = this.elapsedTime!;
+        const lifeTime = this.lifeTime!;
+
+        return elapsedTime > lifeTime
+    }
+
+    //@ts-ignore
+    protected override Height(scale: number): number {
+        return super.Height(scale) * this.ScaleMultiplier;
+    }
+}
