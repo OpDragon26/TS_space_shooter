@@ -49,7 +49,7 @@ export default class Button<GT extends Game<GT>> implements IEntity<GT>
         const x = this.game.inputManager.mouseX
         const y = this.game.inputManager.mouseY
 
-        return this.hitbox.containsPoint(x, y)
+        return this.hitbox.containsPoint(x, y) && this.hitbox.active
     }
 
     public get Pressed(): boolean {

@@ -21,6 +21,6 @@ export default class Font
 
     getStr() : string
     {
-        return `${getStyleName(this.style)} ${this.size}px ${this.family}`
+        return `${getStyleName(this.style)} ${Math.round(this.size * this.scale) }px ${this.family}`
     }
 }

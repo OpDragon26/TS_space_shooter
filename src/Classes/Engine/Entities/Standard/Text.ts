@@ -1,6 +1,6 @@
 import type IEntity from "../IEntity.ts";
 import type Game from "../../General/Game.ts";
-import type Font from "../../Utils/Font.ts";
+import Font from "../../Utils/Font.ts";
 import type RGBA from "../../General/RGBA.ts";
 import {textAlignment} from "../../Utils/textAlignment.ts";
 import clamp from "../../Utils/clamp.ts";
@@ -10,7 +10,6 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
     constructor(text: string, font: Font, color: RGBA, x: number, y: number, width: number, height: number, scale: number, rotation: number, game: GT, alignment: string = textAlignment.START, tags: Set<number> = new Set<number>()) {
         this.text = text;
         this.font = font;
-        this.fontStr = font.getStr()
         this.color = color;
         this.colorStr = color.getStr()
         this.alignment = alignment
@@ -29,17 +28,11 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
 
     text: string;
     private font: Font;
-    private fontStr: string;
     private color: RGBA;
     private colorStr: string;
     alignment: string;
 
     opacity: number = 1
-
-    set Font(font: Font) {
-        this.font = font
-        this.fontStr = this.font.getStr()
-    }
 
     set Color(color: RGBA) {
         this.color = color;
@@ -75,7 +68,10 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
         const prevA = this.game.ctx.globalAlpha
         this.game.ctx.globalAlpha = this.opacity
 
-        this.game.ctx.font = this.fontStr
+        if (this.font.scale != this.scale)
+            this.font = new Font(this.font.size, this.font.family, this.scale, this.font.style)
+
+        this.game.ctx.font = this.font.getStr()
         this.game.ctx.fillStyle = this.colorStr
         this.game.ctx.textAlign = this.alignment as CanvasTextAlign
         if (this.width == 0)
@@ -92,7 +88,7 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
     }
     start(): void {}
     update(): void {
-        this.font.size = this.Height
+
     }
     tagged(tag: number): boolean {
         return this.tags.has(tag)

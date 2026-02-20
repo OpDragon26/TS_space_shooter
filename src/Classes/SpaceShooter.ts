@@ -67,13 +67,13 @@ export default class SpaceShooter extends Game<SpaceShooter>
             "GAME OVER",
             new Font(100, fontFamily.SANS_SERIF, 1, fontStyle.BOLD),
             new RGBA(0xFF, 0, 0x4F),
-            this.Width / 2, this.Height / 2,
+            this.Width / 2, this.Height / 2 - 50,
             0, 100, 1, 0,
             this,
             textAlignment.CENTER,
             new Set<number>([Tags.GAME_OVER_UI]))
 
-        this.restartButton = new RestartButton(this.Width / 2, this.Height / 2, this)
+        this.restartButton = new RestartButton(this.Width / 2, this.Height / 2 + 50, this)
     }
 
     override onStart()
@@ -105,6 +105,8 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.screenShake.update();
         this.updateSkews()
         this.updateFade()
+
+        this.restartButton.hitbox.active = this.gameState == gameStates.GAME_OVER_TRANSITION && this.globalTime > 400
 
         this.spawnStars()
     }
@@ -139,6 +141,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
 
     protected override stateSet(state: number) {
         this.ui.forEach(entity => entity.hidden = true)
+        this.restartButton.hitbox.active = false
 
         switch (state)
         {
@@ -197,7 +200,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         {
             this.fading.Opacity = this.globalTime / this.fadeOutLength
             this.gameOverText.Opacity = this.globalTime / (this.fadeOutLength * 2)
-            this.restartButton.Opacity = (this.globalTime - 60) / (this.fadeOutLength * 0.5)
+            this.restartButton.Opacity = (this.globalTime - 360) / (this.fadeOutLength * 0.5)
         }
         else
         {

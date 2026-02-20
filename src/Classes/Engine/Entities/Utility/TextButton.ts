@@ -2,6 +2,7 @@ import type Game from "../../General/Game.ts";
 import RectButton from "./RectButton.ts";
 import type RGBA from "../../General/RGBA.ts";
 import type Text from "../Standard/Text.ts";
+import flatten from "../../Utils/flatten.ts";
 type PressFn = () => void;
 
 export default class TextButton<GT extends Game<GT>> extends RectButton<GT>
@@ -36,10 +37,15 @@ export default class TextButton<GT extends Game<GT>> extends RectButton<GT>
 
     protected override drawPressed(pos: [x: number, y: number]) {
         super.drawPressed(pos);
-        if (this.pressedText == null)
-            this.normalText.drawAt(this.getTextPos(pos, this.normalText))
-        else
-            this.pressedText.drawAt(this.getTextPos(pos, this.pressedText))
+
+        const textToDraw: Text<GT> = this.pressedText == null ? this.normalText : this.pressedText
+
+        const s = textToDraw.scale
+        const f = 1 - this.PressedElapsedTime / this.pressTime
+
+        textToDraw.scale *= flatten(f, 0.9)
+        textToDraw.drawAt(this.getTextPos(pos, textToDraw))
+        textToDraw.scale = s
     }
 
     override set Opacity(opacity: number) {
