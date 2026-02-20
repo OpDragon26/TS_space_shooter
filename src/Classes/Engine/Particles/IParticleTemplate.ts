@@ -9,9 +9,10 @@ export default interface IParticleTemplate<GT extends Game<any>>
     rotation: number | null
     elapsedTime: number | null
     randomizer: number | null
+    fixed: number | null
     deleted: boolean | null
 
-    load(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): void
+    load(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number, fixedValue: number): void
     update(): void
     draw(): void
 }

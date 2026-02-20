@@ -54,8 +54,7 @@ export default class Meteor extends ProjectedEntity
         {
             this.game.entities.delete(this);
 
-            const pos = this.displayPos
-            this.game.spawnSmokeParticles(pos[0], pos[1])
+            this.game.spawnSmokeParticles(this.x, this.y, this.size)
         }
 
         super.update();

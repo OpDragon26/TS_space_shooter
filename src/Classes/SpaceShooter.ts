@@ -240,10 +240,10 @@ export default class SpaceShooter extends Game<SpaceShooter>
         }
     }
 
-    spawnSmokeParticles(x: number, y: number)
+    spawnSmokeParticles(x: number, y: number, size: number)
     {
         for (let i = 0; i < 5; i++) {
-            this.particles.spawn(Particles.SMOKE, x, y, 1, 0)
+            this.particles.spawn(Particles.SMOKE, x, y, 1, 0, size)
         }
     }
 }

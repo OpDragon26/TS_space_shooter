@@ -11,8 +11,8 @@ export default class HitParticle extends CircleParticle<SpaceShooter>
         super(new RGBA(0xFF, 0xFF, 0xFF, 0x99), 5);
     }
 
-    override load(game: SpaceShooter, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number) {
-        super.load(game, x, y, scale, rotation, elapsedTime, randomizer);
+    override load(game: SpaceShooter, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number, fixedValue: number) {
+        super.load(game, x, y, scale, rotation, elapsedTime, randomizer, fixedValue);
         this.ySpeed = this.YSpeed
         this.xSpeed = this.XSpeed
         this.lifeTime = this.LifeTime;

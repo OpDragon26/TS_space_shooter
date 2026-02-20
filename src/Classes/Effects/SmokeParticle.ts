@@ -1,6 +1,5 @@
 import HitParticle from "./HitParticle.ts";
 import clamp from "../Engine/Utils/clamp.ts";
-import flatten from "../Engine/Utils/flatten.ts";
 import easing from "../Engine/Utils/easing.ts";
 import RGBA from "../Engine/General/RGBA.ts";
 import type SpaceShooter from "../SpaceShooter.ts";
@@ -12,8 +11,8 @@ export default class SmokeParticle extends HitParticle
         this.Color = new RGBA(0x80, 0x80, 0x80)
     }
 
-    override load(game: SpaceShooter, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number) {
-        super.load(game, x, y, scale, rotation, elapsedTime, randomizer);
+    override load(game: SpaceShooter, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number, fixedValue: number) {
+        super.load(game, x, y, scale, rotation, elapsedTime, randomizer, fixedValue);
         this.radius = this.RandRadius
     }
 
@@ -29,7 +28,7 @@ export default class SmokeParticle extends HitParticle
         const lifeTime = this.lifeTime!
         const v = elapsedTime / lifeTime
 
-        return flatten(clamp(v, 0, 1), 0.5)
+        return clamp(v, 0, 1)
     }
 
     override get newOpacity() {
@@ -62,6 +61,8 @@ export default class SmokeParticle extends HitParticle
 
     protected get RandRadius(): number {
         const randomizer = this.randomizer!
-        return randomizer % 0.17 * 52 + 10
+        const fixed = this.fixed!
+
+        return (randomizer % 0.17 * 52 + 10) * fixed
     }
 }

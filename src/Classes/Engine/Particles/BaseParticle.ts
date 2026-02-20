@@ -10,6 +10,7 @@ export default class BaseParticle<GT extends Game<GT>> implements IParticleTempl
     rotation: number | null = null
     elapsedTime: number | null = null
     randomizer: number | null = null
+    fixed: number | null = null;
     deleted: boolean | null = null
 
     ySpeed: number = 0;
@@ -17,7 +18,7 @@ export default class BaseParticle<GT extends Game<GT>> implements IParticleTempl
     xAcceleration: number = 0;
     yAcceleration: number = 0;
 
-    load(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number): void {
+    load(game: GT, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number, fixedValue: number): void {
         this.game = game;
         this.x = x;
         this.y = y;
@@ -25,6 +26,7 @@ export default class BaseParticle<GT extends Game<GT>> implements IParticleTempl
         this.rotation = rotation;
         this.elapsedTime = elapsedTime;
         this.randomizer = randomizer;
+        this.fixed = fixedValue
     }
 
     update() {
