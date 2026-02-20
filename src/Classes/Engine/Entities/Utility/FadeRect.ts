@@ -1,4 +1,4 @@
-import Rectangle from "./Rectangle.ts";
+import Rectangle from "../Standard/Rectangle.ts";
 import type Game from "../../General/Game.ts";
 import type RGBA from "../../General/RGBA.ts";
 

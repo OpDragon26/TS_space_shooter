@@ -34,6 +34,11 @@ export default class TextureParticle<GT extends Game<GT>> extends BaseParticle<G
 
         rotateCanvas(game.ctx, this.newRotation, dx, dy)
 
+        const prevA = game.ctx.globalAlpha
+        game.ctx.globalAlpha = this.newOpacity
+
         game.ctx.drawImage(this.texture, dx - w / 2, dy - h / 2, w, h);
+
+        game.ctx.globalAlpha = prevA
     }
 }

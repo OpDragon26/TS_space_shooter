@@ -14,7 +14,7 @@ import FillBar from "./Engine/Entities/Utility/FillBar.ts";
 import type IEntity from "./Engine/Entities/IEntity.ts";
 import {Tags} from "./Helper/Tags.ts";
 import {gameStates} from "./Helper/gameStates.ts";
-import FadeRect from "./Engine/Entities/Standard/FadeRect.ts";
+import FadeRect from "./Engine/Entities/Utility/FadeRect.ts";
 import Text from "./Engine/Entities/Standard/Text.ts";
 import Font from "./Engine/Utils/Font.ts";
 import {fontStyle} from "./Engine/Utils/fontStyle.ts";
@@ -237,6 +237,13 @@ export default class SpaceShooter extends Game<SpaceShooter>
     {
         for (let i = 0; i < 5; i++) {
             this.particles.spawn(Particles.HIT, x, y, 1, 0)
+        }
+    }
+
+    spawnSmokeParticles(x: number, y: number)
+    {
+        for (let i = 0; i < 5; i++) {
+            this.particles.spawn(Particles.SMOKE, x, y, 1, 0)
         }
     }
 }

@@ -60,6 +60,10 @@ export default class BaseParticle<GT extends Game<GT>> implements IParticleTempl
         return this.scale!
     }
 
+    get newOpacity(): number {
+        return 1
+    }
+
     get doRemove(): boolean {
         const game: GT = this.game!
         const x: number = this.x!

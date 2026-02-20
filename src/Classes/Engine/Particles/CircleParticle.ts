@@ -31,6 +31,9 @@ export default class CircleParticle<GT extends Game<GT>> extends BaseParticle<GT
 
         rotateCanvas(game.ctx, this.newRotation, dx, dy)
 
+        const prevA = game.ctx.globalAlpha
+        game.ctx.globalAlpha = this.newOpacity
+
         game.ctx.beginPath();
         game.ctx.arc(dx, dy, r, 0, 2 * Math.PI);
         game.ctx.fillStyle = this.colorStr;
@@ -38,5 +41,16 @@ export default class CircleParticle<GT extends Game<GT>> extends BaseParticle<GT
         game.ctx.lineWidth = 0;
         game.ctx.strokeStyle = this.colorStr;
         game.ctx.stroke()
+
+        game.ctx.globalAlpha = prevA
+    }
+
+    get Color() : RGBA {
+        return this.color;
+    }
+
+    set Color(color: RGBA) {
+        this.color = color;
+        this.colorStr = color.getStr();
     }
 }

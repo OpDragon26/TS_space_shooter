@@ -51,7 +51,12 @@ export default class Meteor extends ProjectedEntity
             this.yVelocity = 0
 
         if (this.game.outOfBounds(this, 200, 200) || this.destroyed)
+        {
             this.game.entities.delete(this);
+
+            const pos = this.displayPos
+            this.game.spawnSmokeParticles(pos[0], pos[1])
+        }
 
         super.update();
 
