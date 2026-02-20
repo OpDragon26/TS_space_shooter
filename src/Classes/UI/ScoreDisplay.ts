@@ -1,9 +1,9 @@
 import Text from "../Engine/Entities/Standard/Text.ts";
 import type SpaceShooter from "../SpaceShooter.ts";
-import Font from "../Engine/Utils/Font.ts";
+import Font from "../Engine/Utils/TextStyling/Font.ts";
 import RGBA from "../Engine/General/RGBA.ts";
-import {textAlignment} from "../Engine/Utils/textAlignment.ts";
-import {fontStyle} from "../Engine/Utils/fontStyle.ts";
+import {textAlignment} from "../Engine/Utils/TextStyling/textAlignment.ts";
+import {fontStyle} from "../Engine/Utils/TextStyling/fontStyle.ts";
 import {Tags} from "../Helper/Tags.ts";
 
 export default class ScoreDisplay extends Text<SpaceShooter>

@@ -2,10 +2,10 @@
 import type Game from "../../General/Game.ts";
 import type RGBA from "../../General/RGBA.ts";
 import type Animation from "../../Animations/Animation.ts";
-import {ColorTreatment} from "../../Utils/ColorTreatment.ts";
+import {ColorTreatment} from "../../Utils/Display/ColorTreatment.ts";
 import Frame from "../../Animations/Frame.ts";
 import {FrameType} from "../../Animations/FrameType.ts";
-import clamp from "../../Utils/clamp.ts";
+import clamp from "../../Utils/Math/clamp.ts";
 
 export default class Rectangle<GT extends Game<GT>> implements IEntity<GT>
 {

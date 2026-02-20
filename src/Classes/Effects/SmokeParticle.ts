@@ -1,8 +1,9 @@
 import HitParticle from "./HitParticle.ts";
-import clamp from "../Engine/Utils/clamp.ts";
-import easing from "../Engine/Utils/easing.ts";
+import clamp from "../Engine/Utils/Math/clamp.ts";
+import easing from "../Engine/Utils/Math/easeIn.ts";
 import RGBA from "../Engine/General/RGBA.ts";
 import type SpaceShooter from "../SpaceShooter.ts";
+import flatten from "../Engine/Utils/Math/flatten.ts";
 
 export default class SmokeParticle extends HitParticle
 {
@@ -19,7 +20,7 @@ export default class SmokeParticle extends HitParticle
     protected override get LifeTime()
     {
         const randomizer = this.randomizer!
-        return randomizer * 15 + 15
+        return randomizer * 10 + 10
     }
 
     protected override get ScaleMultiplier()
@@ -36,7 +37,7 @@ export default class SmokeParticle extends HitParticle
         const lifeTime = this.lifeTime!
         const v = elapsedTime / lifeTime
 
-        return easing(clamp(v, 0, 1))
+        return 1 - easing(clamp(v, 0, 1))
     }
 
     protected override get YSpeed(): number {
@@ -44,25 +45,27 @@ export default class SmokeParticle extends HitParticle
         const y = this.y!
         const randomizer = this.randomizer!
 
-        return randomizer + 3.5 * p.fractionalY(y)
+        const s = Math.sign(randomizer - 0.5)
+        return (randomizer * 2 + 1) * s + p.fractionalY(y)
     }
 
     protected override get XSpeed(): number {
         const randomizer = this.randomizer!
-        return randomizer % 0.1 * 15 - 1
+        const s = Math.sign(randomizer % 0.2 - 0.1)
+        return (randomizer % 0.1 * 20 + 2) * s
     }
 
     override get newScale(): number {
         const p = this.game!.projector
         const y = this.y!
 
-        return p.fractionalY(y) * (1 - this.ScaleMultiplier)
+        return p.fractionalY(y) * flatten(1 - this.ScaleMultiplier, 0.3)
     }
 
     protected get RandRadius(): number {
         const randomizer = this.randomizer!
         const fixed = this.fixed!
 
-        return (randomizer % 0.17 * 52 + 10) * fixed
+        return (randomizer % 0.17 * 40 + 7) * fixed
     }
 }

@@ -2,7 +2,7 @@ import Animation from "../Engine/Animations/Animation.ts";
 import Frame from "../Engine/Animations/Frame.ts";
 import RGBA from "../Engine/General/RGBA.ts";
 import {FrameType} from "../Engine/Animations/FrameType.ts";
-import {ColorTreatment} from "../Engine/Utils/ColorTreatment.ts";
+import {ColorTreatment} from "../Engine/Utils/Display/ColorTreatment.ts";
 
 export const Animations =
     {

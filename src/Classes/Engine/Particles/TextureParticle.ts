@@ -1,6 +1,6 @@
 import type Game from "../General/Game.ts";
 import BaseParticle from "./BaseParticle.ts";
-import rotateCanvas from "../Utils/rotateCanvas.ts";
+import rotateCanvas from "../Utils/Display/rotateCanvas.ts";
 
 export default class TextureParticle<GT extends Game<GT>> extends BaseParticle<GT>
 {

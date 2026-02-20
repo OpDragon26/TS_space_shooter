@@ -2,10 +2,10 @@ import TextButton from "../Engine/Entities/Utility/TextButton.ts";
 import type SpaceShooter from "../SpaceShooter.ts";
 import RGBA from "../Engine/General/RGBA.ts";
 import Text from "../Engine/Entities/Standard/Text.ts";
-import Font from "../Engine/Utils/Font.ts";
-import {fontFamily} from "../Engine/Utils/fontFamily.ts";
-import {fontStyle} from "../Engine/Utils/fontStyle.ts";
-import {textAlignment} from "../Engine/Utils/textAlignment.ts";
+import Font from "../Engine/Utils/TextStyling/Font.ts";
+import {fontFamily} from "../Engine/Utils/TextStyling/fontFamily.ts";
+import {fontStyle} from "../Engine/Utils/TextStyling/fontStyle.ts";
+import {textAlignment} from "../Engine/Utils/TextStyling/textAlignment.ts";
 import {gameStates} from "../Helper/gameStates.ts";
 import {Tags} from "../Helper/Tags.ts";
 

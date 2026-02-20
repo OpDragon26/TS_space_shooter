@@ -1,6 +1,7 @@
 ﻿import type IEntity from "../Entities/IEntity.ts";
 import InputManager from "./InputManager.ts";
 import ParticleSystem from "../Particles/ParticleSystem.ts";
+import Stopwatch from "../Utils/Timing/Stopwatch.ts";
 
 export default class Game<GT extends Game<GT>> {
     public ctx: CanvasRenderingContext2D;
@@ -14,6 +15,12 @@ export default class Game<GT extends Game<GT>> {
     public inputManager: InputManager;
     public globalTime: number = 0;
     public gameState: number = 0;
+
+    protected readonly frameTimer: Stopwatch = new Stopwatch();
+    protected readonly FPS: number = 60;
+    protected get FrameLength(): number {
+        return 1000 / this.FPS
+    }
 
     public get Width()
     {
@@ -63,10 +70,13 @@ export default class Game<GT extends Game<GT>> {
 
     private loop()
     {
-        this.update();
         if (this.active)
         {
-            requestAnimationFrame(() => this.loop())
+            this.frameTimer.setStart()
+            this.update();
+            const waitTime = this.FrameLength - this.frameTimer.elapsed - 0.01;
+
+            setTimeout(() => this.loop(), waitTime)
         }
     }
 

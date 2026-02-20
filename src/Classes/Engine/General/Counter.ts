@@ -1,4 +1,4 @@
-export default class Timer {
+export default class Counter {
     private readonly startTime: number
     private value: number;
 

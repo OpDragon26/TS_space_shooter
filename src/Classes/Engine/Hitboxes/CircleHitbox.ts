@@ -2,7 +2,7 @@
 import CollisionTester from "./CollisionTester.ts";
 import type Game from "../General/Game.ts";
 import type IEntity from "../Entities/IEntity.ts";
-import random from "../Utils/Random.ts";
+import random from "../Utils/Math/Random.ts";
 
 export default class CircleHitbox implements IHitbox
 {

@@ -1,9 +1,9 @@
 import type IEntity from "../IEntity.ts";
 import type Game from "../../General/Game.ts";
-import Font from "../../Utils/Font.ts";
+import Font from "../../Utils/TextStyling/Font.ts";
 import type RGBA from "../../General/RGBA.ts";
-import {textAlignment} from "../../Utils/textAlignment.ts";
-import clamp from "../../Utils/clamp.ts";
+import {textAlignment} from "../../Utils/TextStyling/textAlignment.ts";
+import clamp from "../../Utils/Math/clamp.ts";
 
 export default class Text<GT extends Game<GT>> implements IEntity<GT>
 {

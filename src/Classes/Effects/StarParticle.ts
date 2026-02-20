@@ -1,8 +1,8 @@
 ﻿import RectParticle from "../Engine/Particles/RectParticle.ts";
 import  SpaceShooter from "../SpaceShooter.ts";
 import RGBA from "../Engine/General/RGBA.ts";
-import flatten from "../Engine/Utils/flatten.ts";
-import type GridProjector from "../Engine/Utils/GridProjector.ts";
+import flatten from "../Engine/Utils/Math/flatten.ts";
+import type GridProjector from "../Engine/Utils/Display/GridProjector.ts";
 
 export default class StarParticle extends RectParticle<SpaceShooter>
 {

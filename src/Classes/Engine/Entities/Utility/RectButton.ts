@@ -1,7 +1,7 @@
 import type Game from "../../General/Game.ts";
 import Button from "./Button.ts";
 import type RGBA from "../../General/RGBA.ts";
-import flatten from "../../Utils/flatten.ts";
+import flatten from "../../Utils/Math/flatten.ts";
 type PressFn = () => void;
 
 export default class RectButton<GT extends Game<GT>> extends Button<GT>

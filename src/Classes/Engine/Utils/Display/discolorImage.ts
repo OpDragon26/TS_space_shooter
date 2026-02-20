@@ -1,4 +1,4 @@
-import type RGBA from "../General/RGBA.ts";
+import type RGBA from "../../General/RGBA.ts";
 
 export default function (image: HTMLImageElement, color: RGBA)
 {

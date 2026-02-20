@@ -1,4 +1,4 @@
-import Random from "../Utils/Random.ts";
+import Random from "../Utils/Math/Random.ts";
 
 export default class TextureSet
 {

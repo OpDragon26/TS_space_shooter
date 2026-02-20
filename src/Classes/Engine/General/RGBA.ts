@@ -1,5 +1,5 @@
 import hexByte from "./hexByte.ts";
-import clamp from "../Utils/clamp.ts";
+import clamp from "../Utils/Math/clamp.ts";
 
 export default class RGBA
 {

@@ -1,7 +1,7 @@
 import BaseParticle from "./BaseParticle.ts";
 import type Game from "../General/Game.ts";
 import type RGBA from "../General/RGBA.ts";
-import rotateCanvas from "../Utils/rotateCanvas.ts";
+import rotateCanvas from "../Utils/Display/rotateCanvas.ts";
 
 export default class CircleParticle<GT extends Game<GT>> extends BaseParticle<GT>
 {

@@ -3,8 +3,8 @@ import type IEntity from "../IEntity.ts";
 import Frame from "../../Animations/Frame.ts";
 import type Animation from "../../Animations/Animation.ts";
 import {FrameType} from "../../Animations/FrameType.ts";
-import discolorImage from "../../Utils/discolorImage.ts";
-import clamp from "../../Utils/clamp.ts";
+import discolorImage from "../../Utils/Display/discolorImage.ts";
+import clamp from "../../Utils/Math/clamp.ts";
 
 export default class GameEntity<GT extends Game<GT>> implements IEntity<GT> {
 

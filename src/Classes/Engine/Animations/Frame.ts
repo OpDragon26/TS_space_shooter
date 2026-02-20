@@ -1,7 +1,7 @@
 import type IFrame from "./IFrame.ts";
 import {FrameType} from "./FrameType.ts";
 import RGBA from "../General/RGBA.ts";
-import {ColorTreatment} from "../Utils/ColorTreatment.ts";
+import {ColorTreatment} from "../Utils/Display/ColorTreatment.ts";
 import type IFrameTransform from "./IFrameTransform.ts";
 import type IFrameTransformComplete from "./IFrameTransformComplete.ts";
 

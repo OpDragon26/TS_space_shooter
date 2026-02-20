@@ -1,7 +1,7 @@
 import  SpaceShooter from "../SpaceShooter.ts";
 import RGBA from "../Engine/General/RGBA.ts";
 import CircleParticle from "../Engine/Particles/CircleParticle.ts";
-import clamp from "../Engine/Utils/clamp.ts";
+import clamp from "../Engine/Utils/Math/clamp.ts";
 
 export default class HitParticle extends CircleParticle<SpaceShooter>
 {
@@ -20,7 +20,7 @@ export default class HitParticle extends CircleParticle<SpaceShooter>
 
     protected get LifeTime(): number {
         const randomizer = this.randomizer!
-        return randomizer * 10 + 25
+        return randomizer * 5 + 10
     }
 
     protected get YSpeed(): number {

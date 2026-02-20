@@ -1,4 +1,4 @@
-﻿import Easing from "./easing.ts";
+﻿import Easing from "../Math/easeIn.ts";
 
 export default class GridProjector {
     innerWidth: number; // width of the inner canvas

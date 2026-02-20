@@ -3,10 +3,10 @@ import RectangleHitbox from "../Engine/Hitboxes/RectangleHitbox.ts";
 import Meteor from "./Meteor.ts";
 import {Tags} from "../Helper/Tags.ts";
 import Projectile from "./Projectile.ts";
-import Timer from "../Engine/General/Timer.ts";
+import Counter from "../Engine/General/Counter.ts";
 import RGBA from "../Engine/General/RGBA.ts";
 import ProjectedRect from "../Helper/ProjectedRect.ts";
-import clamp from "../Engine/Utils/clamp.ts";
+import clamp from "../Engine/Utils/Math/clamp.ts";
 import {gameStates} from "../Helper/gameStates.ts";
 
 export default class Player extends ProjectedRect
@@ -26,7 +26,7 @@ export default class Player extends ProjectedRect
     private readonly projectileYOffset: number = -10;
     private readonly projectileXOffset: number = 20;
     private projectileXOffsetSign: number = 1;
-    private readonly projectileTimer: Timer = new Timer(20);
+    private readonly projectileTimer: Counter = new Counter(20);
 
     constructor(x: number, y: number, game: SpaceShooter) {
         super(x, y, 50, 20, 1, 0, game, new RGBA(0x44, 0x42, 0x82));

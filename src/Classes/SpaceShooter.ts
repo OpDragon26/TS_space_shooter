@@ -1,11 +1,11 @@
 ﻿import Game from "./Engine/General/Game.ts";
 import Meteor from "./Entities/Meteor.ts";
-import GridProjector from "./Engine/Utils/GridProjector.ts";
+import GridProjector from "./Engine/Utils/Display/GridProjector.ts";
 import Player from "./Entities/Player.ts";
-import Random from "./Engine/Utils/Random.ts";
+import Random from "./Engine/Utils/Math/Random.ts";
 import ScreenShake from "./Effects/ScreenShake.ts";
-import Counter from "./Engine/Utils/Counter.ts";
-import easeOut from "./Engine/Utils/easeOut.ts";
+import Counter from "./Engine/Utils/Timing/Counter.ts";
+import easeOut from "./Engine/Utils/Math/easeOut.ts";
 import ScoreDisplay from "./UI/ScoreDisplay.ts";
 import {Particles} from "./Helper/Particles.ts";
 import Rectangle from "./Engine/Entities/Standard/Rectangle.ts";
@@ -16,10 +16,10 @@ import {Tags} from "./Helper/Tags.ts";
 import {gameStates} from "./Helper/gameStates.ts";
 import FadeRect from "./Engine/Entities/Utility/FadeRect.ts";
 import Text from "./Engine/Entities/Standard/Text.ts";
-import Font from "./Engine/Utils/Font.ts";
-import {fontStyle} from "./Engine/Utils/fontStyle.ts";
-import {fontFamily} from "./Engine/Utils/fontFamily.ts";
-import {textAlignment} from "./Engine/Utils/textAlignment.ts";
+import Font from "./Engine/Utils/TextStyling/Font.ts";
+import {fontStyle} from "./Engine/Utils/TextStyling/fontStyle.ts";
+import {fontFamily} from "./Engine/Utils/TextStyling/fontFamily.ts";
+import {textAlignment} from "./Engine/Utils/TextStyling/textAlignment.ts";
 import RestartButton from "./UI/RestartButton.ts";
 
 export default class SpaceShooter extends Game<SpaceShooter>

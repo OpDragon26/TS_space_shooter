@@ -2,7 +2,7 @@
 import CircleHitbox from "../Engine/Hitboxes/CircleHitbox.ts";
 import {Tags} from "../Helper/Tags.ts";
 import {Animations} from "../Helper/Animations.ts";
-import random from "../Engine/Utils/Random.ts";
+import random from "../Engine/Utils/Math/Random.ts";
 import ProjectedEntity from "../Helper/ProjectedEntity.ts";
 import {Textures} from "../Helper/Textures.ts";
 

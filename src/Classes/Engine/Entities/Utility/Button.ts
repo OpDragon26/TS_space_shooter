@@ -1,9 +1,9 @@
 import type Game from "../../General/Game.ts";
 import type IEntity from "../IEntity.ts";
-import clamp from "../../Utils/clamp.ts";
+import clamp from "../../Utils/Math/clamp.ts";
 import type IHitbox from "../../Hitboxes/IHitbox.ts";
 import RectangleHitbox from "../../Hitboxes/RectangleHitbox.ts";
-import rotateCanvas from "../../Utils/rotateCanvas.ts";
+import rotateCanvas from "../../Utils/Display/rotateCanvas.ts";
 type PressFn = () => void;
 
 export default class Button<GT extends Game<GT>> implements IEntity<GT>
