@@ -4,12 +4,12 @@ import Meteor from "./Meteor.ts";
 import {Tags} from "../Helper/Tags.ts";
 import Projectile from "./Projectile.ts";
 import Counter from "../Engine/General/Counter.ts";
-import RGBA from "../Engine/General/RGBA.ts";
-import ProjectedRect from "../Helper/ProjectedRect.ts";
 import clamp from "../Engine/Utils/Math/clamp.ts";
 import {gameStates} from "../Helper/gameStates.ts";
+import ProjectedEntity from "../Helper/ProjectedEntity.ts";
+import {Textures} from "../Helper/Textures.ts";
 
-export default class Player extends ProjectedRect
+export default class Player extends ProjectedEntity
 {
     private readonly acceleration: number = 0.40625;
     private readonly maxSpeed: number = 6.5;
@@ -18,7 +18,7 @@ export default class Player extends ProjectedRect
     public readonly hitbox: RectangleHitbox;
 
     currentHP: number;
-    readonly maxHP: number = 1
+    readonly maxHP: number = 7
 
     private readonly IFrames: number = 120;
     public IFrameCounter: number = 0;
@@ -28,11 +28,16 @@ export default class Player extends ProjectedRect
     private projectileXOffsetSign: number = 1;
     private readonly projectileTimer: Counter = new Counter(20);
 
+    private readonly reScale: number = 0.5;
+
     constructor(x: number, y: number, game: SpaceShooter) {
-        super(x, y, 50, 20, 1, 0, game, new RGBA(0x44, 0x42, 0x82));
+        super(x, y, 1, 0, game, Textures.PLAYER_SHIP.Texture);
         this.layer = 1
 
-        this.hitbox = new RectangleHitbox(x, y, 50, 20)
+        this.width *= this.reScale
+        this.height *= this.reScale
+
+        this.hitbox = new RectangleHitbox(x, y, this.width - 40 * this.reScale, this.height)
 
         this.currentHP = this.maxHP;
     }
@@ -118,7 +123,9 @@ export default class Player extends ProjectedRect
         this.currentHP = clamp(this.currentHP, 0, this.maxHP)
 
         if (this.currentHP == 0)
+        {
             this.game.setStage(gameStates.GAME_OVER_TRANSITION)
+        }
     }
 
     private spawnProjectile()

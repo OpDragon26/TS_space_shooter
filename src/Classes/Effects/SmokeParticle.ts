@@ -29,7 +29,10 @@ export default class SmokeParticle extends HitParticle
     protected override get LifeTime()
     {
         const randomizer = this.randomizer!
-        return randomizer * 10 + 12
+        const size = this.fixed!;
+        const lt = randomizer * 10 + 15
+
+        return size == 4 ? lt * 10 : lt
     }
 
     protected override get ScaleMultiplier()
@@ -53,9 +56,11 @@ export default class SmokeParticle extends HitParticle
         const p = this.game!.projector
         const y = this.y!
         const randomizer = this.randomizer!
+        const fixed = this.fixed!;
 
         const s = Math.sign(randomizer - 0.5)
-        return (randomizer + 0.5) * s + p.fractionalY(y)
+        const ns = (randomizer + 0.5) * s
+        return fixed == 4 ? ns : ns + p.fractionalY(y)
     }
 
     protected override get XSpeed(): number {

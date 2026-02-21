@@ -56,6 +56,8 @@ export default class SpaceShooter extends Game<SpaceShooter>
     private readonly hsDisplay: FinalScoreDisplay;
     private readonly newHSSplash: NewHighScoreSplash;
 
+    private readonly playerExplosionPoints = [1, 60, 120]
+
     constructor() {
         super();
 
@@ -120,6 +122,11 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.updateSkews()
         this.updateFade()
 
+        if (this.gameState == gameStates.GAME_OVER_TRANSITION)
+        {
+            this.explodePlayer()
+        }
+
         this.restartButton.hitbox.active = this.gameState == gameStates.GAME_OVER_TRANSITION && this.globalTime > this.restartButtonWait + 30
 
         this.spawnStars()
@@ -137,6 +144,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.backgroundParticles.clear()
         this.spawnInitialStars()
         this.entities.add(this.player)
+        this.player.hidden = false
     }
 
     private spawnMeteor()
@@ -172,6 +180,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
             case gameStates.GAME_OVER_TRANSITION:
                 this.setAllWithTag(Tags.RUN_UI, this.ui, false)
                 this.setAllWithTag(Tags.GAME_OVER_UI, this.ui, false)
+                this.player.hidden = true
 
                 this.highScore.add(this.score)
                 this.hsDisplay.score = this.score
@@ -273,6 +282,15 @@ export default class SpaceShooter extends Game<SpaceShooter>
         }
         for (let i = 0; i < 5; i++) {
             this.particles.spawn(Particles.SMOKE, x, y, 1, 0, size)
+        }
+    }
+
+    explodePlayer()
+    {
+        if (this.playerExplosionPoints.includes(this.globalTime))
+        {
+            this.screenShake.start()
+            this.spawnExplosionParticles(this.player.x + Random(-40, 40), this.player.y + Random(-10, 10) - 40, 4)
         }
     }
 }

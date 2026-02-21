@@ -50,7 +50,8 @@ export default class ScatterParticle extends RectParticle<SpaceShooter>
         if (elapsedTime == 1)
             return size * 3 * dir
 
-        return speed * dir + 4 * p.fractionalY(y);
+        const ns = speed * dir
+        return size == 4 ? ns : ns + 4 * p.fractionalY(y);
     }
 
     protected get XSpeed(): number {
@@ -69,12 +70,16 @@ export default class ScatterParticle extends RectParticle<SpaceShooter>
     protected get Speed(): number {
         const randomizer = this.randomizer!
         const size = this.size!;
-        return size + 2.5 + randomizer % 0.1 * 5
+        const s = size + 2.5 + randomizer % 0.1 * 5
+        return size == 4 ? s * 0.75 : s
     }
 
     protected get LifeTime(): number {
         const randomizer = this.randomizer!
-        return randomizer * 10 + 15
+        const size = this.size!;
+        const lt = randomizer * 10 + 15
+
+        return size == 4 ? lt * 1.5 : lt
     }
 
     protected get ScaleMultiplier(): number {
