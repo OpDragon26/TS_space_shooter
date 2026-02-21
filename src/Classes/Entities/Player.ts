@@ -145,7 +145,7 @@ export default class Player extends ProjectedEntity
     {
         if (this.currentHP < 3 || (meteor.size == 3 && this.currentHP < 5))
         {
-            if (Math.random() > 0.25 && this.injuryPoint == 0)
+            if (Math.random() > 0.4 && this.injuryPoint == 0)
             {
                 this.injuryPoint = (meteor.x - this.x) / 2
             }
