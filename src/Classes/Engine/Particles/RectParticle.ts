@@ -26,6 +26,11 @@ export default class RectParticle<GT extends Game<GT>> extends BaseParticle<GT> 
         this.colorStr = color.getStr();
     }
 
+    protected get ColorStr(): string
+    {
+        return this.colorStr
+    }
+
     protected Width(scale: number) {
         return this.width * scale;
     }

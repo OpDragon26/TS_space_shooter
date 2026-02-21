@@ -11,7 +11,9 @@ export default class ScatterParticle extends RectParticle<SpaceShooter>
     protected sector: number | null = null;
 
     constructor() {
-        super(new RGBA(0xED, 0xAA, 0x1A), 2.5, 20);
+        super(new RGBA(0xED, 0xAA, 0x1A), 1, 10);
+        this.yAcceleration = 0.15
+        this.xAcceleration = 0.15
     }
 
     override load(game: SpaceShooter, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number, fixedValue: number) {
@@ -23,7 +25,9 @@ export default class ScatterParticle extends RectParticle<SpaceShooter>
 
         this.size = Math.floor(fixedValue / 10)
         this.sector = fixedValue % 10
-        console.log(this.sector)
+
+        this.yAcceleration = -Math.abs(this.yAcceleration) * Math.sign(this.ySpeed)
+        this.xAcceleration = -Math.abs(this.xAcceleration) * Math.sign(this.xSpeed)
     }
 
     override get newRotation(): number
@@ -39,27 +43,33 @@ export default class ScatterParticle extends RectParticle<SpaceShooter>
         const rotation = this.rotation!;
         const p = this.game!.projector
         const y = this.y!
+        const elapsedTime = this.elapsedTime!;
+        const size = this.size!;
+        const dir = Math.sin(rotation - 0.5 * Math.PI)
 
-        return (speed * Math.sin(rotation - 0.5 * Math.PI) + 4 * p.fractionalY(y)) * this.InitJump;
+        if (elapsedTime == 1)
+            return size * 3 * dir
+
+        return speed * dir + 4 * p.fractionalY(y);
     }
 
     protected get XSpeed(): number {
         const speed = this.speed!;
         const rotation = this.rotation!;
-
-        return speed * Math.cos(rotation - 0.5 * Math.PI) * this.InitJump;
-    }
-
-    protected get InitJump(): number {
         const elapsedTime = this.elapsedTime!;
         const size = this.size!;
-        return elapsedTime == 1 ? size * 3 : 1
+        const dir = Math.cos(rotation - 0.5 * Math.PI)
+
+        if (elapsedTime == 1)
+            return size * 3 * dir
+
+        return speed * dir;
     }
 
     protected get Speed(): number {
         const randomizer = this.randomizer!
         const size = this.size!;
-        return size + 2 + randomizer % 0.1 * 10
+        return size + 2.5 + randomizer % 0.1 * 5
     }
 
     protected get LifeTime(): number {
