@@ -57,7 +57,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
     private readonly newHSSplash: NewHighScoreSplash;
 
     private readonly playerExplosionPoints = [1, 60, 120, 180]
-    private readonly playerExplosionIntesnity = [30, 25, 25, 15]
+    private readonly playerExplosionIntensity = [30, 25, 25, 15]
 
     constructor() {
         super();
@@ -299,7 +299,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         if (this.playerExplosionPoints.includes(this.globalTime))
         {
             const i = this.playerExplosionPoints.indexOf(this.globalTime)
-            this.screenShake.start(this.playerExplosionIntesnity[i])
+            this.screenShake.start(this.playerExplosionIntensity[i])
             this.spawnExplosionParticles(this.player.x + Random(-40, 40), this.player.y + Random(-10, 10) - 40, 4)
         }
     }
