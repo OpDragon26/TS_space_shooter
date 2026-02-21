@@ -53,7 +53,7 @@ export default class RectParticle<GT extends Game<GT>> extends BaseParticle<GT> 
         const prevA = game.ctx.globalAlpha
         game.ctx.globalAlpha = this.newOpacity
 
-        game.ctx.fillStyle = this.colorStr;
+        game.ctx.fillStyle = this.ColorStr;
         game.ctx.fillRect(dx - w / 2, dy - h / 2, w, h);
 
         game.ctx.globalAlpha = prevA

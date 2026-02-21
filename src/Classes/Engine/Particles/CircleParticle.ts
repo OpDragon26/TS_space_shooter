@@ -36,10 +36,10 @@ export default class CircleParticle<GT extends Game<GT>> extends BaseParticle<GT
 
         game.ctx.beginPath();
         game.ctx.arc(dx, dy, r, 0, 2 * Math.PI);
-        game.ctx.fillStyle = this.colorStr;
+        game.ctx.fillStyle = this.ColorStr;
         game.ctx.fill()
         game.ctx.lineWidth = 0;
-        game.ctx.strokeStyle = this.colorStr;
+        game.ctx.strokeStyle = this.ColorStr;
         game.ctx.stroke()
 
         game.ctx.globalAlpha = prevA
@@ -52,5 +52,10 @@ export default class CircleParticle<GT extends Game<GT>> extends BaseParticle<GT
     set Color(color: RGBA) {
         this.color = color;
         this.colorStr = color.getStr();
+    }
+
+    protected get ColorStr()
+    {
+        return this.colorStr;
     }
 }

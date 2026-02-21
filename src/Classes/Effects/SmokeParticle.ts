@@ -7,6 +7,8 @@ import flatten from "../Engine/Utils/Math/flatten.ts";
 
 export default class SmokeParticle extends HitParticle
 {
+    colors = ["#80808090","#A0A0A090","#C0C0C090"]
+
     constructor() {
         super();
         this.Color = new RGBA(0x80, 0x80, 0x80, 0x90)
@@ -15,6 +17,13 @@ export default class SmokeParticle extends HitParticle
     override load(game: SpaceShooter, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number, fixedValue: number) {
         super.load(game, x, y, scale, rotation, elapsedTime, randomizer, fixedValue);
         this.radius = this.RandRadius
+    }
+
+    protected override get ColorStr(): string
+    {
+        const randomizer = this.randomizer!
+        const i = Math.round(randomizer % 0.33 * 7)
+        return this.colors[i]
     }
 
     protected override get LifeTime()
