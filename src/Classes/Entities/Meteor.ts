@@ -80,9 +80,13 @@ export default class Meteor extends ProjectedEntity
         {
             this.split()
             this.game.score += 2
+            this.game.screenShake.start(5)
         }
         else
+        {
+            this.game.screenShake.start(3)
             this.game.score++;
+        }
     }
 
     private get destroyed()

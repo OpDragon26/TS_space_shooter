@@ -15,8 +15,8 @@ export default class ScreenShake implements IGlobalTransform {
         this.active = false;
     }
 
-    start() {
-        this.severity = 15
+    start(severity: number = 15) {
+        this.severity = severity
         this.active = true
     }
 

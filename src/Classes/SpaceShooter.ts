@@ -61,7 +61,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
     constructor() {
         super();
 
-        this.player = new Player(this.Width / 2, this.Height, this)
+        this.player = new Player(this.Width / 2, this.Height - 50, this)
         this.projector = new GridProjector(this.Width, this.Height, this.Width * 0.7, this.Width * 0.025, this.Height * 0.75, this.Width * 0.15, this.Height * 0.2);
 
         this.lowerCloseStarProjector = new GridProjector(this.Width, this.Height, this.Width * 1.75, this.Width, this.Height * 0.75, this.Width * -0.375, this.Height * 0.2)
@@ -136,9 +136,10 @@ export default class SpaceShooter extends Game<SpaceShooter>
     {
         this.score = 0
         this.player.currentHP = this.player.maxHP
+        this.player.injuryPoint = 0
         this.player.IFrameCounter = 0
         this.player.x = this.Width / 2
-        this.player.y = this.Height
+        this.player.y = this.Height - 50
         this.entities.clear()
         this.particles.clear()
         this.backgroundParticles.clear()
@@ -289,7 +290,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
     {
         if (this.playerExplosionPoints.includes(this.globalTime))
         {
-            this.screenShake.start()
+            this.screenShake.start(25)
             this.spawnExplosionParticles(this.player.x + Random(-40, 40), this.player.y + Random(-10, 10) - 40, 4)
         }
     }

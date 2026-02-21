@@ -60,13 +60,15 @@ export default class SmokeParticle extends HitParticle
 
         const s = Math.sign(randomizer - 0.5)
         const ns = (randomizer + 0.5) * s
-        return fixed == 4 ? ns : ns + p.fractionalY(y)
+        return fixed == 4 ? ns : ns + p.fractionalY(y) + (fixed == 0.75 ? 3 : 0)
     }
 
     protected override get XSpeed(): number {
         const randomizer = this.randomizer!
+        const fixed = this.fixed!;
         const s = Math.sign(randomizer % 0.2 - 0.1)
-        return (randomizer % 0.1 * 10 + 1.5) * s
+
+        return (randomizer % 0.1 * 10 + 1.5 - (fixed == 0.75 ? 2 : 0)) * s
     }
 
     override get newScale(): number {

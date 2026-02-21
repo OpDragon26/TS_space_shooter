@@ -34,6 +34,9 @@ export default class Player extends ProjectedEntity
 
     private readonly trailVariety: number = 10
     private readonly trailYOffset: number = 6
+    private readonly contactExplosionYOffset = 15
+    public injuryPoint: number = 0;
+    private readonly injuryYOffset: number = 5;
 
     constructor(x: number, y: number, game: SpaceShooter) {
         super(x, y, 1, 0, game, Textures.PLAYER_SHIP.Texture);
@@ -59,6 +62,7 @@ export default class Player extends ProjectedEntity
             this.applyRotation()
 
             this.spawnTrail()
+            this.spawnInjury()
 
             this.hitbox.update(this)
             this.handleCollision()
@@ -122,6 +126,8 @@ export default class Player extends ProjectedEntity
     {
         this.game.screenShake.start()
         this.IFrameCounter = this.IFrames
+        this.game.spawnExplosionParticles(meteor.x, this.y - this.contactExplosionYOffset, meteor.size)
+        this.setInjury(meteor)
 
         if (meteor.size == 3)
             this.currentHP -= 2
@@ -132,6 +138,17 @@ export default class Player extends ProjectedEntity
         if (this.currentHP == 0)
         {
             this.game.setStage(gameStates.GAME_OVER_TRANSITION)
+        }
+    }
+
+    private setInjury(meteor: Meteor)
+    {
+        if (this.currentHP < 3 || (meteor.size == 3 && this.currentHP < 5))
+        {
+            if (Math.random() > 0.25 && this.injuryPoint == 0)
+            {
+                this.injuryPoint = (meteor.x - this.x) / 2
+            }
         }
     }
 
@@ -146,9 +163,18 @@ export default class Player extends ProjectedEntity
 
     private spawnTrail()
     {
+        const offset = Random(-this.trailVariety, this.trailVariety);
+        this.game.particles.spawn(Particles.TRAIL, this.x + offset, this.y + this.trailYOffset, 1, 0)
+    }
+
+    private spawnInjury()
+    {
+        if (this.injuryPoint != 0)
         {
-            const offset = Random(-this.trailVariety, this.trailVariety);
-            this.game.particles.spawn(Particles.TRAIL, this.x + offset, this.y + this.trailYOffset, 1, 0)
+            if (Math.random() < 0.2)
+            {
+                this.game.particles.spawn(Particles.SMOKE, this.x + this.injuryPoint, this.y + this.injuryYOffset, 1, 0, 0.75)
+            }
         }
     }
 
