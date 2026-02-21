@@ -39,6 +39,11 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
         this.colorStr = this.color.getStr()
     }
 
+    protected get ColorStr()
+    {
+        return this.colorStr;
+    }
+
     x: number;
     y: number;
     width: number;
@@ -65,6 +70,7 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
 
     private drawText(pos: [x: number, y: number]): void
     {
+        this.rotateCanvas(pos)
         const prevA = this.game.ctx.globalAlpha
         this.game.ctx.globalAlpha = this.opacity
 
@@ -72,7 +78,7 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
             this.font = new Font(this.font.size, this.font.family, this.scale, this.font.style)
 
         this.game.ctx.font = this.font.getStr()
-        this.game.ctx.fillStyle = this.colorStr
+        this.game.ctx.fillStyle = this.ColorStr
         this.game.ctx.textAlign = this.alignment as CanvasTextAlign
         if (this.width == 0)
             this.game.ctx.fillText(this.text, pos[0], pos[1]);
@@ -106,5 +112,12 @@ export default class Text<GT extends Game<GT>> implements IEntity<GT>
 
     public set Opacity(v: number) {
         this.opacity = clamp(v, 0, 1)
+    }
+
+    rotateCanvas(pos: [x: number, y: number])
+    {
+        this.game.ctx.translate(pos[0], pos[1]);
+        this.game.ctx.rotate(this.rotation)
+        this.game.ctx.translate(-pos[0], -pos[1]);
     }
 }

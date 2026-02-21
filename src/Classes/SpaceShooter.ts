@@ -21,6 +21,9 @@ import {fontStyle} from "./Engine/Utils/TextStyling/fontStyle.ts";
 import {fontFamily} from "./Engine/Utils/TextStyling/fontFamily.ts";
 import {textAlignment} from "./Engine/Utils/TextStyling/textAlignment.ts";
 import RestartButton from "./UI/RestartButton.ts";
+import HighScore from "./Engine/Utils/Game/HighScore.ts";
+import FinalScoreDisplay from "./UI/FinalScoreDisplay.ts";
+import NewHighScoreSplash from "./UI/NewHighScoreSplash.ts";
 
 export default class SpaceShooter extends Game<SpaceShooter>
 {
@@ -31,6 +34,8 @@ export default class SpaceShooter extends Game<SpaceShooter>
     public readonly screenShake: ScreenShake = new ScreenShake();
     public readonly mobilityCounter: Counter = new Counter(30, 1800, 4);
     public score: number = 0
+
+    private readonly highScore: HighScore = new HighScore()
 
     public lowerCloseStarProjector: GridProjector
     public lowerMidStarProjector: GridProjector
@@ -46,7 +51,10 @@ export default class SpaceShooter extends Game<SpaceShooter>
     private readonly fadeOutLength: number = 180;
     private readonly gameOverText: Text<SpaceShooter>;
     private readonly restartButton: RestartButton;
-    private readonly restartButtonWait: number = 300;
+    private readonly restartButtonWait: number = 250;
+    private readonly scoreTextWait: number = 200;
+    private readonly hsDisplay: FinalScoreDisplay;
+    private readonly newHSSplash: NewHighScoreSplash;
 
     constructor() {
         super();
@@ -72,9 +80,12 @@ export default class SpaceShooter extends Game<SpaceShooter>
             0, 100, 1, 0,
             this,
             textAlignment.CENTER,
-            new Set<number>([Tags.GAME_OVER_UI]))
+            new Set<number>([Tags.GAME_OVER_UI])
+        )
 
         this.restartButton = new RestartButton(this.Width / 2, this.Height / 2 + 50, this)
+        this.hsDisplay = new FinalScoreDisplay(this.Width / 2, this.Height / 2 + 175, this)
+        this.newHSSplash = new NewHighScoreSplash(this.Width / 2 + 100, this.Height / 2 + 190, 5, this)
     }
 
     override onStart()
@@ -87,6 +98,8 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.ui.add(this.fading)
         this.ui.add(this.gameOverText)
         this.ui.add(this.restartButton)
+        this.ui.add(this.hsDisplay)
+        this.ui.add(this.newHSSplash)
 
         this.spawnInitialStars()
 
@@ -114,12 +127,15 @@ export default class SpaceShooter extends Game<SpaceShooter>
 
     public reset()
     {
+        this.score = 0
         this.player.currentHP = this.player.maxHP
         this.player.IFrameCounter = 0
         this.player.x = this.Width / 2
         this.player.y = this.Height
         this.entities.clear()
         this.particles.clear()
+        this.backgroundParticles.clear()
+        this.spawnInitialStars()
         this.entities.add(this.player)
     }
 
@@ -156,6 +172,11 @@ export default class SpaceShooter extends Game<SpaceShooter>
             case gameStates.GAME_OVER_TRANSITION:
                 this.setAllWithTag(Tags.RUN_UI, this.ui, false)
                 this.setAllWithTag(Tags.GAME_OVER_UI, this.ui, false)
+
+                this.highScore.add(this.score)
+                this.hsDisplay.score = this.score
+
+                this.newHSSplash.hidden = !this.highScore.IsNewBest
                 break;
 
             case gameStates.GAME_START_TRANSITION:
@@ -204,12 +225,16 @@ export default class SpaceShooter extends Game<SpaceShooter>
             this.fading.Opacity = this.globalTime / this.fadeOutLength
             this.gameOverText.Opacity = this.globalTime / (this.fadeOutLength * 2)
             this.restartButton.Opacity = (this.globalTime - this.restartButtonWait) / (this.fadeOutLength * 0.5)
+            this.hsDisplay.Opacity = (this.globalTime - this.scoreTextWait) / (this.fadeOutLength * 0.5)
+            this.newHSSplash.Opacity = (this.globalTime - this.scoreTextWait) / (this.fadeOutLength * 0.5)
         }
         else
         {
             this.restartButton.Opacity = 0
             this.fading.Opacity = 0
             this.gameOverText.Opacity = 0
+            this.hsDisplay.Opacity = 0
+            this.newHSSplash.Opacity = 0
         }
     }
 

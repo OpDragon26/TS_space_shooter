@@ -18,7 +18,7 @@ export default class Player extends ProjectedRect
     public readonly hitbox: RectangleHitbox;
 
     currentHP: number;
-    readonly maxHP: number = 7
+    readonly maxHP: number = 1
 
     private readonly IFrames: number = 120;
     public IFrameCounter: number = 0;

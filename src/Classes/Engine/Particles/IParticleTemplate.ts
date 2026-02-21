@@ -1,6 +1,6 @@
 import type Game from "../General/Game.ts";
 
-export default interface IParticleTemplate<GT extends Game<any>>
+export default interface IParticleTemplate<GT extends Game<GT>>
 {
     game: GT | null
     x: number | null
