@@ -30,7 +30,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
     public projector: GridProjector
     private enemyInterval: [min: number, max: number] = [5, 40]
     private enemyTimer: number = 0;
-    private readonly player: Player
+    public readonly player: Player
     public readonly screenShake: ScreenShake = new ScreenShake();
     public readonly mobilityCounter: Counter = new Counter(30, 1800, 4);
     public score: number = 0

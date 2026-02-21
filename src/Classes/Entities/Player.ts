@@ -8,6 +8,8 @@ import clamp from "../Engine/Utils/Math/clamp.ts";
 import {gameStates} from "../Helper/gameStates.ts";
 import ProjectedEntity from "../Helper/ProjectedEntity.ts";
 import {Textures} from "../Helper/Textures.ts";
+import {Particles} from "../Helper/Particles.ts";
+import Random from "../Engine/Utils/Math/Random.ts";
 
 export default class Player extends ProjectedEntity
 {
@@ -29,6 +31,9 @@ export default class Player extends ProjectedEntity
     private readonly projectileTimer: Counter = new Counter(20);
 
     private readonly reScale: number = 0.5;
+
+    private readonly trailVariety: number = 10
+    private readonly trailYOffset: number = 6
 
     constructor(x: number, y: number, game: SpaceShooter) {
         super(x, y, 1, 0, game, Textures.PLAYER_SHIP.Texture);
@@ -52,6 +57,8 @@ export default class Player extends ProjectedEntity
             this.projectileTimer.tick()
             this.handleInputs()
             this.applyRotation()
+
+            this.spawnTrail()
 
             this.hitbox.update(this)
             this.handleCollision()
@@ -135,6 +142,14 @@ export default class Player extends ProjectedEntity
         this.projectileXOffsetSign = -this.projectileXOffsetSign;
 
         this.game.entities.add(new Projectile(x, y, this.game))
+    }
+
+    private spawnTrail()
+    {
+        {
+            const offset = Random(-this.trailVariety, this.trailVariety);
+            this.game.particles.spawn(Particles.TRAIL, this.x + offset, this.y + this.trailYOffset, 1, 0)
+        }
     }
 
     private applyRotation()
