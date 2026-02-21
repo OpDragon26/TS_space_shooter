@@ -25,8 +25,8 @@ export default class Player extends ProjectedEntity
     private readonly IFrames: number = 120;
     public IFrameCounter: number = 0;
 
-    private readonly projectileYOffset: number = -10;
-    private readonly projectileXOffset: number = 20;
+    private readonly projectileYOffset: number = -8;
+    private readonly projectileXOffset: number = 24;
     private projectileXOffsetSign: number = 1;
     private readonly projectileTimer: Counter = new Counter(20);
 
@@ -158,6 +158,7 @@ export default class Player extends ProjectedEntity
         const x = this.x + this.projectileXOffset * this.projectileXOffsetSign
         this.projectileXOffsetSign = -this.projectileXOffsetSign;
 
+        this.game.spawnShootParticle(x, y)
         this.game.entities.add(new Projectile(x, y, this.game))
     }
 

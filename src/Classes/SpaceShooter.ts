@@ -56,7 +56,8 @@ export default class SpaceShooter extends Game<SpaceShooter>
     private readonly hsDisplay: FinalScoreDisplay;
     private readonly newHSSplash: NewHighScoreSplash;
 
-    private readonly playerExplosionPoints = [1, 60, 120]
+    private readonly playerExplosionPoints = [1, 60, 120, 180]
+    private readonly playerExplosionIntesnity = [30, 25, 25, 15]
 
     constructor() {
         super();
@@ -276,6 +277,13 @@ export default class SpaceShooter extends Game<SpaceShooter>
         }
     }
 
+    spawnShootParticle(x: number, y: number)
+    {
+        for (let i = 0; i < 5; i++) {
+            this.particles.spawn(Particles.SHOOT, x, y, 1, 0)
+        }
+    }
+
     spawnExplosionParticles(x: number, y: number, size: number)
     {
         for (let i = 0; i < 3; i++) {
@@ -290,7 +298,8 @@ export default class SpaceShooter extends Game<SpaceShooter>
     {
         if (this.playerExplosionPoints.includes(this.globalTime))
         {
-            this.screenShake.start(25)
+            const i = this.playerExplosionPoints.indexOf(this.globalTime)
+            this.screenShake.start(this.playerExplosionIntesnity[i])
             this.spawnExplosionParticles(this.player.x + Random(-40, 40), this.player.y + Random(-10, 10) - 40, 4)
         }
     }

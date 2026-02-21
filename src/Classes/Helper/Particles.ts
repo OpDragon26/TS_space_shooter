@@ -3,6 +3,7 @@ import HitParticle from "../Effects/HitParticle.ts";
 import SmokeParticle from "../Effects/SmokeParticle.ts";
 import ScatterParticle from "../Effects/ScatterParticle.ts";
 import TrailParticle from "../Effects/TrailParticle.ts";
+import ShootParticle from "../Effects/ShootParticle.ts";
 
 export const Particles = {
     STAR: new StarParticle(),
@@ -10,4 +11,5 @@ export const Particles = {
     SMOKE: new SmokeParticle(),
     SCATTER: new ScatterParticle(),
     TRAIL: new TrailParticle(),
+    SHOOT: new ShootParticle(),
 }
