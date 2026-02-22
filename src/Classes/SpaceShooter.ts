@@ -24,6 +24,7 @@ import RestartButton from "./UI/RestartButton.ts";
 import HighScore from "./Engine/Utils/Game/HighScore.ts";
 import FinalScoreDisplay from "./UI/FinalScoreDisplay.ts";
 import NewHighScoreSplash from "./UI/NewHighScoreSplash.ts";
+import easeIn from "./Engine/Utils/Math/easeIn.ts";
 
 export default class SpaceShooter extends Game<SpaceShooter>
 {
@@ -275,7 +276,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
 
             if (this.gameState == gameStates.GAME_START_FADE_IN)
             {
-                this.fading.Opacity = 1 - this.globalTime / this.fadeInTime
+                this.fading.Opacity = easeIn(1 - this.globalTime / this.fadeInTime)
             }
             else
                 this.fading.Opacity = 0
