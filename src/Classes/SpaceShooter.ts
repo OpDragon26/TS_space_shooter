@@ -56,6 +56,9 @@ export default class SpaceShooter extends Game<SpaceShooter>
     private readonly hsDisplay: FinalScoreDisplay;
     private readonly newHSSplash: NewHighScoreSplash;
 
+    private readonly fadeOutTime = 90;
+    private readonly fadeInTime = 90;
+
     private readonly playerExplosionPoints = [1, 60, 120, 180]
     private readonly playerExplosionIntensity = [30, 25, 25, 15]
 
@@ -127,6 +130,16 @@ export default class SpaceShooter extends Game<SpaceShooter>
         {
             this.explodePlayer()
         }
+        if (this.gameState == gameStates.GAME_START_FADE_OUT)
+        {
+            if (this.globalTime > this.fadeOutTime)
+                this.setStage(gameStates.GAME_START_FADE_IN)
+        }
+        if (this.gameState == gameStates.GAME_START_FADE_IN)
+        {
+            if (this.globalTime > this.fadeInTime)
+                this.setStage(gameStates.ONGOING)
+        }
 
         this.restartButton.hitbox.active = this.gameState == gameStates.GAME_OVER_TRANSITION && this.globalTime > this.restartButtonWait + 30
 
@@ -139,6 +152,7 @@ export default class SpaceShooter extends Game<SpaceShooter>
         this.player.currentHP = this.player.maxHP
         this.player.injuryPoint = 0
         this.player.IFrameCounter = 0
+        this.player.rotation = 0
         this.player.x = this.Width / 2
         this.player.y = this.Height - 50
         this.entities.clear()
@@ -176,7 +190,6 @@ export default class SpaceShooter extends Game<SpaceShooter>
         {
             case gameStates.ONGOING:
                 this.setAllWithTag(Tags.RUN_UI, this.ui, false)
-                this.reset()
                 break;
 
             case gameStates.GAME_OVER_TRANSITION:
@@ -190,9 +203,15 @@ export default class SpaceShooter extends Game<SpaceShooter>
                 this.newHSSplash.hidden = !this.highScore.IsNewBest
                 break;
 
-            case gameStates.GAME_START_TRANSITION:
-
+            case gameStates.GAME_START_FADE_OUT:
+                this.setAllWithTag(Tags.GAME_OVER_UI, this.ui, false)
                 break;
+
+            case gameStates.GAME_START_FADE_IN:
+                this.reset()
+                this.setAllWithTag(Tags.RUN_UI, this.ui,false)
+                this.fading.hidden = false
+                break
         }
     }
 
@@ -239,13 +258,27 @@ export default class SpaceShooter extends Game<SpaceShooter>
             this.hsDisplay.Opacity = (this.globalTime - this.scoreTextWait) / (this.fadeOutLength * 0.5)
             this.newHSSplash.Opacity = (this.globalTime - this.scoreTextWait) / (this.fadeOutLength * 0.5)
         }
+        else if (this.gameState == gameStates.GAME_START_FADE_OUT)
+        {
+            this.fading.opacity = 1;
+            this.gameOverText.Opacity = 1 - this.globalTime / this.fadeOutTime;
+            this.restartButton.Opacity = 1 - this.globalTime / this.fadeOutTime;
+            this.hsDisplay.Opacity = 1 - this.globalTime / this.fadeOutTime;
+            this.newHSSplash.Opacity = 1 - this.globalTime / this.fadeOutTime;
+        }
         else
         {
             this.restartButton.Opacity = 0
-            this.fading.Opacity = 0
             this.gameOverText.Opacity = 0
             this.hsDisplay.Opacity = 0
             this.newHSSplash.Opacity = 0
+
+            if (this.gameState == gameStates.GAME_START_FADE_IN)
+            {
+                this.fading.Opacity = 1 - this.globalTime / this.fadeInTime
+            }
+            else
+                this.fading.Opacity = 0
         }
     }
 

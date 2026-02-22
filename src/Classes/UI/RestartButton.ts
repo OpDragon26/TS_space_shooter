@@ -14,7 +14,7 @@ export default class RestartButton extends TextButton<SpaceShooter>
     thickness: number = 5
 
     constructor(x: number, y: number, game: SpaceShooter) {
-        super(x, y, 300, 70, 1, 0, game, 0, 10, () => {game.setStage(gameStates.ONGOING)},
+        super(x, y, 300, 70, 1, 0, game, 0, 10, () => {game.setStage(gameStates.GAME_START_FADE_OUT)},
             new RGBA(0xF7, 0xB4, 0x36),new RGBA(0xF7, 0xB4, 0x36),new RGBA(0xC9, 0x8E, 0x20),
             new Text("RETRY",
                 new Font(36, fontFamily.COURIER_NEW, 1, fontStyle.BOLD),
