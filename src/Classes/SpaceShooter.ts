@@ -206,6 +206,8 @@ export default class SpaceShooter extends Game<SpaceShooter>
 
             case gameStates.GAME_START_FADE_OUT:
                 this.setAllWithTag(Tags.GAME_OVER_UI, this.ui, false)
+                this.newHSSplash.hidden = !this.highScore.IsNewBest
+
                 break;
 
             case gameStates.GAME_START_FADE_IN:
