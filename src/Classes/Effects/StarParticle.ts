@@ -21,7 +21,7 @@ export default class StarParticle extends RectParticle<SpaceShooter>
     }
 
     override load(game: SpaceShooter, x: number, y: number, scale: number, rotation: number, elapsedTime: number, randomizer: number) {
-        super.load(game, x, y, scale, rotation, elapsedTime, randomizer);
+        super.load(game, x, y, scale, rotation, elapsedTime, randomizer, 0);
         this.dist = this.Dist
         this.relevantProjector = this.RelevantProjector
         this.colorStr = this.DistColor
